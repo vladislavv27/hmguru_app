@@ -43,6 +43,7 @@ dependencies:
   infinite_scroll_pagination: ^3.0.1
   path_provider: ^2.0.2
   permission_handler: ^10.2.0
+  date_utils: ^0.2.0
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +64,8 @@ flutter:
   assets:
     - .env
     - assets/apartment.svg
+    - assets/meter-reading.svg
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
