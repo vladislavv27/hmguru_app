@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hmguru/src/pages/home.dart';
+import 'package:hmguru/src/pages/MyApartmentPage.dart';
 
 class MyBottomNavigationMenu extends StatefulWidget {
   final int currentIndex;
@@ -17,16 +17,16 @@ class _MyBottomNavigationMenuState extends State<MyBottomNavigationMenu> {
     return BottomNavigationBar(
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.dashboard_customize),
-          label: 'Dashboard',
+          icon: Icon(Icons.apartment),
+          label: 'My apartment,invoice ',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.apartment),
-          label: 'My apartment',
+          icon: Icon(Icons.dashboard_customize),
+          label: 'Meter readings', //Ввести счетчики
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.school),
-          label: 'Page 3',
+          label: '', //все инвойсы (check or download)
         ),
       ],
       currentIndex: widget.currentIndex,
@@ -39,7 +39,7 @@ class _MyBottomNavigationMenuState extends State<MyBottomNavigationMenu> {
             // Navigate to the home page (Dashboard)
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (BuildContext context) => HomePage(),
+                builder: (BuildContext context) => MyApartmentPage(),
               ),
             );
             break;

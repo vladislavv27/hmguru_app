@@ -11,6 +11,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Color(
+            0xFF1875F0), // Set your desired primary color using the hexadecimal color code
+      ),
       home: LoginView(), // Set LoginView as the home page
     );
   }

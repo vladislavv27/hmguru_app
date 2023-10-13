@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hmguru/src/models/UserProfile%20.dart';
 import 'package:hmguru/src/services/api_service.dart';
-import 'package:hmguru/src/services/auth_service.dart';
-import 'package:hmguru/src/pages/home.dart';
+import 'package:hmguru/src/pages/MyApartmentPage.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:jwt_decoder/jwt_decoder.dart'; // Import JWT decoder library
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -20,12 +18,12 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
-  final _authService = AuthService(); // Initialize your AuthService
-  final apiURLAuth = dotenv.env['API_URL_AUTH'];
   final _apiservice = ApiService();
+  final _preferenceservice = PreferenceService();
+  final apiURLAuth = dotenv.env['API_URL_AUTH'];
+
   String _email = '';
   String _password = '';
-  String? _accessToken;
   bool _isLoading = false;
 
   @override
@@ -119,7 +117,8 @@ class _LoginViewState extends State<LoginView> {
         if (response.statusCode == 200) {
           final responseBody = json.decode(response.body);
           final jwtToken = responseBody['access_token'];
-          await _authService.saveJwtToken(jwtToken); // Use the instance method
+          await _preferenceservice
+              .saveJwtToken(jwtToken); // Use the instance method
 
           // Decode the JWT token to get profile data
           final Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
@@ -134,19 +133,20 @@ class _LoginViewState extends State<LoginView> {
           );
 
           // Save the profile data in SharedPreferences
-          await _authService
+          await _preferenceservice
               .saveUserProfile(userProfile); // Use the instance method
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Login Success'),
-              duration: Duration(seconds: 5),
+              duration: Duration(seconds: 3),
             ),
           );
 
           if (mounted) {
             await _apiservice.getLeasehold();
             await Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+              MaterialPageRoute(
+                  builder: (BuildContext context) => MyApartmentPage()),
               (Route<dynamic> route) => false,
             );
           }
@@ -154,7 +154,7 @@ class _LoginViewState extends State<LoginView> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Login failed. Please check your credentials.'),
-              duration: Duration(seconds: 3),
+              duration: Duration(seconds: 4),
             ),
           );
         }

@@ -1,49 +1,38 @@
 import 'dart:convert';
 
 import 'package:hmguru/src/models/MyLeaseholdVM.dart';
-import 'package:hmguru/src/models/UserVM.dart';
+import 'package:hmguru/src/models/UserProfile%20.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenceService {
-  static const _jwtTokenKey = 'jwtToken';
-  static const _residentDataKey = 'residentData';
-
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-  Future<String?> get jwtToken async {
-    final prefs = await _prefs;
-    return prefs.getString(_jwtTokenKey);
+  Future<void> saveJwtToken(String jwtToken) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('jwtToken', jwtToken);
   }
 
-  Future<void> setJwtToken(String token) async {
-    final prefs = await _prefs;
-    await prefs.setString(_jwtTokenKey, token);
+  Future<String?> loadJwtToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('jwtToken');
   }
 
-  Future<void> removeJwtToken() async {
-    final prefs = await _prefs;
-    await prefs.remove(_jwtTokenKey);
+  Future<void> saveUserProfile(UserProfile userProfile) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userId', userProfile.userId);
+    await prefs.setString('name', userProfile.name);
+    await prefs.setString('role', userProfile.role);
+    await prefs.setString('fullName', userProfile.fullName);
   }
 
-  // Future<void> saveResidentData(UserVM resident) async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final residentJson = json.encode(resident.toJson());
-  //   await prefs.setString('residentData', residentJson);
-  // }
+  Future<UserProfile> loadUserProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getString('userId') ?? '';
+    final name = prefs.getString('name') ?? '';
+    final role = prefs.getString('role') ?? '';
+    final fullName = prefs.getString('fullName') ?? '';
+    return UserProfile(
+        userId: userId, name: name, role: role, fullName: fullName);
+  }
 
-  // Future<UserVM?> loadResidentData() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final residentJson = prefs.getString(_residentDataKey);
-  //   if (residentJson != null) {
-  //     final residentMap = json.decode(residentJson);
-  //     return UserVM.fromJson(residentMap);
-  //   } else {
-  //     return null;
-  //   }
-  // }
-  static const String _key = 'MyLeaseholdVM';
-
-  // Save user profile data to SharedPreferences
   Future<void> saveLeaseholdData(MyLeaseholdVM leasehold) async {
     final prefs = await SharedPreferences.getInstance();
     final leaseholdJson = jsonEncode(leasehold);
@@ -57,17 +46,6 @@ class PreferenceService {
       return MyLeaseholdVM.fromJson(jsonDecode(leaseholdJson));
     }
     return null;
-  }
-
-  Future<void> clearLeaseholdData() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('leaseholdData');
-  }
-
-  // Clear user profile data from SharedPreferences
-  Future<void> clearUserProfile() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_key);
   }
 
   Future<void> clearAllPreferences() async {
