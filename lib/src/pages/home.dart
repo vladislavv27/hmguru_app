@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hmguru/src/models/auth_service.dart';
+import 'package:hmguru/src/models/MyLeaseholdVM.dart';
 import 'package:hmguru/src/pages/login.dart';
-import 'package:hmguru/src/models/UserProfile%20.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hmguru/src/pages/menu.dart';
+import 'package:hmguru/src/services/api_service.dart';
+import 'package:hmguru/src/services/auth_service.dart';
+import 'package:hmguru/src/services/preference_service.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,8 +12,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool _isLoading = false; // Add a loading indicator variable
-  final _authService = AuthService(); // Create an instance of AuthService
+  int _currentIndex = 0; // To keep track of the current menu item index
+  final _authService = AuthService();
+  final _prefservice = PreferenceService();
+  final _apiservice = ApiService();
+  MyLeaseholdVM? leaseholdData;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLeaseholdData();
+  }
+
+  Future<void> _loadLeaseholdData() async {
+    final myLeaseholdVM = await _prefservice.loadLeaseholdData();
+    if (myLeaseholdVM != null) {
+      setState(() {
+        leaseholdData = myLeaseholdVM;
+        print("Home Page");
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,61 +41,58 @@ class _HomePageState extends State<HomePage> {
         title: Text('Home Page'),
       ),
       body: Center(
-        child: FutureBuilder<UserProfile>(
-          future: _loadUserProfile(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
-            } else if (snapshot.hasData) {
-              final userProfile = snapshot.data!;
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Hello ${userProfile.fullName}'),
-                  ElevatedButton(
-                    onPressed: () {
-                      _handleLogout(context);
-                    },
-                    child: Text('Logout'),
-                  ),
-                  // Add more content for the home page
-                ],
-              );
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              return Text('No user data found');
-            }
-          },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (leaseholdData != null)
+              Text('Address: ${leaseholdData!.address}'),
+            if (leaseholdData != null)
+              Text('Full Address: ${leaseholdData!.fullAddress}'),
+            if (leaseholdData != null) Text('Floor: ${leaseholdData!.floor}'),
+            if (leaseholdData != null)
+              Text('Resident Count: ${leaseholdData!.residentCount}'),
+            // Add more fields here as needed
+            ElevatedButton(
+              onPressed: () {
+                _handleLogout(context);
+              },
+              child: Text('Logout'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _loadLeaseholdData();
+                print(leaseholdData);
+              },
+              child: Text('Reload Data'),
+            ),
+          ],
         ),
+      ),
+      // Add the bottom navigation menu
+      bottomNavigationBar: MyBottomNavigationMenu(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          // Handle menu item tap
+          setState(() {
+            _currentIndex = index;
+          });
+          // You can implement navigation logic based on the index here.
+        },
       ),
     );
   }
 
-  Future<UserProfile> _loadUserProfile() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString('userId') ?? '';
-    final name = prefs.getString('name') ?? '';
-    final role = prefs.getString('role') ?? '';
-    final fullName = prefs.getString('fullName') ?? '';
-    return UserProfile(
-        userId: userId, name: name, role: role, fullName: fullName);
-  }
-
   void _handleLogout(BuildContext context) async {
-    setState(() {
-      _isLoading = true;
-    });
+    // Clear all preferences or do any necessary cleanup
+    await _prefservice.clearAllPreferences();
 
-    await _authService.clearUserData();
-
-    // Check if the widget is still mounted before navigation
-    if (mounted) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (BuildContext context) => LoginView(),
-        ),
-      );
-    }
+    // Use Navigator to navigate to the LoginView page and remove the current page
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => LoginView(),
+      ),
+      (Route<dynamic> route) => false, // Clear the navigation stack
+    );
   }
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hmguru/src/models/UserProfile%20.dart';
-import 'package:hmguru/src/models/auth_service.dart';
+import 'package:hmguru/src/services/api_service.dart';
+import 'package:hmguru/src/services/auth_service.dart';
 import 'package:hmguru/src/pages/home.dart';
+import 'package:hmguru/src/services/preference_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -20,7 +22,7 @@ class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
   final _authService = AuthService(); // Initialize your AuthService
   final apiURLAuth = dotenv.env['API_URL_AUTH'];
-
+  final _apiservice = ApiService();
   String _email = '';
   String _password = '';
   String? _accessToken;
@@ -117,7 +119,6 @@ class _LoginViewState extends State<LoginView> {
         if (response.statusCode == 200) {
           final responseBody = json.decode(response.body);
           final jwtToken = responseBody['access_token'];
-
           await _authService.saveJwtToken(jwtToken); // Use the instance method
 
           // Decode the JWT token to get profile data
@@ -143,6 +144,7 @@ class _LoginViewState extends State<LoginView> {
           );
 
           if (mounted) {
+            await _apiservice.getLeasehold();
             await Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (BuildContext context) => HomePage()),
               (Route<dynamic> route) => false,

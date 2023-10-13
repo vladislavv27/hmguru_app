@@ -12,4 +12,21 @@ class UserProfile {
     required this.role,
     required this.fullName,
   });
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
+    return UserProfile(
+      userId: json['userId'],
+      name: json['name'],
+      role: json['role'],
+      fullName: json['fullName'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'name': name,
+      'role': role,
+      'fullName': fullName,
+    };
+  }
 }
