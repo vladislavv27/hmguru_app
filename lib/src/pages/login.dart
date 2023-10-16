@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hmguru/src/models/UserProfile%20.dart';
+import 'package:hmguru/src/models/user_profile.dart';
 import 'package:hmguru/src/services/api_service.dart';
-import 'package:hmguru/src/pages/MyApartmentPage.dart';
+import 'package:hmguru/src/pages/home.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -115,6 +115,8 @@ class _LoginViewState extends State<LoginView> {
 
       if (mounted) {
         if (response.statusCode == 200) {
+          await _preferenceservice.clearAllPreferences();
+
           final responseBody = json.decode(response.body);
           final jwtToken = responseBody['access_token'];
           await _preferenceservice
@@ -144,9 +146,10 @@ class _LoginViewState extends State<LoginView> {
 
           if (mounted) {
             await _apiservice.getLeasehold();
+            await _apiservice.getInvoiceDataForHomepage();
+            //await _apiservice.getInvoiceList();
             await Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (BuildContext context) => MyApartmentPage()),
+              MaterialPageRoute(builder: (BuildContext context) => HomePage()),
               (Route<dynamic> route) => false,
             );
           }

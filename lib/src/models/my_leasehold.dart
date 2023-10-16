@@ -122,20 +122,15 @@ class MyLeaseholdVM {
 
 InvoiceDeliveryType parseInvoiceDeliveryType(int? value) {
   if (value == null) {
-    return InvoiceDeliveryType.unknown; // Handle null values with a default
+    return InvoiceDeliveryType.unknown;
   }
-
-  final index = value - 1; // Adjust to start from 0
-
+  final index = value;
   if (index >= 0 && index < InvoiceDeliveryType.values.length) {
     return InvoiceDeliveryType.values[index];
   } else {
-    return InvoiceDeliveryType
-        .unknown; // Return a default value for unknown values
+    return InvoiceDeliveryType.unknown;
   }
 }
-
-// Rest of your code remains the same
 
 enum InvoiceDeliveryType {
   Email,
