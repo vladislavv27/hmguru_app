@@ -1,18 +1,23 @@
 import 'dart:convert';
 
-import 'package:hmguru/src/models/MyLeaseholdVM.dart';
-import 'package:hmguru/src/models/UserProfile%20.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hmguru/src/models/Invoice_Info.dart';
+import 'package:hmguru/src/models/invoice_list.dart';
+import 'package:hmguru/src/models/my_leasehold.dart';
+import 'package:hmguru/src/models/user_profile.dart';
+import 'package:hmguru/src/models/invoice_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenceService {
   Future<void> saveJwtToken(String jwtToken) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('jwtToken', jwtToken);
+    final secureStorage = FlutterSecureStorage();
+    await secureStorage.write(key: 'jwtToken', value: jwtToken);
   }
 
   Future<String?> loadJwtToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('jwtToken');
+    final secureStorage = FlutterSecureStorage();
+    String? jwtToken = await secureStorage.read(key: 'jwtToken');
+    return jwtToken;
   }
 
   Future<void> saveUserProfile(UserProfile userProfile) async {
@@ -51,6 +56,58 @@ class PreferenceService {
   Future<void> clearAllPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
-    print('All data in preferences has been cleared.');
+  }
+
+  Future<void> saveInvoiceInfo(InvoiceInfo invoiceInfo) async {
+    final prefs = await SharedPreferences.getInstance();
+    final invoiceInfoJson = jsonEncode(invoiceInfo);
+    await prefs.setString('invoiceInfo', invoiceInfoJson);
+  }
+
+  Future<InvoiceInfo?> loadInvoiceInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    final invoiceInfoJson = prefs.getString('invoiceInfo');
+    if (invoiceInfoJson != null) {
+      return InvoiceInfo.fromJson(jsonDecode(invoiceInfoJson));
+    }
+    return null;
+  }
+
+  Future<void> saveInvoiceDetails(List<InvoiceDetailVM> invoiceDetails) async {
+    final prefs = await SharedPreferences.getInstance();
+    final invoiceDetailsJson = jsonEncode(invoiceDetails);
+    await prefs.setString('invoiceDetails', invoiceDetailsJson);
+  }
+
+  Future<List<InvoiceDetailVM>> loadInvoiceDetails() async {
+    final prefs = await SharedPreferences.getInstance();
+    final invoiceDetailsJson = prefs.getString('invoiceDetails');
+    if (invoiceDetailsJson != null) {
+      final List<dynamic> decodedList = jsonDecode(invoiceDetailsJson);
+      List<InvoiceDetailVM> invoiceDetails =
+          decodedList.map((json) => InvoiceDetailVM.fromJson(json)).toList();
+      return invoiceDetails;
+    }
+    return [];
+  }
+
+  Future<void> saveInvoiceList(List<InvoiceList> invoiceList) async {
+    final prefs = await SharedPreferences.getInstance();
+    final invoiceListJson = jsonEncode(invoiceList);
+    await prefs.setString('invoiceList', invoiceListJson);
+  }
+
+  Future<List<InvoiceList>> loadInvoiceList() async {
+    final prefs = await SharedPreferences.getInstance();
+    final invoiceListJson = prefs.getString('invoiceList');
+    if (invoiceListJson != null) {
+      final List<dynamic> decodedList = jsonDecode(invoiceListJson);
+      List<InvoiceList> invoiceList = decodedList
+          .map((json) => InvoiceList.fromJson(json as Map<String, dynamic>))
+          .toList();
+      return invoiceList;
+    }
+
+    return [];
   }
 }

@@ -31,6 +31,7 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Center(
         child: Padding(
@@ -147,7 +148,6 @@ class _LoginViewState extends State<LoginView> {
           if (mounted) {
             await _apiservice.getLeasehold();
             await _apiservice.getInvoiceDataForHomepage();
-            //await _apiservice.getInvoiceList();
             await Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (BuildContext context) => HomePage()),
               (Route<dynamic> route) => false,

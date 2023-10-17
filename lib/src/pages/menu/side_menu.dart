@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/my_leasehold.dart';
 import 'package:hmguru/src/pages/login.dart';
 import 'package:hmguru/src/services/preference_service.dart';
@@ -48,22 +49,22 @@ class _SideMenuState extends State<SideMenu> {
           UserAccountsDrawerHeader(
             accountName: Text(
               userName,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
               ),
             ),
             accountEmail: Text(userMail),
-            currentAccountPicture: CircleAvatar(
+            currentAccountPicture: const CircleAvatar(
               backgroundColor: Colors.white,
               child: Icon(
                 Icons.person,
-                color: Colors.blue,
+                color: AppColors.primaryColor,
               ),
             ),
           ),
           ListTile(
             leading: Icon(Icons.apartment),
-            title: Text(
+            title: const Text(
               'My apartment',
               style: TextStyle(
                 fontSize: 18,
@@ -77,7 +78,7 @@ class _SideMenuState extends State<SideMenu> {
           ),
           ListTile(
             leading: Icon(Icons.logout),
-            title: Text(
+            title: const Text(
               'Logout',
               style: TextStyle(
                 fontSize: 18,

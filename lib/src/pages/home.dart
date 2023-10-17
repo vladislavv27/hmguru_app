@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hmguru/src/models/Invoice_Info.dart';
+import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/my_leasehold.dart';
 import 'package:hmguru/src/pages/invoice_details.dart';
 import 'package:hmguru/src/pages/menu/bottom_navigation.dart';
@@ -51,10 +52,18 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.all(10.0),
                     child: Column(
                       children: [
-                        SvgPicture.asset(
-                          'assets/apartment.svg',
-                          height: 140,
-                          width: 140,
+                        OrientationBuilder(
+                          builder: (context, orientation) {
+                            if (orientation == Orientation.portrait) {
+                              return SvgPicture.asset(
+                                'assets/apartment.svg',
+                                height: 140,
+                                width: 140,
+                              );
+                            } else {
+                              return SizedBox(); // Hide the SVG in landscape orientation
+                            }
+                          },
                         ),
                         SizedBox(height: 20),
                         Text(
@@ -64,34 +73,47 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(
                             color: leaseholdData != null
                                 ? Color(0xFF464646)
-                                : Color.fromARGB(255, 254, 112, 96),
+                                : AppColors.accentColor,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 15),
-                        Text(
-                          invoiceInfoData != null
-                              ? 'Last invoice: ${_getPreviousMonthDate()}'
-                              : '',
-                          style: TextStyle(
-                            color: Color(0xFF464646),
-                            fontSize: 20,
                           ),
                         ),
                         SizedBox(height: 25),
                         Text(
                           invoiceInfoData != null
-                              ? 'Invoice: ${invoiceInfoData!.invoiceUID}\n ${invoiceInfoData!.sumTotal}€'
-                              : '',
+                              ? 'Last invoice: ${_getPreviousMonthDate()}'
+                              : 'No invoice data available',
+                          style: TextStyle(
+                            color: Color(0xFF464646),
+                            fontSize: 20,
+                          ),
+                        ),
+                        // The Text widget for invoice information goes here
+                        Text(
+                          invoiceInfoData != null
+                              ? 'Invoice: ${invoiceInfoData!.invoiceUID}'
+                              : 'No invoice data available',
                           style: TextStyle(
                             color: leaseholdData != null
                                 ? Color(0xFF464646)
-                                : Color.fromARGB(255, 254, 112, 96),
+                                : AppColors.primaryColor,
                             fontSize: 20,
                             fontWeight: FontWeight.normal,
                           ),
-                          textAlign: TextAlign.center, // Center-align the text
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          invoiceInfoData != null
+                              ? '${invoiceInfoData!.sumTotal}€'
+                              : 'No invoice data available',
+                          style: TextStyle(
+                            color: leaseholdData != null
+                                ? AppColors.primaryColor
+                                : AppColors.primaryColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
                         if (invoiceInfoData != null && !invoiceInfoData!.isPaid)
                           Column(
@@ -99,13 +121,13 @@ class _HomePageState extends State<HomePage> {
                               SizedBox(height: 20),
                               Icon(
                                 Icons.local_fire_department,
-                                color: Color.fromARGB(255, 254, 112, 96),
+                                color: Color(0xFF464646),
                                 size: 48,
                               ),
                               Text(
                                 'You are a debtor',
                                 style: TextStyle(
-                                  color: Color.fromARGB(255, 254, 112, 96),
+                                  color: Color(0xFF464646),
                                   fontSize: 20,
                                 ),
                               ),
@@ -116,7 +138,11 @@ class _HomePageState extends State<HomePage> {
                           onPressed: () {
                             _openAdditionalInformationPage();
                           },
-                          child: Text('More Information'),
+                          style: ElevatedButton.styleFrom(
+                            primary: AppColors
+                                .primaryColor, // Set the background color
+                          ),
+                          child: Text('Read more'),
                         ),
                       ],
                     ),
