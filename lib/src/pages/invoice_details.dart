@@ -80,7 +80,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                   minScale: 1.0,
                   maxScale: 3.0,
                   scaleEnabled: true, // Allow scaling
-                  panEnabled: true, // Allow panning
+                  panEnabled: false, // Allow panning
                   child: DataTable(
                     columns: <DataColumn>[
                       DataColumn(label: Text('SERVICE')),

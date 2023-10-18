@@ -41,6 +41,8 @@ dependencies:
   flutter_svg: ^0.22.0
   cupertino_icons: ^1.0.2
   infinite_scroll_pagination: ^3.0.1
+  path_provider: ^2.0.2
+  permission_handler: ^10.2.0
 
 dev_dependencies:
   flutter_test:

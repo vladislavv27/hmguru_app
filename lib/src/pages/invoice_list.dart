@@ -155,9 +155,38 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
                                     ),
                                     label: Text(''),
                                   ),
+                                  TextButton.icon(
+                                    onPressed: () async {
+                                      bool downloaded = await _apiservice
+                                          .downloadFile(rowData.id);
+                                      if (downloaded) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content:
+                                                Text('Successfully downloaded'),
+                                            duration: Duration(seconds: 2),
+                                          ),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text('Download error'),
+                                            duration: Duration(seconds: 4),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    icon: Icon(
+                                      Icons.download,
+                                      color: AppColors.accentColor,
+                                    ),
+                                    label: Text(''),
+                                  ),
                                 ],
                               ),
-                            ),
+                            )
                           ],
                         );
                       }).toList(),

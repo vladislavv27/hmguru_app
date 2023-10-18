@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:hmguru/src/models/Invoice_Info.dart';
 import 'package:hmguru/src/models/my_leasehold.dart';
 import 'package:hmguru/src/models/invoice_details.dart';
@@ -26,12 +27,11 @@ class ApiService {
     );
 
     if (response.statusCode == 200) {
-      print(response.body);
       final jsonBody = jsonDecode(response.body);
       final myLeaseholdVM = MyLeaseholdVM.fromJson(jsonBody);
-      if (myLeaseholdVM == null) await _preferenceservice.clearAllPreferences();
       _preferenceservice.saveLeaseholdData(myLeaseholdVM);
     }
+    return null;
   }
 
   Future<MyLeaseholdVM?> getInvoiceDataForHomepage() async {
@@ -53,6 +53,7 @@ class ApiService {
       final myInvoiceInfo = InvoiceInfo.fromJson(jsonBody);
       _preferenceservice.saveInvoiceInfo(myInvoiceInfo);
     }
+    return null;
   }
 
   Future<void> getInvoiceDataFormId(String invoiceId) async {
@@ -101,5 +102,58 @@ class ApiService {
           jsonList.map((json) => InvoiceList.fromJson(json)).toList();
       _preferenceservice.saveInvoiceList(invoiceList);
     }
+  }
+
+  Future<bool> downloadFile(String invoiceId) async {
+    final String? jwtToken = await _preferenceservice.loadJwtToken();
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $jwtToken',
+    };
+
+    try {
+      final response = await http.get(
+        Uri.parse('http://10.0.2.2:13016/api/invoice/$invoiceId/export'),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        final contentDisposition = response.headers['content-disposition'];
+        final fileName = extractFileName(contentDisposition) ?? 'invoice.docx';
+
+        final directory = "/storage/emulated/0/Download";
+        final filePath = '$directory/$fileName'; // Save to external storage
+
+        // Ensure the directory exists
+
+        File file = File(filePath);
+
+        await file.writeAsBytes(response.bodyBytes);
+        print('File saved at: $filePath');
+        return true; // File downloaded successfully
+      } else {
+        throw Exception('Failed to download file');
+      }
+    } catch (e) {
+      print('Error: $e');
+      return false; // File download failed
+    }
+  }
+
+  String? extractFileName(String? contentDisposition) {
+    if (contentDisposition == null) {
+      return null;
+    }
+
+    final parts = contentDisposition.split('; ');
+    for (var part in parts) {
+      if (part.startsWith('filename=')) {
+        final name = part.substring(10).replaceAll('"', '');
+        return Uri.decodeComponent(name);
+      }
+    }
+    return null;
   }
 }
