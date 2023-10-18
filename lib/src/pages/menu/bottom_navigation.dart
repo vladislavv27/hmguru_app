@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hmguru/src/pages/home.dart';
 import 'package:hmguru/src/pages/invoice_list.dart';
+import 'package:hmguru/src/pages/meter_readings.dart';
 
 class MyBottomNavigationMenu extends StatefulWidget {
   final int currentIndex;
@@ -27,7 +28,7 @@ class _MyBottomNavigationMenuState extends State<MyBottomNavigationMenu> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.receipt),
-          label: 'Invoices', //все инвойсы (check or download)
+          label: 'Invoices',
         ),
       ],
       currentIndex: widget.currentIndex,
@@ -43,6 +44,11 @@ class _MyBottomNavigationMenuState extends State<MyBottomNavigationMenu> {
             );
             break;
           case 1:
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (BuildContext context) => MeterReadingPage(),
+              ),
+            );
             break;
           case 2:
             Navigator.of(context).pushReplacement(

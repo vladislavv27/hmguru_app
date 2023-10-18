@@ -17,7 +17,6 @@ class InvoiceListPage extends StatefulWidget {
 class _InvoiceListPageState extends State<InvoiceListPage> {
   List<InvoiceList> invoiceList = [];
   InvoiceInfo? invoiceInfoData;
-  bool _isLoading = true;
   final _prefservice = PreferenceService();
   final _apiservice = ApiService();
   var _currentIndex = 2;
@@ -27,31 +26,15 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
   @override
   void initState() {
     super.initState();
-    if (!_dataLoaded) {
-      _loadInvoiceList();
-    }
+    _loadInvoiceList();
   }
 
   Future<void> _loadInvoiceList() async {
-    try {
-      setState(() {
-        _isLoading = true; // Start loading
-      });
-
-      await _apiservice.getInvoiceList();
-
-      final updatedInvoices = await _prefservice.loadInvoiceList();
-      setState(() {
-        invoiceList = updatedInvoices;
-        _dataLoaded = true; // Set this flag to true after loading the data.
-        _isLoading = false; // Stop loading
-      });
-    } catch (e) {
-      print(e);
-      setState(() {
-        _isLoading = false; // Stop loading on error
-      });
-    }
+    final updatedInvoices = await _prefservice.loadInvoiceList();
+    setState(() {
+      invoiceList = updatedInvoices;
+      _dataLoaded = true;
+    });
   }
 
   @override
@@ -62,139 +45,9 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
         title: Text('Invoice List'),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : InteractiveViewer(
-              boundaryMargin: EdgeInsets.all(200),
-              minScale: 1.0,
-              maxScale: 3.0,
-              child: ListView(
-                children: [
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: DataTable(
-                      columns: <DataColumn>[
-                        DataColumn(label: Text('PERIOD')),
-                        DataColumn(label: Text('INVOICE')),
-                        DataColumn(label: Text('TO PAY FOR PERIOD')),
-                        DataColumn(label: Text('TO PAY')),
-                        DataColumn(label: Text('PAID')),
-                        DataColumn(label: Text('DEBT')),
-                        DataColumn(label: Text('PENALTY')),
-                        DataColumn(label: Text('RECALCULATION')),
-                        DataColumn(label: Text('')),
-                      ],
-                      rows: invoiceList.map((rowData) {
-                        return DataRow(
-                          cells: [
-                            DataCell(
-                              Text(
-                                  DateFormat('yyyy-MM').format(rowData.period)),
-                            ),
-                            DataCell(Text(rowData.invoiceUID)),
-                            DataCell(
-                              Text(
-                                rowData.toPayForPeriod,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.primaryColor,
-                                ),
-                              ),
-                            ),
-                            DataCell(
-                              Text(
-                                rowData.sumTotal,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.primaryColor,
-                                ),
-                              ),
-                            ),
-                            DataCell(
-                              Text(
-                                (double.tryParse(rowData.paymentSum) ?? 0) > 0
-                                    ? '+ €${rowData.paymentSum}'
-                                    : '€${rowData.paymentSum}',
-                                style: TextStyle(),
-                              ),
-                            ),
-                            DataCell(
-                              Text(
-                                rowData.debt,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.accentColor,
-                                ),
-                              ),
-                            ),
-                            DataCell(
-                              Text(
-                                rowData.penalty,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.warningColor,
-                                ),
-                              ),
-                            ),
-                            DataCell(
-                              Text(rowData.priceRecalculationValueTotal),
-                            ),
-                            DataCell(
-                              Row(
-                                children: [
-                                  TextButton.icon(
-                                    onPressed: () {
-                                      _openAdditionalInformationPage(
-                                          rowData.id);
-                                    },
-                                    icon: Icon(
-                                      Icons.info,
-                                      color: AppColors.secondaryColor,
-                                    ),
-                                    label: Text(''),
-                                  ),
-                                  TextButton.icon(
-                                    onPressed: () async {
-                                      bool downloaded = await _apiservice
-                                          .downloadFile(rowData.id);
-                                      if (downloaded) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content:
-                                                Text('Successfully downloaded'),
-                                            duration: Duration(seconds: 2),
-                                          ),
-                                        );
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text('Download error'),
-                                            duration: Duration(seconds: 4),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                    icon: Icon(
-                                      Icons.download,
-                                      color: AppColors.accentColor,
-                                    ),
-                                    label: Text(''),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+      body: _dataLoaded
+          ? _buildInvoiceTable()
+          : Center(child: CircularProgressIndicator()),
       bottomNavigationBar: MyBottomNavigationMenu(
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -206,15 +59,78 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
     );
   }
 
+  Widget _buildInvoiceTable() {
+    return ListView(
+      children: [
+        DataTable(
+          columnSpacing:
+              8.0, // Set the column spacing to 8.0 (adjust as needed)
+          columns: [
+            DataColumn(label: Text('PERIOD')),
+            DataColumn(label: Text('INVOICE')),
+            DataColumn(label: Text('')),
+          ],
+          rows: invoiceList.map((rowData) {
+            return DataRow(
+              cells: [
+                DataCell(
+                  Text(DateFormat('yyyy-MM').format(rowData.period)),
+                ),
+                DataCell(Text(rowData.invoiceUID)),
+                DataCell(
+                  Row(
+                    children: [
+                      TextButton.icon(
+                        onPressed: () {
+                          _openAdditionalInformationPage(rowData.id);
+                        },
+                        icon: Icon(
+                          Icons.info,
+                          color: AppColors.secondaryColor,
+                        ),
+                        label: Text(''),
+                      ),
+                      TextButton.icon(
+                        onPressed: () async {
+                          bool downloaded =
+                              await _apiservice.downloadFile(rowData.id);
+                          if (downloaded) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Successfully downloaded'),
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Download error'),
+                                duration: Duration(seconds: 4),
+                              ),
+                            );
+                          }
+                        },
+                        icon: Icon(
+                          Icons.download,
+                          color: AppColors.accentColor,
+                        ),
+                        label: Text(''),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
+
   Future<void> _openAdditionalInformationPage(String id) async {
     try {
-      // Fetch data using _apiservice.getInvoiceDataFormId
       await _apiservice.getInvoiceDataFormId(id);
       final additionalData = await _prefservice.loadInvoiceDetails();
-
-      // Convert the additionalData to the required format
-
-      // Navigate to the new page and pass the data
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => InvoiceDetailPage(data: additionalData),
       ));
@@ -222,10 +138,4 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
       print(e);
     }
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: InvoiceListPage(),
-  ));
 }
