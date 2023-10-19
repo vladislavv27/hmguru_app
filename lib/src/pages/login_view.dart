@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hmguru/src/models/user_profile.dart';
 import 'package:hmguru/src/services/api_service.dart';
-import 'package:hmguru/src/pages/home.dart';
+import 'package:hmguru/src/pages/home_view.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

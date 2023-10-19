@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hmguru/src/models/Invoice_Info.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/my_leasehold.dart';
-import 'package:hmguru/src/pages/invoice_details.dart';
+import 'package:hmguru/src/pages/invoice_details_view.dart';
 import 'package:hmguru/src/pages/menu/bottom_navigation.dart';
 import 'package:hmguru/src/pages/menu/side_menu.dart';
 import 'package:hmguru/src/services/api_service.dart';
