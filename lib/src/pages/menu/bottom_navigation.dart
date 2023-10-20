@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hmguru/src/pages/home.dart';
-import 'package:hmguru/src/pages/invoice_list.dart';
-import 'package:hmguru/src/pages/meter_readings.dart';
+import 'package:hmguru/src/pages/home_view.dart';
+import 'package:hmguru/src/pages/invoice_list_view.dart';
+import 'package:hmguru/src/pages/meter_readings_view.dart';
 
 class MyBottomNavigationMenu extends StatefulWidget {
   final int currentIndex;
@@ -37,28 +37,34 @@ class _MyBottomNavigationMenuState extends State<MyBottomNavigationMenu> {
 
         switch (index) {
           case 0:
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (BuildContext context) => HomePage(),
-              ),
-            );
+            _navigateWithAnimation(context, HomePage());
             break;
           case 1:
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (BuildContext context) => MeterReadingPage(),
-              ),
-            );
+            _navigateWithAnimation(context, MeterReadingPage());
             break;
           case 2:
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (BuildContext context) => InvoiceListPage(),
-              ),
-            );
+            _navigateWithAnimation(context, InvoiceListPage());
             break;
         }
       },
     );
+  }
+
+  void _navigateWithAnimation(BuildContext context, Widget page) {
+    Navigator.of(context).pushReplacement(PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var offsetAnimation = animation.drive(tween);
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+    ));
   }
 }

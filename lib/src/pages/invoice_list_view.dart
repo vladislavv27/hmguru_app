@@ -22,7 +22,6 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
   final _apiservice = ApiService();
   var _currentIndex = 2;
   bool _dataLoaded = false;
-  double _zoomValue = 1.0; // Initial zoom level
 
   @override
   void initState() {
@@ -85,55 +84,69 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
                   child: ExpansionTile(
                     title: Row(
                       children: [
-                        Text(
-                          DateFormat('yyyy-MM').format(rowData.period),
-                          style: TextStyle(fontSize: 18),
+                        Expanded(
+                          child: Center(
+                            child: Text(
+                              DateFormat('yyyy-MM').format(rowData.period),
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
                         ),
-                        SizedBox(width: 16),
-                        Text(
-                          rowData.invoiceUID,
-                          style: TextStyle(fontSize: 18),
+                        Expanded(
+                          child: Center(
+                            child: Text(
+                              rowData.invoiceUID,
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
                         ),
                       ],
                     ),
                     children: [
-                      Center(
-                        child: Text(
-                          "To Pay For Period: ${rowData.toPayForPeriod}",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                      Center(
-                        child: Text(
-                          "To Pay: ${rowData.sumTotal}",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                      Center(
-                        child: Text(
-                          (double.tryParse(rowData.paymentSum) ?? 0) > 0
-                              ? 'Paid: +${rowData.paymentSum}€'
-                              : 'Paid: ${rowData.paymentSum}€',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                      Center(
-                        child: Text(
-                          'Debt: ${rowData.debt}',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                      Center(
-                        child: Text(
-                          'Penalty: ${rowData.penalty}',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                      Center(
-                        child: Text(
-                          'Recalculation ${rowData.priceRecalculationValueTotal}',
-                          style: TextStyle(fontSize: 18),
-                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "To Pay For Period: ${rowData.toPayForPeriod}",
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            "To Pay: ${rowData.sumTotal}",
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            (double.tryParse(rowData.paymentSum) ?? 0) > 0
+                                ? 'Paid: +${rowData.paymentSum}€'
+                                : 'Paid: ${rowData.paymentSum}€',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            'Debt: ${rowData.debt}',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            'Penalty: ${rowData.penalty}',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            'Recalculation ${rowData.priceRecalculationValueTotal}',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -191,10 +204,10 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
       ),
     );
   }
-}
 
-void main() {
-  runApp(MaterialApp(
-    home: InvoiceListPage(),
-  ));
+  void main() {
+    runApp(MaterialApp(
+      home: InvoiceListPage(),
+    ));
+  }
 }
