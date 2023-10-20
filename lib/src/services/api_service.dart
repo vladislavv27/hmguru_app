@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:hmguru/src/models/ApartmentMeterVM.dart';
 import 'package:hmguru/src/models/Invoice_Info.dart';
 import 'package:hmguru/src/models/my_leasehold.dart';
 import 'package:hmguru/src/models/invoice_details.dart';
@@ -155,5 +156,80 @@ class ApiService {
       }
     }
     return null;
+  }
+
+  Future<DateTime> getCurrentPeriod(String? id, {String? leaseholdId}) async {
+    final String? jwtToken = await _preferenceservice.loadJwtToken();
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $jwtToken',
+    };
+
+    final response = await http.get(
+      Uri.parse(
+          'http://10.0.2.2:13016/api/period/current${leaseholdId != null ? '?leaseholdId=' + leaseholdId : ''}'),
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      final String period = response.body;
+      final RegExp dateRegex =
+          RegExp(r'(\d{2}/\d{2}/\d{4}) (\d{2}:\d{2}:\d{2})');
+
+      final Match? match = dateRegex.firstMatch(period);
+      if (match != null) {
+        final String datePart = match.group(1)!;
+        final String timePart = match.group(2)!;
+
+        final List<int> dateComponents =
+            datePart.split('/').map(int.parse).toList();
+        final List<int> timeComponents =
+            timePart.split(':').map(int.parse).toList();
+
+        final currentPeriod = DateTime(
+            dateComponents[2],
+            dateComponents[0],
+            dateComponents[1],
+            timeComponents[0],
+            timeComponents[1],
+            timeComponents[2]);
+        return currentPeriod;
+      } else {
+        throw Exception('Invalid date format: $period');
+      }
+    } else {
+      throw Exception('Could not get the current period');
+    }
+  }
+
+  DateTime getUTCDate(DateTime date) {
+    return DateTime.utc(date.year, date.month, date.day);
+  }
+
+  Future<void> getMyMeterReadings() async {
+    final String? jwtToken = await _preferenceservice.loadJwtToken();
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $jwtToken',
+    };
+
+    final response = await http.get(
+      Uri.parse('http://10.0.2.2:13016/api/my/readings'),
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      final Iterable<dynamic> jsonList = json.decode(response.body);
+      final List<ApartmentMeterVM> meterReadings =
+          jsonList.map((e) => ApartmentMeterVM.fromJson(e)).toList();
+
+      // Save the meter readings using your service
+      await _preferenceservice.saveApartmentMeterData(meterReadings);
+    } else {
+      throw Exception('Could not get meter readings');
+    }
   }
 }

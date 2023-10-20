@@ -149,6 +149,7 @@ class _LoginViewState extends State<LoginView> {
             await _apiservice.getLeasehold();
             await _apiservice.getInvoiceDataForHomepage();
             await _apiservice.getInvoiceList();
+            await _apiservice.getMyMeterReadings();
 
             await Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (BuildContext context) => HomePage()),

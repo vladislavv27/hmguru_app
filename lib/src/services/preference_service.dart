@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hmguru/src/models/ApartmentMeterVM.dart';
 import 'package:hmguru/src/models/Invoice_Info.dart';
 import 'package:hmguru/src/models/invoice_list.dart';
 import 'package:hmguru/src/models/my_leasehold.dart';
@@ -55,6 +56,8 @@ class PreferenceService {
 
   Future<void> clearAllPreferences() async {
     final prefs = await SharedPreferences.getInstance();
+    final secureStorage = FlutterSecureStorage();
+    await secureStorage.deleteAll();
     await prefs.clear();
   }
 
@@ -109,5 +112,29 @@ class PreferenceService {
     }
 
     return [];
+  }
+
+  Future<void> saveApartmentMeterData(List<ApartmentMeterVM> data) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonData = data.map((item) => item.toJson()).toList();
+    final jsonString = json.encode(jsonData);
+    await prefs.setString('apartmentMeterData', jsonString);
+  }
+
+  Future<List<ApartmentMeterVM>?> loadApartmentMeterData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString('apartmentMeterData');
+    if (jsonString != null) {
+      final List<dynamic> jsonData = json.decode(jsonString);
+      List<ApartmentMeterVM> data =
+          jsonData.map((item) => ApartmentMeterVM.fromJson(item)).toList();
+      return data;
+    }
+    return null;
+  }
+
+  Future<void> clearInvoiceList() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('invoiceList');
   }
 }

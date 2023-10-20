@@ -12,9 +12,6 @@ class InvoiceDetailPage extends StatefulWidget {
 }
 
 class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
-  double _scale = 1.0;
-  double _previousScale = 1.0;
-
   int? selectedRow;
 
   @override
@@ -26,102 +23,128 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: GestureDetector(
-        onScaleUpdate: (ScaleUpdateDetails details) {
-          setState(() {
-            _scale = _previousScale * details.scale;
-          });
-        },
-        onScaleEnd: (ScaleEndDetails details) {
-          setState(() {
-            _previousScale = _scale;
-          });
-        },
-        child: ListView.builder(
-          itemCount: widget.data.length,
-          itemBuilder: (context, index) {
-            final rowData = widget.data[index];
-            return Card(
-              child: ExpansionTile(
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
                   children: [
-                    Text(
-                      'Service: ${rowData.serviceTitle}',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    Text(
-                      'Price: ${rowData.priceForService}',
-                      style: TextStyle(fontSize: 18),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Invoice: ${widget.data.isNotEmpty ? widget.data[0].invoiceUID : ""}',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                children: [
-                  Center(
-                    child: Text(
-                      "Tax: ${rowData.priceTaxTotal}",
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      "Debt: ${rowData.debtForService}",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'To pay: ${totalPrice.toStringAsFixed(2)}',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryColor,
+                        ),
                       ),
                     ),
-                  ),
-                  Center(
-                    child: Text(
-                      'To Pay: ${rowData.priceForServiceTotal}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
+                  ],
+                ),
+              ],
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: widget.data.length,
+              itemBuilder: (context, index) {
+                final rowData = widget.data[index];
+                return Card(
+                  child: ExpansionTile(
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Service: ${rowData.serviceTitle}',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Text(
+                          'Price: ${rowData.priceForService}',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Tax: ${rowData.priceTaxTotal}",
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            "Debt: ${rowData.debtForService}",
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            'To Pay: ${rowData.priceForServiceTotal}',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            (double.tryParse(rowData.payedForService) ?? 0) > 0
+                                ? 'Paid: +${rowData.payedForService}€'
+                                : 'Paid: ${rowData.payedForService}€',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            'Penalty For Period: ${rowData.penaltyForService}',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            'Penalty: ${rowData.penaltyForServiceTotal}',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            'Recalculation: ${rowData.debtRecalculationValue}',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            'Formula: ${rowData.rateFormula}',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+                    ],
                   ),
-                  Center(
-                    child: Text(
-                      (double.tryParse(rowData.payedForService) ?? 0) > 0
-                          ? 'Paid: +${rowData.payedForService}€'
-                          : 'Paid: ${rowData.payedForService}€',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      'Penalty For Period: ${rowData.penaltyForService}',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      'Penalty: ${rowData.penaltyForServiceTotal}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      'Recalculation: ${rowData.debtRecalculationValue}',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      'Formula: ${rowData.rateFormula}',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
