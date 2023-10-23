@@ -14,6 +14,12 @@ class MyBottomNavigationMenu extends StatefulWidget {
 }
 
 class _MyBottomNavigationMenuState extends State<MyBottomNavigationMenu> {
+  final List<Widget> pages = [
+    HomePage(),
+    MeterReadingPage(),
+    InvoiceListPage(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -24,7 +30,7 @@ class _MyBottomNavigationMenuState extends State<MyBottomNavigationMenu> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.electric_meter),
-          label: 'Meter', //Ввести счетчики
+          label: 'Meter',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.receipt),
@@ -35,16 +41,8 @@ class _MyBottomNavigationMenuState extends State<MyBottomNavigationMenu> {
       onTap: (index) {
         widget.onTap(index);
 
-        switch (index) {
-          case 0:
-            _navigateWithAnimation(context, HomePage());
-            break;
-          case 1:
-            _navigateWithAnimation(context, MeterReadingPage());
-            break;
-          case 2:
-            _navigateWithAnimation(context, InvoiceListPage());
-            break;
+        if (index != widget.currentIndex) {
+          _navigateWithAnimation(context, pages[index]);
         }
       },
     );
