@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class MeterReadingValueVM {
   double prevValue;
   double curValue;
@@ -34,7 +36,8 @@ class ApartmentMeterVM extends MeterReadingValueVM {
   bool isFilledForThisPeriod;
   bool allowAddNewMeterReadings;
   bool modifiedByMe;
-
+  TextEditingController consumptionController = TextEditingController();
+  TextEditingController currentlyController = TextEditingController();
   ApartmentMeterVM({
     required this.serviceTitle,
     required this.meterTitle,
