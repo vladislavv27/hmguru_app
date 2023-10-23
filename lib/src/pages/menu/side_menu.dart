@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/my_leasehold.dart';
-import 'package:hmguru/src/pages/login.dart';
+import 'package:hmguru/src/pages/login_view.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 
 class SideMenu extends StatefulWidget {
@@ -115,20 +115,16 @@ class _SideMenuState extends State<SideMenu> {
         return AlertDialog(
           title: const Text('Apartment information'),
           content: Text(
-            leaseholdData != null
-                ? '${leaseholdData.address}\nApartment number:${leaseholdData.fullNumber}\n'
-                    'Owner: ${leaseholdData.owners.isNotEmpty ? leaseholdData.owners.join(", ") : ""}\n'
-                    'Floor: ${leaseholdData.floor}\n'
-                    'Resident count: ${leaseholdData.residentCount}\n'
-                    'Area: ${leaseholdData.fullArea.toStringAsFixed(2)}\n'
-                    'Balcony area: ${leaseholdData.balconyArea.toStringAsFixed(2)}\n'
-                    'Bill delivery type: ${leaseholdData.billDeliveryType.name}\n'
-                    'Access code: ${leaseholdData.accessCode}'
-                : 'Sorry, data not found',
+            '${leaseholdData.address}\nApartment number:${leaseholdData.fullNumber}\n'
+            'Owner: ${leaseholdData.owners.isNotEmpty ? leaseholdData.owners.join(", ") : ""}\n'
+            'Floor: ${leaseholdData.floor}\n'
+            'Resident count: ${leaseholdData.residentCount}\n'
+            'Area: ${leaseholdData.fullArea.toStringAsFixed(2)}\n'
+            'Balcony area: ${leaseholdData.balconyArea.toStringAsFixed(2)}\n'
+            'Bill delivery type: ${leaseholdData.billDeliveryType.name}\n'
+            'Access code: ${leaseholdData.accessCode}',
             style: TextStyle(
-              color: leaseholdData != null
-                  ? Color(0xFF464646)
-                  : Color.fromARGB(255, 254, 112, 96),
+              color: Color(0xFF464646),
               fontSize: 20,
               fontWeight: FontWeight.normal,
             ),
