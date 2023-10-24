@@ -58,7 +58,8 @@ class PreferenceService {
   Future<void> clearAllPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     final secureStorage = FlutterSecureStorage();
-    await secureStorage.deleteAll();
+    await secureStorage.delete(key: 'jwtToken');
+    // await secureStorage.deleteAll();
     await prefs.clear();
   }
 

@@ -94,10 +94,8 @@ class _SideMenuState extends State<SideMenu> {
   }
 
   void _handleLogout(BuildContext context) async {
-    // Clear all preferences or do any necessary cleanup
     await _prefservice.clearAllPreferences();
 
-    // Use Navigator to navigate to the LoginView page and remove the current page
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(

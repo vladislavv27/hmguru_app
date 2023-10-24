@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hmguru/src/models/user_profile.dart';
 import 'package:hmguru/src/services/api_service.dart';
 import 'package:hmguru/src/pages/home_view.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 class LoginView extends StatefulWidget {
@@ -19,12 +19,37 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
   final _apiservice = ApiService();
-  final _preferenceservice = PreferenceService();
   final apiURLAuth = dotenv.env['API_URL_AUTH'];
+  final _storage = FlutterSecureStorage();
+  final _preferenceService = PreferenceService();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  String _email = '';
-  String _password = '';
   bool _isLoading = false;
+  bool _rememberMe = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkRememberMe();
+  }
+
+  Future<void> _checkRememberMe() async {
+    final rememberMe = await _storage.read(key: 'rememberMe');
+
+    if (rememberMe != null && rememberMe == 'true') {
+      final storedEmail = await _storage.read(key: 'email');
+      final storedPassword = await _storage.read(key: 'password');
+
+      if (storedEmail != null && storedPassword != null) {
+        setState(() {
+          _emailController.text = storedEmail;
+          _passwordController.text = storedPassword;
+          _rememberMe = true;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +76,7 @@ class _LoginViewState extends State<LoginView> {
                         }
                         return null;
                       },
-                      onSaved: (value) {
-                        _email = value!;
-                      },
+                      controller: _emailController,
                     ),
                     TextFormField(
                       decoration: InputDecoration(labelText: 'Password'),
@@ -64,25 +87,34 @@ class _LoginViewState extends State<LoginView> {
                         }
                         return null;
                       },
-                      onSaved: (value) {
-                        _password = value!;
-                      },
+                      controller: _passwordController,
                     ),
                   ],
                 ),
               ),
+              Row(
+                children: <Widget>[
+                  Checkbox(
+                    value: _rememberMe,
+                    onChanged: (value) {
+                      setState(() {
+                        _rememberMe = value!;
+                      });
+                    },
+                  ),
+                  Text('Remember Me'),
+                ],
+              ),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save(); // Save the form fields
-                    _submitForm(context); // Pass the context to _submitForm
+                    _formKey.currentState!.save();
+                    _submitForm(context);
                   }
                 },
                 child: Text('Login'),
               ),
-              _isLoading
-                  ? CircularProgressIndicator()
-                  : SizedBox(), // Show a loading indicator when loading
+              _isLoading ? CircularProgressIndicator() : SizedBox(),
             ],
           ),
         ),
@@ -109,24 +141,24 @@ class _LoginViewState extends State<LoginView> {
           'grant_type': 'password',
           'client_id': 'client',
           'scope': 'api1 offline_access',
-          'username': _email,
-          'password': _password,
+          'username': _emailController.text,
+          'password': _passwordController.text,
         },
       );
 
       if (mounted) {
         if (response.statusCode == 200) {
-          await _preferenceservice.clearAllPreferences();
+          await _preferenceService.clearAllPreferences();
+
+          await _storage.write(
+              key: 'rememberMe', value: _rememberMe.toString());
 
           final responseBody = json.decode(response.body);
           final jwtToken = responseBody['access_token'];
-          await _preferenceservice
-              .saveJwtToken(jwtToken); // Use the instance method
+          await _storage.write(key: 'jwtToken', value: jwtToken);
 
-          // Decode the JWT token to get profile data
-          final Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
+          final decodedToken = JwtDecoder.decode(jwtToken);
 
-          // Extract the profile data from the decoded token
           final userProfile = UserProfile(
             userId: decodedToken['sub'],
             name: decodedToken['name'],
@@ -135,9 +167,7 @@ class _LoginViewState extends State<LoginView> {
                 decodedToken['http://hms/claims/authorization/user/fullname'],
           );
 
-          // Save the profile data in SharedPreferences
-          await _preferenceservice
-              .saveUserProfile(userProfile); // Use the instance method
+          await _preferenceService.saveUserProfile(userProfile);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Login Success'),
@@ -151,7 +181,16 @@ class _LoginViewState extends State<LoginView> {
             await _apiservice.getInvoiceList();
             await _apiservice.getMyMeterReadings();
 
-            await Navigator.of(context).pushAndRemoveUntil(
+            if (_rememberMe) {
+              await _storage.write(key: 'email', value: _emailController.text);
+              await _storage.write(
+                  key: 'password', value: _passwordController.text);
+            } else {
+              await _storage.delete(key: 'email');
+              await _storage.delete(key: 'password');
+            }
+
+            Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (BuildContext context) => HomePage()),
               (Route<dynamic> route) => false,
             );
