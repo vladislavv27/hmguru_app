@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hmguru/src/models/Invoice_Info.dart';
+import 'package:hmguru/src/controllers/invoice_list_controller.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/invoice_list.dart';
-import 'package:hmguru/src/pages/invoice_details_view.dart';
-import 'package:hmguru/src/pages/menu/bottom_navigation.dart';
 import 'package:hmguru/src/pages/menu/side_menu.dart';
-import 'package:hmguru/src/services/api_service.dart';
-import 'package:hmguru/src/services/preference_service.dart';
 import 'package:intl/intl.dart';
+import 'invoice_details_view.dart';
+import 'menu/bottom_navigation.dart';
 
 class InvoiceListPage extends StatefulWidget {
   @override
@@ -16,185 +14,48 @@ class InvoiceListPage extends StatefulWidget {
 
 class _InvoiceListPageState extends State<InvoiceListPage> {
   List<InvoiceList> invoiceList = [];
-  InvoiceInfo? invoiceInfoData;
   bool _isLoading = true;
-  final _prefservice = PreferenceService();
-  final _apiservice = ApiService();
+  final _controller = InvoiceListController();
   var _currentIndex = 2;
-  bool _dataLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    if (!_dataLoaded) {
-      _loadInvoiceList();
-    }
+    _loadInvoiceList();
   }
 
   Future<void> _loadInvoiceList() async {
-    try {
-      setState(() {
-        _isLoading = true; // Start loading
-      });
-
-      await _apiservice.getInvoiceList();
-
-      final updatedInvoices = await _prefservice.loadInvoiceList();
-      setState(() {
-        invoiceList = updatedInvoices;
-        _dataLoaded = true; // Set this flag to true after loading the data.
-        _isLoading = false; // Stop loading
-      });
-    } catch (e) {
-      print(e);
-      setState(() {
-        _isLoading = false; // Stop loading on error
-      });
-    }
+    final updatedInvoices = await _controller.loadInvoiceList();
+    setState(() {
+      invoiceList = updatedInvoices;
+      _isLoading = false;
+    });
   }
 
   Future<void> _openAdditionalInformationPage(String id) async {
-    try {
-      await _apiservice.getInvoiceDataFormId(id);
-      final additionalData = await _prefservice.loadInvoiceDetails();
-
+    final additionalData = await _controller.openAdditionalInformationPage(id);
+    if (additionalData != null) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => InvoiceDetailPage(data: additionalData),
       ));
-    } catch (e) {
-      print(e);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideMenu(),
       appBar: AppBar(
         title: Text('Invoice List'),
         backgroundColor: Theme.of(context).primaryColor,
       ),
+      drawer: SideMenu(),
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : ListView(
-              children: invoiceList.map((rowData) {
-                return Card(
-                  child: ExpansionTile(
-                    title: Row(
-                      children: [
-                        Expanded(
-                          child: Center(
-                            child: Text(
-                              DateFormat('yyyy-MM').format(rowData.period),
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Center(
-                            child: Text(
-                              rowData.invoiceUID,
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            "To Pay For Period: ${rowData.toPayForPeriod}",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          Text(
-                            "To Pay: ${rowData.sumTotal}",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          Text(
-                            (double.tryParse(rowData.paymentSum) ?? 0) > 0
-                                ? 'Paid: +${rowData.paymentSum}€'
-                                : 'Paid: ${rowData.paymentSum}€',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          Text(
-                            'Debt: ${rowData.debt}',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          Text(
-                            'Penalty: ${rowData.penalty}',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          Text(
-                            'Recalculation ${rowData.priceRecalculationValueTotal}',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextButton.icon(
-                            onPressed: () {
-                              _openAdditionalInformationPage(rowData.id);
-                            },
-                            icon: Icon(
-                              Icons.info,
-                              color: AppColors.secondaryColor,
-                            ),
-                            label: Text(''),
-                          ),
-                          TextButton.icon(
-                            onPressed: () async {
-                              bool downloaded =
-                                  await _apiservice.downloadFile(rowData.id);
-                              if (downloaded) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Successfully downloaded'),
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Download error'),
-                                    duration: Duration(seconds: 4),
-                                  ),
-                                );
-                              }
-                            },
-                            icon: Icon(
-                              Icons.download,
-                              color: AppColors.accentColor,
-                            ),
-                            label: Text(''),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
-            ),
+          : _buildInvoiceListView(),
       bottomNavigationBar: MyBottomNavigationMenu(
+        // Add this part
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
@@ -205,9 +66,133 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
     );
   }
 
-  void main() {
-    runApp(MaterialApp(
-      home: InvoiceListPage(),
-    ));
+  Widget _buildInvoiceListView() {
+    return ListView(
+      children: invoiceList.map((rowData) {
+        return Card(
+          child: _buildInvoiceExpansionTile(rowData),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildInvoiceExpansionTile(InvoiceList rowData) {
+    return ExpansionTile(
+      title: Row(
+        children: [
+          Expanded(
+            child: Center(
+              child: Text(
+                DateFormat('yyyy-MM').format(rowData.period),
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Center(
+              child: Text(
+                rowData.invoiceUID,
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          ),
+        ],
+      ),
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "To Pay For Period: ${rowData.toPayForPeriod}",
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            Text(
+              "To Pay: ${rowData.sumTotal}",
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            Text(
+              (double.tryParse(rowData.paymentSum) ?? 0) > 0
+                  ? 'Paid: +${rowData.paymentSum}€'
+                  : 'Paid: ${rowData.paymentSum}€',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            Text(
+              'Debt: ${rowData.debt}',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            Text(
+              'Penalty: ${rowData.penalty}',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            Text(
+              'Recalculation ${rowData.priceRecalculationValueTotal}',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildInfoButton(rowData.id),
+            _buildDownloadButton(rowData.id),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoButton(String id) {
+    return TextButton.icon(
+      onPressed: () {
+        _openAdditionalInformationPage(id);
+      },
+      icon: Icon(
+        Icons.info,
+        color: AppColors.secondaryColor,
+      ),
+      label: Text(''),
+    );
+  }
+
+  Widget _buildDownloadButton(String id) {
+    return TextButton.icon(
+      onPressed: () async {
+        bool downloaded = await _controller.downloadFile(id);
+        if (downloaded) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Successfully downloaded'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Download error'),
+              duration: Duration(seconds: 4),
+            ),
+          );
+        }
+      },
+      icon: Icon(
+        Icons.download,
+        color: AppColors.accentColor,
+      ),
+      label: Text(''),
+    );
   }
 }
