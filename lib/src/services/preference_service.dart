@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hmguru/src/models/ApartmentMeterVM.dart';
 import 'package:hmguru/src/models/Invoice_Info.dart';
 import 'package:hmguru/src/models/invoice_list.dart';
+import 'package:hmguru/src/models/meters_vm.dart';
 import 'package:hmguru/src/models/my_leasehold.dart';
 import 'package:hmguru/src/models/user_profile.dart';
 import 'package:hmguru/src/models/invoice_details.dart';
@@ -136,5 +137,28 @@ class PreferenceService {
   Future<void> clearInvoiceList() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('invoiceList');
+  }
+
+  Future<void> saveMetersData(List<MetersVM> metersDataList) async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<Map<String, dynamic>> dataToSave =
+        metersDataList.map((meterData) => meterData.toJson()).toList();
+    await prefs.setString('metersData', jsonEncode(dataToSave));
+  }
+
+  Future<List<MetersVM>> loadMetersData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString('metersData');
+    if (jsonString != null) {
+      final List<dynamic> jsonData = json.decode(jsonString);
+      final metersData =
+          jsonData.map((item) => MetersVM.fromJson(item)).toList();
+      metersData.forEach((element) {
+        print(element.serviceTitle);
+      });
+      return metersData;
+    } else {
+      return [];
+    }
   }
 }

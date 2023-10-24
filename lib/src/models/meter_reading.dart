@@ -16,12 +16,4 @@ class MeterReadingDTO {
       'meterId': meterId,
     };
   }
-
-  factory MeterReadingDTO.fromJson(Map<String, dynamic> json) {
-    return MeterReadingDTO(
-      consumption: json['consumption'],
-      curValue: json['curValue'],
-      meterId: json['meterId'],
-    );
-  }
 }

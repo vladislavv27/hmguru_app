@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:hmguru/src/models/ApartmentMeterVM.dart';
 import 'package:hmguru/src/models/Invoice_Info.dart';
+import 'package:hmguru/src/models/meter_reading.dart';
+import 'package:hmguru/src/models/meters_vm.dart';
 import 'package:hmguru/src/models/my_leasehold.dart';
 import 'package:hmguru/src/models/invoice_details.dart';
 import 'package:hmguru/src/models/invoice_list.dart';
@@ -204,10 +206,6 @@ class ApiService {
     }
   }
 
-  DateTime getUTCDate(DateTime date) {
-    return DateTime.utc(date.year, date.month, date.day);
-  }
-
   Future<void> getMyMeterReadings() async {
     final String? jwtToken = await _preferenceservice.loadJwtToken();
     final headers = {
@@ -230,6 +228,75 @@ class ApiService {
       await _preferenceservice.saveApartmentMeterData(meterReadings);
     } else {
       throw Exception('Could not get meter readings');
+    }
+  }
+
+  Future<void> saveMeterReading(MeterReadingDTO readingDTO) async {
+    final String apiUrl = 'http://10.0.2.2:13016/api/meterreadings';
+    final String? jwtToken = await _preferenceservice.loadJwtToken();
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $jwtToken',
+    };
+
+    final jsonBody = jsonEncode(readingDTO.toJson());
+    print(readingDTO.meterId);
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        body: jsonBody,
+      );
+
+      if (response.statusCode == 200) {
+        // Successful response, handle the result if needed
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        print('Meter reading created successfully: $responseData');
+      } else {
+        // Handle errors or unsuccessful response
+        print(
+            'Failed to create meter reading. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (e) {
+      // Handle exceptions or network errors
+      print('Error: $e');
+    }
+  }
+
+  Future<void> getMyMeters() async {
+    final apiUrl = 'http://10.0.2.2:13016/api/my/meters';
+    final String? jwtToken = await _preferenceservice.loadJwtToken();
+    final tableQuery = TableQueryModel();
+
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $jwtToken',
+      },
+      body: jsonEncode(tableQuery.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      final List<dynamic> jsonList = jsonResponse['list'];
+      final List<MetersVM> invoiceList =
+          jsonList.map((json) => MetersVM.fromJson(json)).toList();
+      _preferenceservice.saveMetersData(invoiceList);
+      print(invoiceList);
+
+      // final data = json.decode(response.body);
+      // print(data);
+      // final metersList = MetersVM.fromJson(data);
+      // print(
+      //     'test1: ${data}'); // Assuming MetersVM.fromJson handles the map
+      // _preferenceservice.saveMetersData([metersList]);
+    } else {
+      throw Exception('Unexpected response format: ');
     }
   }
 }
