@@ -224,7 +224,6 @@ class ApiService {
       final List<ApartmentMeterVM> meterReadings =
           jsonList.map((e) => ApartmentMeterVM.fromJson(e)).toList();
 
-      // Save the meter readings using your service
       await _preferenceservice.saveApartmentMeterData(meterReadings);
     } else {
       throw Exception('Could not get meter readings');
@@ -242,7 +241,6 @@ class ApiService {
     };
 
     final jsonBody = jsonEncode(readingDTO.toJson());
-    print(readingDTO.meterId);
     try {
       final response = await http.post(
         Uri.parse(apiUrl),
@@ -255,22 +253,18 @@ class ApiService {
         final Map<String, dynamic> responseData = json.decode(response.body);
         print('Meter reading created successfully: $responseData');
       } else {
-        // Handle errors or unsuccessful response
         print(
             'Failed to create meter reading. Status code: ${response.statusCode}');
         print('Response body: ${response.body}');
       }
     } catch (e) {
-      // Handle exceptions or network errors
       print('Error: $e');
     }
   }
 
-  Future<void> getMyMeters() async {
+  Future<void> getMyMeters(MetersQuery tableQuery) async {
     final apiUrl = 'http://10.0.2.2:13016/api/my/meters';
     final String? jwtToken = await _preferenceservice.loadJwtToken();
-    final tableQuery = TableQueryModel();
-
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: <String, String>{
@@ -287,16 +281,31 @@ class ApiService {
       final List<MetersVM> invoiceList =
           jsonList.map((json) => MetersVM.fromJson(json)).toList();
       _preferenceservice.saveMetersData(invoiceList);
-      print(invoiceList);
-
-      // final data = json.decode(response.body);
-      // print(data);
-      // final metersList = MetersVM.fromJson(data);
-      // print(
-      //     'test1: ${data}'); // Assuming MetersVM.fromJson handles the map
-      // _preferenceservice.saveMetersData([metersList]);
     } else {
       throw Exception('Unexpected response format: ');
+    }
+  }
+
+  Future<void> getMyMeterPeriods() async {
+    final String? jwtToken = await _preferenceservice.loadJwtToken();
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $jwtToken',
+    };
+
+    final response = await http.get(
+      Uri.parse('http://10.0.2.2:13016/api/my/meters/periods'),
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      final Iterable<dynamic> jsonList = json.decode(response.body);
+      final List<int> yearsList = jsonList.map((item) => item as int).toList();
+
+      await _preferenceservice.saveMyMeterPeriods(yearsList);
+    } else {
+      throw Exception('Could not get meter readings');
     }
   }
 }

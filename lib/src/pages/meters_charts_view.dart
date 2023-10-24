@@ -1,40 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:hmguru/src/controllers/meter_charts_controller.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/meters_vm.dart';
-import 'package:hmguru/src/services/preference_service.dart';
 
 class MeterChartsPage extends StatefulWidget {
+  final MeterChartsController controller;
+
+  MeterChartsPage({required this.controller});
+
   @override
   _MeterChartsPageState createState() => _MeterChartsPageState();
 }
 
 class _MeterChartsPageState extends State<MeterChartsPage> {
-  List<MetersVM> meterDataList = [];
-  bool isLoading = true;
-  final _preferenceService = PreferenceService();
-
+  bool _isDataLoaded = false;
+  int? selectedYear;
   @override
   void initState() {
     super.initState();
-    _initializeData();
+    _loadData();
   }
 
-  Future<void> _initializeData() async {
-    try {
-      final myMeterDataList = await _preferenceService.loadMetersData();
-
-      if (myMeterDataList != null) {
-        setState(() {
-          meterDataList = myMeterDataList;
-          isLoading = false;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-    }
+  Future<void> _loadData() async {
+    await widget.controller.initializeData();
+    setState(() {
+      _isDataLoaded = true;
+    });
   }
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
@@ -91,51 +83,37 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Meter Charts'),
-      ),
-      body: SafeArea(
-        child: ListView.builder(
-          itemCount: meterDataList.length,
-          itemBuilder: (context, index) {
-            final meterData = meterDataList[index];
-            final LineChart chart = buildLineChart(meterData);
-
-            return Container(
-              margin: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    '${meterData.title}',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    '${meterData.meterUID}',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  Container(
-                    width: double.infinity,
-                    height: 300,
-                    child: chart,
-                  ),
-                  SizedBox(height: 16),
-                ],
+  Future<void> _showModalBottomSheet() async {
+    await showModalBottomSheet<int>(
+      context: context,
+      builder: (BuildContext context) {
+        return Column(
+          children: <Widget>[
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.controller.meterPeriodList.length,
+                itemBuilder: (context, index) {
+                  final meterPeriod = widget.controller.meterPeriodList[index];
+                  return ListTile(
+                    title: Text('$meterPeriod'),
+                    onTap: () async {
+                      Navigator.of(context).pop(meterPeriod);
+                      try {
+                        await widget.controller.updateDataForYear(meterPeriod);
+                        setState(() {
+                          selectedYear = meterPeriod;
+                        });
+                      } catch (error) {
+                        print('Error updating data: $error');
+                      }
+                    },
+                  );
+                },
               ),
-            );
-          },
-        ),
-      ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -167,7 +145,7 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
         lineBarsData: [
           LineChartBarData(
             spots: spots,
-            isCurved: true,
+            isCurved: false,
             barWidth: 3,
             color: AppColors.chartColor,
             belowBarData: BarAreaData(
@@ -176,6 +154,79 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Meter Charts'),
+        backgroundColor: AppColors.primaryColor,
+      ),
+      body: SafeArea(
+        child: ListView(
+          children: [
+            Center(
+              child: Container(
+                width: 160,
+                child: ElevatedButton(
+                  onPressed: _showModalBottomSheet,
+                  style: ElevatedButton.styleFrom(
+                    primary: AppColors.primaryColor,
+                  ),
+                  child: Text(
+                    selectedYear != null
+                        ? 'Select period: $selectedYear'
+                        : 'Select period',
+                  ),
+                ),
+              ),
+            ),
+            _isDataLoaded
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    itemCount: widget.controller.meterDataList.length,
+                    itemBuilder: (context, index) {
+                      final meterData = widget.controller.meterDataList[index];
+                      final chart = buildLineChart(meterData);
+
+                      return Container(
+                        margin: EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              '${meterData.title}',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '${meterData.meterUID}',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            SizedBox(height: 16),
+                            Container(
+                              width: double.infinity,
+                              height: 300,
+                              child: chart,
+                            ),
+                            SizedBox(height: 16),
+                          ],
+                        ),
+                      );
+                    },
+                  )
+                : Center(child: CircularProgressIndicator()),
+          ],
+        ),
       ),
     );
   }

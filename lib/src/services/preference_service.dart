@@ -161,4 +161,18 @@ class PreferenceService {
       return [];
     }
   }
+
+  Future<void> saveMyMeterPeriods(List<int> years) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setStringList('years', years.map((year) => year.toString()).toList());
+  }
+
+  Future<List<int>> loadMyMeterPeriods() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String>? yearStrings = prefs.getStringList('years');
+    if (yearStrings == null) {
+      return []; // Return an empty list if the data is not found
+    }
+    return yearStrings.map((yearString) => int.parse(yearString)).toList();
+  }
 }
