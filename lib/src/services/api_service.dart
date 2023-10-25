@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hmguru/src/models/ApartmentMeterVM.dart';
 import 'package:hmguru/src/models/Invoice_Info.dart';
 import 'package:hmguru/src/models/meter_reading.dart';
@@ -15,6 +16,8 @@ final _preferenceservice = PreferenceService();
 // ValidateIssuer = false, IN .NET IDENTITYSTARTAP!!!!!!!!!!!!
 
 class ApiService {
+  final apiURL = dotenv.env['API_URL'];
+
   Future<MyLeaseholdVM?> getLeasehold() async {
     final String? jwtToken = await _preferenceservice.loadJwtToken();
 
@@ -25,7 +28,7 @@ class ApiService {
     };
 
     final response = await http.get(
-      Uri.parse('http://10.0.2.2:13016/api/my/leasehold'),
+      Uri.parse(apiURL! + '/my/leasehold'),
       headers: headers,
     );
 
@@ -47,7 +50,7 @@ class ApiService {
     };
 
     final response = await http.get(
-      Uri.parse('http://10.0.2.2:13016/api/my/invoice-info'),
+      Uri.parse(apiURL! + '/my/invoice-info'),
       headers: headers,
     );
 
@@ -69,7 +72,7 @@ class ApiService {
     };
 
     final response = await http.get(
-      Uri.parse('http://10.0.2.2:13016/api/invoice/$invoiceId/details'),
+      Uri.parse(apiURL! + '/invoice/$invoiceId/details'),
       headers: headers,
     );
 
@@ -93,7 +96,7 @@ class ApiService {
     final tableQuery = TableQueryModel();
 
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:13016/api/my/invoices'),
+      Uri.parse(apiURL! + '/my/invoices'),
       headers: headers,
       body: jsonEncode(tableQuery.toJson()),
     );
@@ -118,7 +121,7 @@ class ApiService {
 
     try {
       final response = await http.get(
-        Uri.parse('http://10.0.2.2:13016/api/invoice/$invoiceId/export'),
+        Uri.parse(apiURL! + '/invoice/$invoiceId/export'),
         headers: headers,
       );
 
@@ -127,21 +130,19 @@ class ApiService {
         final fileName = extractFileName(contentDisposition) ?? 'invoice.docx';
 
         final directory = "/storage/emulated/0/Download";
-        final filePath = '$directory/$fileName'; // Save to external storage
-
-        // Ensure the directory exists
+        final filePath = '$directory/$fileName';
 
         File file = File(filePath);
 
         await file.writeAsBytes(response.bodyBytes);
         print('File saved at: $filePath');
-        return true; // File downloaded successfully
+        return true;
       } else {
         throw Exception('Failed to download file');
       }
     } catch (e) {
       print('Error: $e');
-      return false; // File download failed
+      return false;
     }
   }
 
@@ -170,8 +171,8 @@ class ApiService {
     };
 
     final response = await http.get(
-      Uri.parse(
-          'http://10.0.2.2:13016/api/period/current${leaseholdId != null ? '?leaseholdId=' + leaseholdId : ''}'),
+      Uri.parse(apiURL! +
+          '/period/current${leaseholdId != null ? '?leaseholdId=' + leaseholdId : ''}'),
       headers: headers,
     );
 
@@ -215,7 +216,7 @@ class ApiService {
     };
 
     final response = await http.get(
-      Uri.parse('http://10.0.2.2:13016/api/my/readings'),
+      Uri.parse(apiURL! + '/my/readings'),
       headers: headers,
     );
 
@@ -231,7 +232,6 @@ class ApiService {
   }
 
   Future<void> saveMeterReading(MeterReadingDTO readingDTO) async {
-    final String apiUrl = 'http://10.0.2.2:13016/api/meterreadings';
     final String? jwtToken = await _preferenceservice.loadJwtToken();
 
     final headers = {
@@ -243,7 +243,7 @@ class ApiService {
     final jsonBody = jsonEncode(readingDTO.toJson());
     try {
       final response = await http.post(
-        Uri.parse(apiUrl),
+        Uri.parse(apiURL! + '/meterreadings'),
         headers: headers,
         body: jsonBody,
       );
@@ -263,10 +263,9 @@ class ApiService {
   }
 
   Future<void> getMyMeters(MetersQuery tableQuery) async {
-    final apiUrl = 'http://10.0.2.2:13016/api/my/meters';
     final String? jwtToken = await _preferenceservice.loadJwtToken();
     final response = await http.post(
-      Uri.parse(apiUrl),
+      Uri.parse(apiURL! + '/my/meters'),
       headers: <String, String>{
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -282,7 +281,7 @@ class ApiService {
           jsonList.map((json) => MetersVM.fromJson(json)).toList();
       _preferenceservice.saveMetersData(invoiceList);
     } else {
-      throw Exception('Unexpected response format: ');
+      print('Unexpected response format: ');
     }
   }
 
@@ -295,7 +294,7 @@ class ApiService {
     };
 
     final response = await http.get(
-      Uri.parse('http://10.0.2.2:13016/api/my/meters/periods'),
+      Uri.parse(apiURL! + '/my/meters/periods'),
       headers: headers,
     );
 
