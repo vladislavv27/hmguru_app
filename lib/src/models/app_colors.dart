@@ -7,4 +7,5 @@ class AppColors {
   static const Color warningColor = Color(0xffe6b527);
   static const Color succesColor = Color(0xff65a71d);
   static const Color chartColor = Color(0xFFC0D9FA);
+  static const Color textColor = Color(0xFF868E96);
 }

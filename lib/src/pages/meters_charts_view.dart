@@ -193,6 +193,36 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
                       final meterData = widget.controller.meterDataList[index];
                       final chart = buildLineChart(meterData);
 
+                      if (meterData.chartData!.values.isEmpty) {
+                        return Container(
+                            margin: EdgeInsets.all(16),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    '${meterData.title}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${meterData.meterUID}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                  Text(
+                                    ' No Data',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.accentColor),
+                                  ),
+                                ]));
+                      }
+
                       return Container(
                         margin: EdgeInsets.all(16),
                         child: Column(
