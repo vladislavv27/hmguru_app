@@ -178,8 +178,6 @@ class _LoginViewState extends State<LoginView> {
           if (mounted) {
             await _apiservice.getLeasehold();
             await _apiservice.getInvoiceDataForHomepage();
-            await _apiservice.getInvoiceList();
-            await _apiservice.getMyMeterReadings();
 
             if (_rememberMe) {
               await _storage.write(key: 'email', value: _emailController.text);

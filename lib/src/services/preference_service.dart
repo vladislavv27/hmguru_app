@@ -154,9 +154,7 @@ class PreferenceService {
       final List<dynamic> jsonData = json.decode(jsonString);
       final metersData =
           jsonData.map((item) => MetersVM.fromJson(item)).toList();
-      metersData.forEach((element) {
-        print(element.serviceTitle);
-      });
+      metersData.forEach((element) {});
       return metersData;
     } else {
       return [];
@@ -172,7 +170,7 @@ class PreferenceService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<String>? yearStrings = prefs.getStringList('years');
     if (yearStrings == null) {
-      return []; // Return an empty list if the data is not found
+      return [];
     }
     return yearStrings.map((yearString) => int.parse(yearString)).toList();
   }
