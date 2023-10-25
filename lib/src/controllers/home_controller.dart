@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hmguru/src/pages/invoice_details_view.dart';
 import 'package:intl/intl.dart';
-import 'package:hmguru/src/models/Invoice_Info.dart';
-import 'package:hmguru/src/models/my_leasehold.dart';
+import 'package:hmguru/src/models/Invoice_Info_vm.dart';
+import 'package:hmguru/src/models/my_leasehold_vm.dart';
 import 'package:hmguru/src/services/api_service.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 
@@ -10,7 +10,7 @@ class HomeController {
   final PreferenceService _prefservice = PreferenceService();
   final ApiService _apiservice = ApiService();
   MyLeaseholdVM? leaseholdData;
-  InvoiceInfo? invoiceInfoData;
+  InvoiceInfoVm? invoiceInfoData;
   bool isLoading = true;
 
   Future<void> loadLeaseholdData(Function setState) async {

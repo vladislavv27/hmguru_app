@@ -1,9 +1,9 @@
-class MeterReadingDTO {
+class MeterReadingVM {
   double consumption;
   double curValue;
   String meterId;
 
-  MeterReadingDTO({
+  MeterReadingVM({
     required this.consumption,
     required this.curValue,
     required this.meterId,

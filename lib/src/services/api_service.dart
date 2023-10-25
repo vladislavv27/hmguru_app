@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hmguru/src/models/ApartmentMeterVM.dart';
-import 'package:hmguru/src/models/Invoice_Info.dart';
-import 'package:hmguru/src/models/meter_reading.dart';
+import 'package:hmguru/src/models/apartment_meter_vm.dart';
+import 'package:hmguru/src/models/Invoice_Info_vm.dart';
+import 'package:hmguru/src/models/meter_reading_vm.dart';
 import 'package:hmguru/src/models/meters_vm.dart';
-import 'package:hmguru/src/models/my_leasehold.dart';
-import 'package:hmguru/src/models/invoice_details.dart';
+import 'package:hmguru/src/models/my_leasehold_vm.dart';
+import 'package:hmguru/src/models/invoice_details_vm.dart';
 import 'package:hmguru/src/models/invoice_list.dart';
-import 'package:hmguru/src/models/table_queru.dart';
+import 'package:hmguru/src/models/table_querus_vm.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -56,7 +56,7 @@ class ApiService {
 
     if (response.statusCode == 200) {
       final jsonBody = jsonDecode(response.body);
-      final myInvoiceInfo = InvoiceInfo.fromJson(jsonBody);
+      final myInvoiceInfo = InvoiceInfoVm.fromJson(jsonBody);
       _preferenceservice.saveInvoiceInfo(myInvoiceInfo);
     }
     return null;
@@ -104,8 +104,8 @@ class ApiService {
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       final List<dynamic> jsonList = jsonResponse['list'];
-      final List<InvoiceList> invoiceList =
-          jsonList.map((json) => InvoiceList.fromJson(json)).toList();
+      final List<InvoiceListVm> invoiceList =
+          jsonList.map((json) => InvoiceListVm.fromJson(json)).toList();
       _preferenceservice.saveInvoiceList(invoiceList);
     }
   }
@@ -231,7 +231,7 @@ class ApiService {
     }
   }
 
-  Future<void> saveMeterReading(MeterReadingDTO readingDTO) async {
+  Future<void> saveMeterReading(MeterReadingVM readingDTO) async {
     final String? jwtToken = await _preferenceservice.loadJwtToken();
 
     final headers = {

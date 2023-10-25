@@ -1,4 +1,4 @@
-class InvoiceInfo {
+class InvoiceInfoVm {
   final String invoiceId;
   final String invoiceUID;
   final double sumTotal;
@@ -10,7 +10,7 @@ class InvoiceInfo {
   final int meterReadingDueDay;
   final int invoiceDeliveryType;
 
-  InvoiceInfo({
+  InvoiceInfoVm({
     required this.invoiceId,
     required this.invoiceUID,
     required this.sumTotal,
@@ -23,8 +23,8 @@ class InvoiceInfo {
     required this.invoiceDeliveryType,
   });
 
-  factory InvoiceInfo.fromJson(Map<String, dynamic> json) {
-    return InvoiceInfo(
+  factory InvoiceInfoVm.fromJson(Map<String, dynamic> json) {
+    return InvoiceInfoVm(
       invoiceId: json['invoiceId'],
       invoiceUID: json['invoiceUID'],
       sumTotal: (json['sumTotal'] as num).toDouble(),

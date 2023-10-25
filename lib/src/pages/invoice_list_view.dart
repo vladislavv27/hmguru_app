@@ -13,7 +13,7 @@ class InvoiceListPage extends StatefulWidget {
 }
 
 class _InvoiceListPageState extends State<InvoiceListPage> {
-  List<InvoiceList> invoiceList = [];
+  List<InvoiceListVm> invoiceList = [];
   bool _isLoading = true;
   final _controller = InvoiceListController();
   var _currentIndex = 2;
@@ -76,7 +76,7 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
     );
   }
 
-  Widget _buildInvoiceExpansionTile(InvoiceList rowData) {
+  Widget _buildInvoiceExpansionTile(InvoiceListVm rowData) {
     return ExpansionTile(
       title: Row(
         children: [

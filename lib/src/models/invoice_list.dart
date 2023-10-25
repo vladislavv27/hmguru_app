@@ -1,4 +1,4 @@
-class InvoiceList {
+class InvoiceListVm {
   final String invoiceUID;
   final String payed;
   final String priceRecalculationValueTotal;
@@ -21,7 +21,7 @@ class InvoiceList {
   final bool isDeleted;
   final String rowVersion;
 
-  InvoiceList({
+  InvoiceListVm({
     required this.invoiceUID,
     required this.payed,
     required this.priceRecalculationValueTotal,
@@ -45,8 +45,8 @@ class InvoiceList {
     required this.modifiedBy,
   });
 
-  factory InvoiceList.fromJson(Map<String, dynamic> json) {
-    return InvoiceList(
+  factory InvoiceListVm.fromJson(Map<String, dynamic> json) {
+    return InvoiceListVm(
       invoiceUID: json['invoiceUID'] ?? '',
       payed: json['payed'] ?? '',
       priceRecalculationValueTotal: json['priceRecalculationValueTotal'] ?? '',
