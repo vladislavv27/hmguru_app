@@ -79,7 +79,7 @@ class _PaymentDetailViewState extends State<PaymentDetailView> {
           ),
           _buildDetail(
             "payment amount",
-            _paymentDetail?.amount?.toStringAsFixed(2) ?? "No data",
+            _paymentDetail?.amount.toStringAsFixed(2) ?? "No data",
             _paymentDetail?.currency,
           ),
           _buildDetail("bank transaction comment",

@@ -232,17 +232,18 @@ class ApiService {
     }
   }
 
-  Future<void> saveMeterReading(MeterReadingVM readingDTO) async {
-    final String? jwtToken = await _preferenceservice.loadJwtToken();
-
-    final headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $jwtToken',
-    };
-
-    final jsonBody = jsonEncode(readingDTO.toJson());
+  Future<bool> saveMeterReading(MeterReadingVM readingDTO) async {
     try {
+      final String? jwtToken = await _preferenceservice.loadJwtToken();
+
+      final headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $jwtToken',
+      };
+
+      final jsonBody = jsonEncode(readingDTO.toJson());
+
       final response = await http.post(
         Uri.parse(apiURL! + '/meterreadings'),
         headers: headers,
@@ -250,16 +251,17 @@ class ApiService {
       );
 
       if (response.statusCode == 200) {
-        // Successful response, handle the result if needed
         final Map<String, dynamic> responseData = json.decode(response.body);
         print('Meter reading created successfully: $responseData');
+        return true;
       } else {
         print(
             'Failed to create meter reading. Status code: ${response.statusCode}');
-        print('Response body: ${response.body}');
+        return false;
       }
     } catch (e) {
       print('Error: $e');
+      return false;
     }
   }
 
@@ -334,10 +336,7 @@ class ApiService {
                 .map((e) => PaymentListVM.fromJson(e as Map<String, dynamic>))
                 .toList();
 
-        // Save the leaseholdPayments to SharedPreferences
         await _preferenceservice.savePaymentList(leaseholdPayments);
-
-        // Process the leaseholdPayments as needed
       } else {
         throw Exception('Invalid response format: "list" is not a list');
       }

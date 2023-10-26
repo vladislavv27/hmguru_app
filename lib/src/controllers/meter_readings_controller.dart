@@ -34,22 +34,20 @@ class MeterReadingController {
         }
 
         final period = await _apiService.getCurrentPeriod(leaseholdData!.id);
-        if (period != null) {
-          currentPeriod = period;
+        currentPeriod = period;
 
-          final isSameMonth = invoiceInfoData!.meterReadingDueDay >
-              invoiceInfoData!.meterReadingActivationDay;
-          lastDayDate = DateTime(
-            currentPeriod!.year,
-            isSameMonth ? currentPeriod!.month : currentPeriod!.month + 1,
-            invoiceInfoData!.meterReadingDueDay,
-          );
-        }
+        final isSameMonth = invoiceInfoData!.meterReadingDueDay >
+            invoiceInfoData!.meterReadingActivationDay;
+        lastDayDate = DateTime(
+          currentPeriod!.year,
+          isSameMonth ? currentPeriod!.month : currentPeriod!.month + 1,
+          invoiceInfoData!.meterReadingDueDay,
+        );
 
         isTodayValidDateForMetersReading =
             checkTodayValidDateForMetersReading();
-        allMeterReadingsSet = apartmentMeterVM!.every((reading) =>
-            reading.consumption != null && reading.consumption >= 0);
+        allMeterReadingsSet =
+            apartmentMeterVM!.every((reading) => reading.consumption >= 0);
       }
     } catch (e) {
       isLoading = false;

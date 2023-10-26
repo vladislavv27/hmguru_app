@@ -118,7 +118,7 @@ class _AddMeterViewState extends State<AddMeterView> {
                                         if (numericValue != null &&
                                             numericValue > 0) {
                                           controller.sendDataToFunction(
-                                              numericValue, meter);
+                                              context, numericValue, meter);
                                         }
                                       }
                                     },
@@ -168,7 +168,7 @@ class _AddMeterViewState extends State<AddMeterView> {
                                       if (numericValue != null &&
                                           numericValue > 0) {
                                         controller.sendDataToFunction(
-                                            numericValue, meter);
+                                            context, numericValue, meter);
                                       }
                                     }
                                   },

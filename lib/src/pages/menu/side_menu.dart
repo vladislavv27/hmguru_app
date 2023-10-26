@@ -122,7 +122,7 @@ class _SideMenuState extends State<SideMenu> {
       MaterialPageRoute(
         builder: (BuildContext context) => LoginView(),
       ),
-      (Route<dynamic> route) => false, // Clear the navigation stack
+      (Route<dynamic> route) => false,
     );
   }
 
@@ -151,7 +151,7 @@ class _SideMenuState extends State<SideMenu> {
           actions: <Widget>[
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
               child: Text('Close'),
             ),
