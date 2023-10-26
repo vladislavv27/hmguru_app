@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/user_profile.dart';
+import 'package:hmguru/src/pages/not_resident_view.dart';
 import 'package:hmguru/src/services/api_service.dart';
 import 'package:hmguru/src/pages/home_view.dart';
 import 'package:hmguru/src/services/preference_service.dart';
@@ -171,12 +173,6 @@ class _LoginViewState extends State<LoginView> {
           );
 
           await _preferenceService.saveUserProfile(userProfile);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Login Success'),
-              duration: Duration(seconds: 3),
-            ),
-          );
 
           if (mounted) {
             await _apiservice.getLeasehold();
@@ -190,19 +186,24 @@ class _LoginViewState extends State<LoginView> {
               await _storage.delete(key: 'email');
               await _storage.delete(key: 'password');
             }
+            _handleLogin(true);
 
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (BuildContext context) => HomePage()),
-              (Route<dynamic> route) => false,
-            );
+            if (userProfile.role == "Resident") {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (BuildContext context) => HomePage()),
+                (Route<dynamic> route) => false,
+              );
+            } else {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (BuildContext context) => NotResidentView()),
+                (Route<dynamic> route) => false,
+              );
+            }
           }
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Login failed. Please check your credentials.'),
-              duration: Duration(seconds: 4),
-            ),
-          );
+          _handleLogin(false);
         }
       }
     } catch (e) {
@@ -220,5 +221,24 @@ class _LoginViewState extends State<LoginView> {
         });
       }
     }
+  }
+
+  Future<void> _handleLogin(bool isSuccess) async {
+    Color snackBarColor =
+        isSuccess ? AppColors.successColor : AppColors.accentColor;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          isSuccess
+              ? 'Login Success'
+              : 'Login failed. Please check your credentials.',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        duration: Duration(seconds: isSuccess ? 3 : 4),
+        backgroundColor: snackBarColor,
+      ),
+    );
   }
 }
