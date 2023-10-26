@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hmguru/src/models/apartment_meter_vm.dart';
+import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/meter_reading_vm.dart';
 import 'package:hmguru/src/models/my_leasehold_vm.dart';
 import 'package:hmguru/src/services/api_service.dart';
@@ -49,19 +50,37 @@ class AddMeterController {
     }
   }
 
-  void sendDataToFunction(double newConsumptionValue, ApartmentMeterVM meter) {
+  void sendDataToFunction(BuildContext context, double newConsumptionValue,
+      ApartmentMeterVM meter) async {
     if (newConsumptionValue > 0) {
       final readingDTO = MeterReadingVM(
         consumption: newConsumptionValue,
         curValue: 0,
         meterId: meter.meterId,
       );
-      _apiservice.saveMeterReading(readingDTO);
-      Future.delayed(Duration(seconds: 3), () {
+
+      bool saveSuccess = await _apiservice.saveMeterReading(readingDTO);
+
+      final snackBar = SnackBar(
+        content: Text(
+          saveSuccess
+              ? 'Meter reading saved successfully'
+              : 'Failed to save meter reading',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        duration: Duration(seconds: 2),
+        backgroundColor:
+            saveSuccess ? AppColors.successColor : AppColors.accentColor,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      if (saveSuccess) {
         meter.consumption = newConsumptionValue;
         meter.curValue = meter.prevValue + newConsumptionValue;
         _prefservice.saveApartmentMeterData(apartmentMeterVM!);
-      });
+      }
     }
   }
 }
