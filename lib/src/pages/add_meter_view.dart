@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // Add this import
-import 'dart:convert';
-
-import 'package:hmguru/src/models/ApartmentMeterVM.dart';
-import 'package:hmguru/src/models/meter_reading.dart';
-import 'package:hmguru/src/models/meters_vm.dart';
-import 'package:hmguru/src/models/my_leasehold.dart';
-import 'package:hmguru/src/services/api_service.dart';
-import 'package:hmguru/src/services/preference_service.dart';
+import 'package:hmguru/src/controllers/add_meter_controller.dart';
+import 'package:hmguru/src/models/app_colors.dart';
 import 'package:intl/intl.dart';
 
 class AddMeterView extends StatefulWidget {
@@ -17,64 +10,20 @@ class AddMeterView extends StatefulWidget {
 }
 
 class _AddMeterViewState extends State<AddMeterView> {
-  MyLeaseholdVM? leaseholdData;
-  List<ApartmentMeterVM>? apartmentMeterVM;
-
-  DateTime? currentPeriod;
-  bool dataLoaded = false;
-  final _apiservice = ApiService();
-  final _prefservice = PreferenceService();
+  final controller = AddMeterController();
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _initializeData();
+    _loadData();
   }
 
-  Future<void> _initializeData() async {
-    if (dataLoaded) {
-      return; // Data is already loaded, don't load again.
-    }
-
-    try {
-      final myLeaseholdVM = await _prefservice.loadLeaseholdData();
-      final myMeterReadings = await _prefservice.loadApartmentMeterData();
-
-      if (myLeaseholdVM != null) {
-        setState(() {
-          leaseholdData = myLeaseholdVM;
-        });
-
-        if (myMeterReadings != null) {
-          setState(() {
-            apartmentMeterVM = myMeterReadings;
-          });
-        }
-        final period = await _apiservice.getCurrentPeriod(leaseholdData!.id);
-        if (period != null) {
-          setState(() {
-            currentPeriod = period;
-          });
-        }
-
-        apartmentMeterVM?.forEach((meter) {
-          final consumptionValue = meter.consumption ?? 0.0;
-          final curValue = meter.curValue ?? 0.0;
-          final currentlyValue = curValue;
-
-          meter.consumptionController =
-              TextEditingController(text: consumptionValue.toStringAsFixed(2));
-          meter.currentlyController =
-              TextEditingController(text: currentlyValue.toStringAsFixed(2));
-        });
-
-        setState(() {
-          dataLoaded = true;
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
+  Future<void> _loadData() async {
+    await controller.initializeData();
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -84,14 +33,17 @@ class _AddMeterViewState extends State<AddMeterView> {
         backgroundColor: Theme.of(context).primaryColor,
         title: Text('Add Meter Readings'),
       ),
-      body: dataLoaded
-          ? CustomScrollView(
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : CustomScrollView(
               slivers: <Widget>[
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      'Meter Readings for ${currentPeriod != null ? DateFormat.MMMM().format(currentPeriod!) : ''} 2023',
+                      'Meter Readings for ${controller.currentPeriod != null ? DateFormat.MMMM().format(controller.currentPeriod!) + ' ' + DateFormat.y().format(controller.currentPeriod!) : ''}',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -102,7 +54,7 @@ class _AddMeterViewState extends State<AddMeterView> {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
-                      final meter = apartmentMeterVM![index];
+                      final meter = controller.apartmentMeterVM![index];
 
                       return Column(
                         children: [
@@ -126,47 +78,65 @@ class _AddMeterViewState extends State<AddMeterView> {
                             ),
                             children: [
                               ListTile(
-                                title: Text('Previously ${meter.prevValue}'),
-                              ),
-                              ListTile(
-                                title: Text('Consumption'),
-                                subtitle: TextFormField(
-                                  controller: meter.consumptionController,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    if (value.isNotEmpty) {
-                                      final numericValue =
-                                          double.tryParse(value);
-                                      if (numericValue != null) {
-                                        double newConsumptionValue =
-                                            numericValue;
-                                        double currentlyValue =
-                                            meter.prevValue +
-                                                newConsumptionValue;
-                                        meter.currentlyController.text =
-                                            currentlyValue.toStringAsFixed(2);
-                                      }
-                                    }
-                                  },
-                                  onEditingComplete: () {
-                                    if (meter.consumptionController.text
-                                        .isNotEmpty) {
-                                      final numericValue = double.tryParse(
-                                          meter.consumptionController.text);
-                                      if (numericValue != null &&
-                                          numericValue > 0) {
-                                        sendDataToFunction(numericValue, meter);
-                                      }
-                                    }
-                                  },
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp(r'^\d+\.?\d{0,2}')),
-                                  ],
+                                title: Text(
+                                  'Previously: ${meter.prevValue}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.textGrayColor),
                                 ),
                               ),
                               ListTile(
-                                title: Text('Currently'),
+                                title: Text(
+                                  'Consumption',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.textGrayColor),
+                                ),
+                                subtitle: TextFormField(
+                                    controller: meter.consumptionController,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      if (value.isNotEmpty) {
+                                        final numericValue =
+                                            double.tryParse(value);
+                                        if (numericValue != null) {
+                                          double newConsumptionValue =
+                                              numericValue;
+                                          double currentlyValue =
+                                              meter.prevValue +
+                                                  newConsumptionValue;
+                                          meter.currentlyController.text =
+                                              currentlyValue.toStringAsFixed(2);
+                                        }
+                                      }
+                                    },
+                                    onEditingComplete: () {
+                                      if (meter.consumptionController.text
+                                          .isNotEmpty) {
+                                        final numericValue = double.tryParse(
+                                            meter.consumptionController.text);
+                                        if (numericValue != null &&
+                                            numericValue > 0) {
+                                          controller.sendDataToFunction(
+                                              numericValue, meter);
+                                        }
+                                      }
+                                    },
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'^\d+\.?\d{0,2}')),
+                                    ],
+                                    style: TextStyle(
+                                        color: AppColors.primaryColor,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              ListTile(
+                                title: Text(
+                                  'Currently',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.textGrayColor),
+                                ),
                                 subtitle: TextFormField(
                                   controller: meter.currentlyController,
                                   keyboardType: TextInputType.number,
@@ -197,7 +167,8 @@ class _AddMeterViewState extends State<AddMeterView> {
                                           meter.currentlyController.text);
                                       if (numericValue != null &&
                                           numericValue > 0) {
-                                        sendDataToFunction(numericValue, meter);
+                                        controller.sendDataToFunction(
+                                            numericValue, meter);
                                       }
                                     }
                                   },
@@ -205,6 +176,9 @@ class _AddMeterViewState extends State<AddMeterView> {
                                     FilteringTextInputFormatter.allow(
                                         RegExp(r'^\d+\.?\d{0,2}')),
                                   ],
+                                  style: TextStyle(
+                                      color: AppColors.primaryColor,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               )
                             ],
@@ -212,31 +186,22 @@ class _AddMeterViewState extends State<AddMeterView> {
                         ],
                       );
                     },
-                    childCount: apartmentMeterVM!.length,
+                    childCount: controller.apartmentMeterVM!.length,
                   ),
                 ),
+                if (controller.apartmentMeterVM == null ||
+                    controller.apartmentMeterVM!.isEmpty)
+                  SliverToBoxAdapter(
+                    child: Center(
+                      child: Text('No data',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.accentColor,
+                              fontSize: 20)),
+                    ),
+                  ),
               ],
-            )
-          : Center(
-              child: CircularProgressIndicator(),
             ),
     );
-  }
-
-  void sendDataToFunction(double newConsumptionValue, ApartmentMeterVM meter) {
-    if (newConsumptionValue > 0) {
-      final readingDTO = MeterReadingDTO(
-        consumption: newConsumptionValue,
-        curValue: 0,
-        meterId: meter.meterId,
-      );
-      _apiservice.saveMeterReading(readingDTO);
-      Future.delayed(Duration(seconds: 3), () {
-        print('Sending data to function: $newConsumptionValue');
-        meter.consumption = newConsumptionValue;
-        meter.curValue = meter.prevValue + newConsumptionValue;
-        _prefservice.saveApartmentMeterData(apartmentMeterVM!);
-      });
-    }
   }
 }
