@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hmguru/src/pages/login.dart';
+import 'package:hmguru/src/models/app_colors.dart';
+import 'package:hmguru/src/pages/login_view.dart';
 
 void main() async {
   await dotenv.load();
@@ -12,10 +13,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: Color(
-            0xFF1875F0), // Set your desired primary color using the hexadecimal color code
+        primaryColor: AppColors.primaryColor,
       ),
-      home: LoginView(), // Set LoginView as the home page
+      home: LoginView(),
     );
   }
 }

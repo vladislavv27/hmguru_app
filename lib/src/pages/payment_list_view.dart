@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hmguru/src/controllers/payment_detail_controller.dart';
 import 'package:hmguru/src/controllers/payment_list_controller.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/payments_vm.dart';
 import 'package:hmguru/src/pages/payment_details_view.dart';
-import 'package:hmguru/src/services/api_service.dart';
 import 'package:intl/intl.dart';
 
 class PaymentListView extends StatefulWidget {
@@ -16,7 +14,6 @@ class _PaymentListViewState extends State<PaymentListView> {
   final PaymentListController _controller = PaymentListController();
   List<PaymentListVM> _paymentList = [];
   bool _isLoading = true;
-  final _apiService = ApiService();
   @override
   void initState() {
     super.initState();

@@ -93,11 +93,23 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
             Padding(
               padding: EdgeInsets.all(10.0),
               child: Center(
-                child: Text(
-                  'The meter readings can be submitted from ${meterController.currentPeriod != null ? DateFormat.MMMM().format(meterController.currentPeriod!) : ''}  ${meterController.invoiceInfoData?.meterReadingActivationDay} to ${meterController.lastDayDate != null ? DateFormat.MMMM().format(meterController.lastDayDate!) : ''} ${meterController.invoiceInfoData?.meterReadingDueDay}.',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.normal,
+                child: RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      _buildTextSpan(
+                          'The meter readings can be submitted from '),
+                      _buildDateTextSpan(
+                        meterController.currentPeriod,
+                        meterController
+                            .invoiceInfoData?.meterReadingActivationDay
+                            .toString(),
+                      ),
+                      _buildTextSpan(' to '),
+                      _buildDateTextSpan(
+                          meterController.lastDayDate,
+                          meterController.invoiceInfoData?.meterReadingDueDay
+                              .toString()),
+                    ],
                   ),
                 ),
               ),
@@ -137,6 +149,31 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  TextSpan _buildDateTextSpan(
+    DateTime? date,
+    String? text,
+  ) {
+    return TextSpan(
+      text: '${date != null ? DateFormat.MMMM().format(date) : ''} $text',
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.normal,
+        color: AppColors.primaryColor,
+      ),
+    );
+  }
+
+  TextSpan _buildTextSpan(String text) {
+    return TextSpan(
+      text: text,
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.normal,
+        color: Colors.black,
       ),
     );
   }

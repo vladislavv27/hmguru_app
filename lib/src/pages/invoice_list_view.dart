@@ -32,15 +32,6 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
     });
   }
 
-  Future<void> _openAdditionalInformationPage(String id) async {
-    final additionalData = await _controller.openAdditionalInformationPage(id);
-    if (additionalData != null) {
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => InvoiceDetailPage(data: additionalData),
-      ));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,18 +41,11 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
       ),
       drawer: SideMenu(),
       body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
+          ? Center(child: CircularProgressIndicator())
           : _buildInvoiceListView(),
       bottomNavigationBar: MyBottomNavigationMenu(
-        // Add this part
         currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+        onTap: (index) => setState(() => _currentIndex = index),
       ),
     );
   }
@@ -80,68 +64,23 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
     return ExpansionTile(
       title: Row(
         children: [
-          Expanded(
-            child: Center(
-              child: Text(
-                DateFormat('yyyy-MM').format(rowData.period),
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-          ),
-          Expanded(
-            child: Center(
-              child: Text(
-                rowData.invoiceUID,
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-          ),
+          _buildCenterText(DateFormat('yyyy-MM').format(rowData.period)),
+          _buildCenterText(rowData.invoiceUID),
         ],
       ),
       children: [
         Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              "To Pay For Period: ${rowData.toPayForPeriod}",
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
-            Text(
-              "To Pay: ${rowData.sumTotal}",
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
-            Text(
-              (double.tryParse(rowData.paymentSum) ?? 0) > 0
-                  ? 'Paid: +${rowData.paymentSum}€'
-                  : 'Paid: ${rowData.paymentSum}€',
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
-            Text(
-              'Debt: ${rowData.debt}',
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
-            Text(
-              'Penalty: ${rowData.penalty}',
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
-            Text(
-              'Recalculation ${rowData.priceRecalculationValueTotal}',
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
+            _buildText("To Pay For Period: ${rowData.toPayForPeriod}"),
+            _buildText("To Pay: ${rowData.sumTotal}"),
+            _buildText((double.tryParse(rowData.paymentSum) ?? 0) > 0
+                ? 'Paid: +${rowData.paymentSum}€'
+                : 'Paid: ${rowData.paymentSum}€'),
+            _buildText('Debt: ${rowData.debt}'),
+            _buildText('Penalty: ${rowData.penalty}'),
+            _buildText('Recalculation ${rowData.priceRecalculationValueTotal}'),
           ],
         ),
         Row(
@@ -155,44 +94,67 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
     );
   }
 
-  Widget _buildInfoButton(String id) {
-    return TextButton.icon(
-      onPressed: () {
-        _openAdditionalInformationPage(id);
-      },
-      icon: Icon(
-        Icons.info,
-        color: AppColors.secondaryColor,
+  Widget _buildCenterText(String text) {
+    return Expanded(
+      child: Center(
+        child: Text(text, style: TextStyle(fontSize: 18)),
       ),
+    );
+  }
+
+  Widget _buildText(String text) {
+    return Text(text, style: TextStyle(fontSize: 18));
+  }
+
+  Widget _buildInfoButton(String id) =>
+      _buildTextButton(id, Icons.info, AppColors.secondaryColor);
+
+  Widget _buildDownloadButton(String id) =>
+      _buildTextButton(id, Icons.download, AppColors.accentColor);
+
+  Widget _buildTextButton(String id, IconData icon, Color color) {
+    return TextButton.icon(
+      onPressed: () => _handleButton(id, icon),
+      icon: Icon(icon, color: color),
       label: Text(''),
     );
   }
 
-  Widget _buildDownloadButton(String id) {
-    return TextButton.icon(
-      onPressed: () async {
-        bool downloaded = await _controller.downloadFile(id);
-        if (downloaded) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Successfully downloaded'),
-              duration: Duration(seconds: 2),
-            ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Download error'),
-              duration: Duration(seconds: 4),
-            ),
-          );
-        }
-      },
-      icon: Icon(
-        Icons.download,
-        color: AppColors.accentColor,
+  void _handleButton(String id, IconData icon) async {
+    if (icon == Icons.info) {
+      _openAdditionalInformationPage(id);
+    } else if (icon == Icons.download) {
+      _handleDownload(id);
+    }
+  }
+
+  Future<void> _handleDownload(String id) async {
+    final downloaded = await _controller.downloadFile(id);
+    final message = downloaded ? 'Successfully downloaded' : 'Download error';
+    final color = downloaded ? AppColors.successColor : AppColors.accentColor;
+    _showSnackBar(message, color);
+  }
+
+  void _showSnackBar(String message, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        duration: Duration(seconds: 2),
+        backgroundColor: color,
       ),
-      label: Text(''),
     );
+  }
+
+  Future<void> _openAdditionalInformationPage(String id) async {
+    final additionalData = await _controller.openAdditionalInformationPage(id);
+    if (additionalData != null) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => InvoiceDetailPage(data: additionalData),
+      ));
+    }
   }
 }

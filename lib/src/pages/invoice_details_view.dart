@@ -12,8 +12,6 @@ class InvoiceDetailPage extends StatefulWidget {
 }
 
 class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
-  int? selectedRow;
-
   @override
   Widget build(BuildContext context) {
     double totalPrice = calculateTotalPrice();
@@ -25,153 +23,82 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
       body: GestureDetector(
         child: ListView(
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Invoice: ${widget.data.isNotEmpty ? widget.data[0].invoiceUID : ""}',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'To pay: ${totalPrice.toStringAsFixed(2)}',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: widget.data.length,
-              itemBuilder: (context, index) {
-                final rowData = widget.data[index];
-                return Card(
-                  child: ExpansionTile(
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Service: ${rowData.serviceTitle}',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        Text(
-                          'Price: ${rowData.priceForService}',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            alignment: Alignment
-                                .centerLeft, // Align the text to the left
-                            child: Text(
-                              "Tax: ${rowData.priceTaxTotal}",
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Debt: ${rowData.debtForService}",
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'To Pay: ${rowData.priceForServiceTotal}',
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              (double.tryParse(rowData.payedForService) ?? 0) >
-                                      0
-                                  ? 'Paid: +${rowData.payedForService}€'
-                                  : 'Paid: ${rowData.payedForService}€',
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Penalty For Period: ${rowData.penaltyForService}',
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Penalty: ${rowData.penaltyForServiceTotal}',
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Recalculation: ${rowData.debtRecalculationValue}',
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Formula: ${rowData.rateFormula}',
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                );
-              },
-            ),
+            _buildHeaderRow(totalPrice),
+            _buildInvoiceList(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderRow(double totalPrice) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _buildHeaderItem(
+            'Invoice: ${widget.data.isNotEmpty ? widget.data[0].invoiceUID : ""}'),
+        _buildHeaderItem('To pay: ${totalPrice.toStringAsFixed(2)}'),
+      ],
+    );
+  }
+
+  Widget _buildHeaderItem(String text) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        text,
+        style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primaryColor),
+      ),
+    );
+  }
+
+  Widget _buildInvoiceList() {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: widget.data.length,
+      itemBuilder: (context, index) {
+        final rowData = widget.data[index];
+        return Card(
+          child: ExpansionTile(
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildText('Service: ${rowData.serviceTitle}'),
+                _buildText('Price: ${rowData.priceForService}'),
+              ],
+            ),
+            children: _buildInvoiceDetails(rowData),
+          ),
+        );
+      },
+    );
+  }
+
+  List<Widget> _buildInvoiceDetails(InvoiceDetailVM rowData) {
+    return [
+      _buildText('Tax: ${rowData.priceTaxTotal}'),
+      _buildText('Debt: ${rowData.debtForService}'),
+      _buildText('To Pay: ${rowData.priceForServiceTotal}'),
+      _buildText((double.tryParse(rowData.payedForService) ?? 0) > 0
+          ? 'Paid: +${rowData.payedForService}€'
+          : 'Paid: ${rowData.payedForService}€'),
+      _buildText('Penalty For Period: ${rowData.penaltyForService}'),
+      _buildText('Penalty: ${rowData.penaltyForServiceTotal}'),
+      _buildText('Recalculation: ${rowData.debtRecalculationValue}'),
+      _buildText('Formula: ${rowData.rateFormula}'),
+    ];
+  }
+
+  Widget _buildText(String text) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 18),
       ),
     );
   }
