@@ -112,6 +112,9 @@ class _LoginViewState extends State<LoginView> {
                     _submitForm(context);
                   }
                 },
+                style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                ),
                 child: Text('Login'),
               ),
               _isLoading ? CircularProgressIndicator() : SizedBox(),

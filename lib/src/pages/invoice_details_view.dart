@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hmguru/src/models/app_colors.dart';
-import 'package:hmguru/src/models/invoice_details.dart';
+import 'package:hmguru/src/models/invoice_details_vm.dart';
 
 class InvoiceDetailPage extends StatefulWidget {
   final List<InvoiceDetailVM> data;
@@ -87,58 +87,84 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            "Tax: ${rowData.priceTaxTotal}",
-                            style: TextStyle(
-                              fontSize: 18,
+                          Container(
+                            alignment: Alignment
+                                .centerLeft, // Align the text to the left
+                            child: Text(
+                              "Tax: ${rowData.priceTaxTotal}",
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
                           ),
-                          Text(
-                            "Debt: ${rowData.debtForService}",
-                            style: TextStyle(
-                              fontSize: 18,
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Debt: ${rowData.debtForService}",
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
                           ),
-                          Text(
-                            'To Pay: ${rowData.priceForServiceTotal}',
-                            style: TextStyle(
-                              fontSize: 18,
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'To Pay: ${rowData.priceForServiceTotal}',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
                           ),
-                          Text(
-                            (double.tryParse(rowData.payedForService) ?? 0) > 0
-                                ? 'Paid: +${rowData.payedForService}€'
-                                : 'Paid: ${rowData.payedForService}€',
-                            style: TextStyle(
-                              fontSize: 18,
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              (double.tryParse(rowData.payedForService) ?? 0) >
+                                      0
+                                  ? 'Paid: +${rowData.payedForService}€'
+                                  : 'Paid: ${rowData.payedForService}€',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
                           ),
-                          Text(
-                            'Penalty For Period: ${rowData.penaltyForService}',
-                            style: TextStyle(
-                              fontSize: 18,
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Penalty For Period: ${rowData.penaltyForService}',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
                           ),
-                          Text(
-                            'Penalty: ${rowData.penaltyForServiceTotal}',
-                            style: TextStyle(
-                              fontSize: 18,
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Penalty: ${rowData.penaltyForServiceTotal}',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
                           ),
-                          Text(
-                            'Recalculation: ${rowData.debtRecalculationValue}',
-                            style: TextStyle(
-                              fontSize: 18,
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Recalculation: ${rowData.debtRecalculationValue}',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
                           ),
-                          Text(
-                            'Formula: ${rowData.rateFormula}',
-                            style: TextStyle(
-                              fontSize: 18,
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Formula: ${rowData.rateFormula}',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
                           ),
                         ],
-                      ),
+                      )
                     ],
                   ),
                 );

@@ -1,4 +1,4 @@
-import 'package:hmguru/src/models/invoice_details.dart';
+import 'package:hmguru/src/models/invoice_details_vm.dart';
 import 'package:hmguru/src/models/invoice_list.dart';
 import 'package:hmguru/src/services/api_service.dart';
 import 'package:hmguru/src/services/preference_service.dart';
@@ -7,10 +7,14 @@ class InvoiceListController {
   final _prefservice = PreferenceService();
   final _apiservice = ApiService();
 
-  Future<List<InvoiceList>> loadInvoiceList() async {
+  Future<List<InvoiceListVm>> loadInvoiceList() async {
     try {
-      await _apiservice.getInvoiceList();
-      return await _prefservice.loadInvoiceList();
+      if (await _prefservice.IfdataExists('invoiceList')) {
+        return await _prefservice.loadInvoiceList();
+      } else {
+        await _apiservice.getInvoiceList();
+        return await _prefservice.loadInvoiceList();
+      }
     } catch (e) {
       print(e);
       return [];

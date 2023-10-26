@@ -238,9 +238,9 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
                             Text(
                               '${meterData.meterUID}',
                               style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal,
-                              ),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.normal,
+                                  color: AppColors.textGrayColor),
                             ),
                             SizedBox(height: 16),
                             Container(

@@ -1,5 +1,5 @@
 import 'package:hmguru/src/models/meters_vm.dart';
-import 'package:hmguru/src/models/table_queru.dart';
+import 'package:hmguru/src/models/table_querus_vm.dart';
 import 'package:hmguru/src/services/api_service.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,10 +23,13 @@ class MeterChartsController {
       final myMeterDataList = await _preferenceService.loadMetersData();
       final myMeterPeriodList = await _preferenceService.loadMyMeterPeriods();
 
-      if (myMeterDataList != null) {
+      try {
         meterDataList = myMeterDataList;
         meterPeriodList = myMeterPeriodList;
         isLoading = false;
+      } catch (e) {
+        isLoading = false;
+        print(e);
       }
     } catch (e) {
       isLoading = false;
@@ -56,10 +59,12 @@ class MeterChartsController {
       final myMeterDataList = await _preferenceService.loadMetersData();
       final myMeterPeriodList = await _preferenceService.loadMyMeterPeriods();
 
-      if (myMeterDataList != null) {
+      try {
         meterDataList = myMeterDataList;
         meterPeriodList = myMeterPeriodList;
         isLoading = false;
+      } catch (e) {
+        print(e);
       }
     } catch (e) {
       isLoading = false;
