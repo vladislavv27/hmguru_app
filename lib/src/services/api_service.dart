@@ -7,6 +7,7 @@ import 'package:hmguru/src/models/meters_vm.dart';
 import 'package:hmguru/src/models/my_leasehold_vm.dart';
 import 'package:hmguru/src/models/invoice_details_vm.dart';
 import 'package:hmguru/src/models/invoice_list.dart';
+import 'package:hmguru/src/models/payments_vm.dart';
 import 'package:hmguru/src/models/table_querus_vm.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 import 'package:http/http.dart' as http;
@@ -305,6 +306,65 @@ class ApiService {
       await _preferenceservice.saveMyMeterPeriods(yearsList);
     } else {
       throw Exception('Could not get meter readings');
+    }
+  }
+
+  Future<void> getLeaseholdPayments() async {
+    final String? jwtToken = await _preferenceservice.loadJwtToken();
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $jwtToken',
+    };
+    final tableQuery = TableQueryModel();
+
+    final Map<String, dynamic> requestBody = tableQuery.toJson();
+
+    final response = await http.post(
+      Uri.parse(apiURL! + '/my/payments'),
+      headers: headers,
+      body: json.encode(requestBody),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic>? jsonResponse = json.decode(response.body);
+      if (jsonResponse != null && jsonResponse['list'] is List) {
+        final List<PaymentListVM> leaseholdPayments =
+            (jsonResponse['list'] as List)
+                .map((e) => PaymentListVM.fromJson(e as Map<String, dynamic>))
+                .toList();
+
+        // Save the leaseholdPayments to SharedPreferences
+        await _preferenceservice.savePaymentList(leaseholdPayments);
+
+        // Process the leaseholdPayments as needed
+      } else {
+        throw Exception('Invalid response format: "list" is not a list');
+      }
+    } else {
+      throw Exception('Could not get leasehold payments');
+    }
+  }
+
+  Future<void> getPaymentDetails(String id) async {
+    final String? jwtToken = await _preferenceservice.loadJwtToken();
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $jwtToken',
+    };
+
+    final response = await http.get(
+      Uri.parse(apiURL! + '/payment/$id/details'),
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      final PaymentDetailVM paymentDetails =
+          PaymentDetailVM.fromJson(jsonResponse);
+      await _preferenceservice.savePaymentDetails(paymentDetails); // Corrected
     }
   }
 }

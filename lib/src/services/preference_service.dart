@@ -6,6 +6,7 @@ import 'package:hmguru/src/models/Invoice_Info_vm.dart';
 import 'package:hmguru/src/models/invoice_list.dart';
 import 'package:hmguru/src/models/meters_vm.dart';
 import 'package:hmguru/src/models/my_leasehold_vm.dart';
+import 'package:hmguru/src/models/payments_vm.dart';
 import 'package:hmguru/src/models/user_profile.dart';
 import 'package:hmguru/src/models/invoice_details_vm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -178,5 +179,44 @@ class PreferenceService {
   Future<bool> IfdataExists(String key) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.containsKey(key);
+  }
+
+  Future<void> savePaymentList(List<PaymentListVM> paymentList) async {
+    final prefs = await SharedPreferences.getInstance();
+    final paymentListJson =
+        paymentList.map((payment) => payment.toJson()).toList();
+    final paymentListString = jsonEncode(paymentListJson);
+    await prefs.setString('paymentList', paymentListString);
+  }
+
+  Future<List<PaymentListVM>?> loadPaymentList() async {
+    final prefs = await SharedPreferences.getInstance();
+    final paymentListString = prefs.getString('paymentList');
+
+    if (paymentListString != null) {
+      final List<dynamic> decodedList = jsonDecode(paymentListString);
+      List<PaymentListVM> paymentList = decodedList
+          .map((json) => PaymentListVM.fromJson(json as Map<String, dynamic>))
+          .toList();
+      return paymentList;
+    }
+
+    return null;
+  }
+
+  Future<void> savePaymentDetails(PaymentDetailVM paymentDetails) async {
+    final prefs = await SharedPreferences.getInstance();
+    final paymentDetailsJson = jsonEncode(paymentDetails);
+    await prefs.setString('paymentDetails', paymentDetailsJson);
+  }
+
+  Future<PaymentDetailVM?> loadPaymentDetails() async {
+    final prefs = await SharedPreferences.getInstance();
+    final paymentDetailJson = prefs.getString('paymentDetails');
+    if (paymentDetailJson != null) {
+      final Map<String, dynamic> decodedData = jsonDecode(paymentDetailJson);
+      return PaymentDetailVM.fromJson(decodedData);
+    }
+    return null;
   }
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hmguru/src/models/app_colors.dart';
-import 'package:hmguru/src/models/my_leasehold.dart';
+import 'package:hmguru/src/models/my_leasehold_vm.dart';
 import 'package:hmguru/src/pages/login_view.dart';
+import 'package:hmguru/src/pages/payment_list_view.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 
 class SideMenu extends StatefulWidget {
@@ -61,6 +62,9 @@ class _SideMenuState extends State<SideMenu> {
                 color: AppColors.primaryColor,
               ),
             ),
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+            ),
           ),
           ListTile(
             leading: Icon(Icons.apartment),
@@ -74,6 +78,23 @@ class _SideMenuState extends State<SideMenu> {
               if (leaseholdData != null) {
                 _openMyApartmentPageAsDialog(context, leaseholdData!);
               }
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.payment),
+            title: const Text(
+              'Payments',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PaymentListView(),
+                ),
+              );
             },
           ),
           ListTile(
