@@ -4,6 +4,7 @@ import 'package:hmguru/src/controllers/home_controller.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/pages/menu/bottom_navigation.dart';
 import 'package:hmguru/src/pages/menu/side_menu.dart';
+import 'package:hmguru/l10n/global_localizations.dart'; // Import localization
 
 class HomePage extends StatefulWidget {
   @override
@@ -44,8 +45,8 @@ class _HomePageState extends State<HomePage> {
         children: [
           Text(
             _controller.leaseholdData != null
-                ? '${_controller.leaseholdData!.address}\nApartment number:${_controller.leaseholdData!.fullNumber}'
-                : 'Sorry, data not found',
+                ? '${_controller.leaseholdData!.address}\n${AppLocalizations.of(context)!.apartmentNumber}:${_controller.leaseholdData!.fullNumber}'
+                : AppLocalizations.of(context)!.dataNotFound,
             style: TextStyle(
               color: _controller.leaseholdData != null
                   ? Color(0xFF464646)
@@ -56,7 +57,9 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(height: 25),
           Text(
-            _controller.invoiceInfoData != null ? 'Last invoice:' : '',
+            _controller.invoiceInfoData != null
+                ? AppLocalizations.of(context)!.lastInvoice
+                : '',
             style: TextStyle(
                 color: Color(0xFF464646),
                 fontSize: 22,
@@ -78,7 +81,7 @@ class _HomePageState extends State<HomePage> {
           Text(
             _controller.invoiceInfoData != null
                 ? '${_controller.invoiceInfoData!.invoiceUID}'
-                : 'No invoice data available',
+                : AppLocalizations.of(context)!.noInvoiceData,
             style: TextStyle(
               color: _controller.leaseholdData != null
                   ? AppColors.textGrayColor
@@ -91,7 +94,7 @@ class _HomePageState extends State<HomePage> {
           Text(
             _controller.invoiceInfoData != null
                 ? '${_controller.invoiceInfoData!.sumTotal}€'
-                : 'No invoice data available',
+                : AppLocalizations.of(context)!.noInvoiceData,
             style: TextStyle(
               color: _controller.leaseholdData != null
                   ? AppColors.primaryColor
@@ -111,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                   size: 48,
                 ),
                 Text(
-                  'You are a debtor ${_controller.leaseholdData!.balance}',
+                  '${AppLocalizations.of(context)!.youAreDebtor} ${_controller.leaseholdData!.balance}',
                   style: TextStyle(
                       color: AppColors.accentColor,
                       fontSize: 20,
@@ -126,7 +129,7 @@ class _HomePageState extends State<HomePage> {
             style: ElevatedButton.styleFrom(
               primary: AppColors.primaryColor,
             ),
-            child: Text('Read more'),
+            child: Text(AppLocalizations.of(context)!.readMore),
           ),
         ],
       ),
@@ -138,7 +141,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text('My apartment'),
+        title: Text(AppLocalizations.of(context)!.myApartment),
       ),
       drawer: SideMenu(),
       body: _controller.isLoading

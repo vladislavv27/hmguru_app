@@ -6,5 +6,12 @@
   "loginButton": "Pieteikties",
   "selectLanguage": "Mainīt valodu",
   "loginSuccess": "Pieteikšanās veiksmīga",
-  "loginFailure": "Pieteikšanās neizdevās. Lūdzu, pārbaudiet savus dati."
+  "loginFailure": "Pieteikšanās neizdevās. Lūdzu, pārbaudiet savus dati.",
+  "myApartment": "Mana dzīvoklis",
+  "apartmentNumber": "Dzīvokļa numurs",
+  "dataNotFound": "Atvainojiet, datu nav",
+  "lastInvoice": "Pēdējā rēķina:",
+  "noInvoiceData": "Nav pieejami rēķina dati",
+  "youAreDebtor": "Jūs esat parādnieks %s",
+  "readMore": "Lasīt vairāk"
 }

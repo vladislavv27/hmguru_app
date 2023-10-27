@@ -6,5 +6,12 @@
   "loginButton": "Login",
   "selectLanguage": "Change Language",
   "loginSuccess": "Login Success",
-  "loginFailure": "Login failed. Please check your credentials."
+  "loginFailure": "Login failed. Please check your credentials.",
+  "myApartment": "My Apartment",
+  "apartmentNumber": "Apartment number",
+  "dataNotFound": "Sorry, data not found",
+  "lastInvoice": "Last invoice:",
+  "noInvoiceData": "No invoice data available",
+  "youAreDebtor": "You are a debtor %s",
+  "readMore": "Read more"
 }
