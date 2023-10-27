@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hmguru/l10n/global_localizations.dart';
 import 'package:hmguru/src/controllers/meter_charts_controller.dart';
 import 'package:hmguru/src/controllers/meter_readings_controller.dart';
 import 'package:hmguru/src/models/app_colors.dart';
@@ -37,7 +38,7 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
     return Scaffold(
       drawer: SideMenu(),
       appBar: AppBar(
-        title: Text('Meter readings'),
+        title: Text(AppLocalizations.of(context)!.meterReadingsTitle),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: _isLoading
@@ -78,7 +79,7 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
                     children: [
                       Icon(Icons.info, color: AppColors.accentColor),
                       Text(
-                        'You have no meter readings',
+                        AppLocalizations.of(context)!.noMeterReadings,
                         style: TextStyle(
                           color: AppColors.accentColor,
                           fontSize: 18,
@@ -106,9 +107,10 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
                       ),
                       _buildTextSpan(' to '),
                       _buildDateTextSpan(
-                          meterController.lastDayDate,
-                          meterController.invoiceInfoData?.meterReadingDueDay
-                              .toString()),
+                        meterController.lastDayDate,
+                        meterController.invoiceInfoData?.meterReadingDueDay
+                            .toString(),
+                      ),
                     ],
                   ),
                 ),
@@ -127,7 +129,7 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
               style: ElevatedButton.styleFrom(
                 primary: AppColors.primaryColor,
               ),
-              child: Text('Submit Meter Readings'),
+              child: Text(AppLocalizations.of(context)!.submitMeterReadings),
             ),
             SizedBox(height: 10),
             ElevatedButton(
@@ -145,7 +147,7 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
               style: ElevatedButton.styleFrom(
                 primary: AppColors.primaryColor,
               ),
-              child: Text('Meters'),
+              child: Text(AppLocalizations.of(context)!.metersButton),
             ),
           ],
         ),
@@ -168,8 +170,17 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
   }
 
   TextSpan _buildTextSpan(String text) {
+    String translatedText = '';
+
+    if (text == 'The meter readings can be submitted from ') {
+      translatedText =
+          AppLocalizations.of(context)!.themeterreadingscanbesubmittedfrom;
+    } else if (text == ' to ') {
+      translatedText = AppLocalizations.of(context)!.to;
+    }
+
     return TextSpan(
-      text: text,
+      text: translatedText,
       style: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.normal,
