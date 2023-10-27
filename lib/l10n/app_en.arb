@@ -61,11 +61,15 @@
   "may": "May",
   "june": "June",
   "july": "July",
-  "month_08": "August",
-  "month_09": "September",
-  "month_10": "October",
-  "month_11": "November",
-  "month_12": "December",
+  "august": "August",
+  "september": "September",
+  "october": "October",
+  "november": "November",
+  "december": "December",
   "themeterreadingscanbesubmittedfrom": "The meter readings can be submitted from ",
-  "to": " to "
+  "to": " to ",
+  "meterChartsTitle": "Meter Charts",
+  "selectPeriodLabel": "Select period: ",
+  "selectPeriodLabelNoYear": "Select period",
+  "noDataLabel": "No Data"
 }

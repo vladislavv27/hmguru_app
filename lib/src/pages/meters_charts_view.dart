@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:hmguru/l10n/global_localizations.dart';
 import 'package:hmguru/src/controllers/meter_charts_controller.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/meters_vm.dart';
@@ -162,7 +163,7 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Meter Charts'),
+        title: Text(AppLocalizations.of(context)!.meterChartsTitle),
         backgroundColor: AppColors.primaryColor,
       ),
       body: SafeArea(
@@ -170,7 +171,7 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
           children: [
             Center(
               child: Container(
-                width: 160,
+                width: 190,
                 child: ElevatedButton(
                   onPressed: _showModalBottomSheet,
                   style: ElevatedButton.styleFrom(
@@ -178,8 +179,9 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
                   ),
                   child: Text(
                     selectedYear != null
-                        ? 'Select period: $selectedYear'
-                        : 'Select period',
+                        ? AppLocalizations.of(context)!.selectPeriodLabel +
+                            (selectedYear.toString())
+                        : AppLocalizations.of(context)!.selectPeriodLabelNoYear,
                   ),
                 ),
               ),
@@ -200,7 +202,7 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    '${meterData.title}',
+                                    AppLocalizations.of(context)!.noInvoiceData,
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -214,7 +216,7 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
                                     ),
                                   ),
                                   Text(
-                                    ' No Data',
+                                    AppLocalizations.of(context)!.noDataLabel,
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
