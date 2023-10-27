@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hmguru/l10n/global_localizations.dart';
 import 'package:hmguru/src/controllers/add_meter_controller.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:intl/intl.dart';
@@ -31,7 +32,7 @@ class _AddMeterViewState extends State<AddMeterView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text('Add Meter Readings'),
+        title: Text(AppLocalizations.of(context)!.addMeterReadings),
       ),
       body: _isLoading
           ? Center(
@@ -43,7 +44,7 @@ class _AddMeterViewState extends State<AddMeterView> {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      'Meter Readings for ${controller.currentPeriod != null ? DateFormat.MMMM().format(controller.currentPeriod!) + ' ' + DateFormat.y().format(controller.currentPeriod!) : ''}',
+                      '${AppLocalizations.of(context)!.meterReadingsFor} ${controller.currentPeriod != null ? DateFormat.MMMM().format(controller.currentPeriod!) + ' ' + DateFormat.y().format(controller.currentPeriod!) : ''}',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -79,7 +80,7 @@ class _AddMeterViewState extends State<AddMeterView> {
                             children: [
                               ListTile(
                                 title: Text(
-                                  'Previously: ${meter.prevValue}',
+                                  '${AppLocalizations.of(context)!.previously}: ${meter.prevValue}',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.textGrayColor),
@@ -87,7 +88,7 @@ class _AddMeterViewState extends State<AddMeterView> {
                               ),
                               ListTile(
                                 title: Text(
-                                  'Consumption',
+                                  AppLocalizations.of(context)!.consumption,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.textGrayColor),
@@ -132,7 +133,7 @@ class _AddMeterViewState extends State<AddMeterView> {
                               ),
                               ListTile(
                                 title: Text(
-                                  'Currently',
+                                  AppLocalizations.of(context)!.currently,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.textGrayColor),
@@ -193,7 +194,7 @@ class _AddMeterViewState extends State<AddMeterView> {
                     controller.apartmentMeterVM!.isEmpty)
                   SliverToBoxAdapter(
                     child: Center(
-                      child: Text('No data',
+                      child: Text(AppLocalizations.of(context)!.noData,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: AppColors.accentColor,

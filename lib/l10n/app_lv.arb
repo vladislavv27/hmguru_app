@@ -71,5 +71,12 @@
   "meterChartsTitle": "Skaitītāju diagrammas",
   "selectPeriodLabel": "Izvēlieties periodu: ",
   "selectPeriodLabelNoYear": "Izvēlieties periodu",
-  "noDataLabel": "Datu nav"
+  "noDataLabel": "Datu nav",
+    "currently": "Pašreizējais",
+  "consumption": "Paterināšana",
+  "previously": "Iepriekšējais",
+  "meterReadingsFor": "Skaitītāja rādījumi",
+  "addMeterReadings": "Pievienot skaitītāja rādījumus",
+  "noData": "Datu nav"
+
 }

@@ -71,5 +71,12 @@
   "meterChartsTitle": "Графики счетчиков",
   "selectPeriodLabel": "Выберите период: ",
   "selectPeriodLabelNoYear": "Выберите период",
-  "noDataLabel": "Нет данных"
+  "noDataLabel": "Нет данных",
+  "currently": "Текущее",
+  "consumption": "Расход",
+  "previously": "Предыдущее",
+  "meterReadingsFor": "Показания счетчика для",
+  "addMeterReadings": "Добавить показания счетчика",
+  "noData": "Нет данных"
+
 }

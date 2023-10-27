@@ -71,5 +71,12 @@
   "meterChartsTitle": "Meter Charts",
   "selectPeriodLabel": "Select period: ",
   "selectPeriodLabelNoYear": "Select period",
-  "noDataLabel": "No Data"
+  "noDataLabel": "No Data",
+    "currently": "Currently",
+  "consumption": "Consumption",
+  "previously": "Previously",
+  "meterReadingsFor": "Meter Readings for",
+  "addMeterReadings": "Add Meter Readings",
+  "noData": "No Data"
+
 }
