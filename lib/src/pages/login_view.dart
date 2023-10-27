@@ -1,6 +1,9 @@
+import 'package:flag/flag_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hmguru/l10n/global_localizations.dart';
+import 'package:hmguru/main.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/user_profile.dart';
 import 'package:hmguru/src/pages/not_resident_view.dart';
@@ -55,10 +58,23 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text(AppLocalizations.of(context)!.loginTitle),
         backgroundColor: Theme.of(context).primaryColor,
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              _showLanguageSelectionDialog(context);
+            },
+            style: ElevatedButton.styleFrom(
+              primary: Theme.of(context).primaryColor,
+            ),
+            child: Text(AppLocalizations.of(context)!.selectLanguage),
+          ),
+        ],
       ),
       body: Center(
         child: Padding(
@@ -71,21 +87,24 @@ class _LoginViewState extends State<LoginView> {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
-                      decoration: InputDecoration(labelText: 'Email'),
+                      decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.emailLabel),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
+                          return AppLocalizations.of(context)!.emailLabel;
                         }
                         return null;
                       },
                       controller: _emailController,
                     ),
                     TextFormField(
-                      decoration: InputDecoration(labelText: 'Password'),
+                      decoration: InputDecoration(
+                          labelText:
+                              AppLocalizations.of(context)!.passwordLabel),
                       obscureText: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
+                          return AppLocalizations.of(context)!.passwordLabel;
                         }
                         return null;
                       },
@@ -104,7 +123,7 @@ class _LoginViewState extends State<LoginView> {
                       });
                     },
                   ),
-                  Text('Remember Me'),
+                  Text(AppLocalizations.of(context)!.rememberMe),
                 ],
               ),
               ElevatedButton(
@@ -117,13 +136,56 @@ class _LoginViewState extends State<LoginView> {
                 style: ElevatedButton.styleFrom(
                   primary: Theme.of(context).primaryColor,
                 ),
-                child: Text('Login'),
+                child: Text(AppLocalizations.of(context)!.loginButton),
               ),
               _isLoading ? CircularProgressIndicator() : SizedBox(),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  List<Locale> supportedLocales = [Locale('en'), Locale('lv'), Locale('ru')];
+
+  Future<void> _showLanguageSelectionDialog(BuildContext context) async {
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Available Locales: ${supportedLocales}'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: supportedLocales.map((locale) {
+              String displayLocale =
+                  (locale.languageCode == 'en') ? 'gb' : locale.languageCode;
+
+              if (locale != null) {
+                return ListTile(
+                  title: Row(
+                    children: [
+                      Flag.fromString(
+                        displayLocale,
+                        width: 32,
+                        height: 24,
+                      ),
+                      SizedBox(width: 16),
+                      Text(locale.languageCode.toUpperCase()),
+                    ],
+                  ),
+                  onTap: () {
+                    Locale newLocale = locale;
+                    MyApp.setLocale(context, newLocale);
+                    Navigator.of(context).pop();
+                  },
+                );
+              } else {
+                return Container();
+              }
+            }).toList(),
+          ),
+        );
+      },
     );
   }
 

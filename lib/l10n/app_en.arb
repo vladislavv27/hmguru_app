@@ -1,0 +1,10 @@
+{
+  "loginTitle": "Login",
+  "emailLabel": "Email",
+  "passwordLabel": "Password",
+  "rememberMe": "Remember Me",
+  "loginButton": "Login",
+  "selectLanguage": "Change Language",
+  "loginSuccess": "Login Success",
+  "loginFailure": "Login failed. Please check your credentials."
+}

@@ -1,0 +1,10 @@
+{
+  "loginTitle": "Pieteikties",
+  "emailLabel": "E-pasts",
+  "passwordLabel": "Parole",
+  "rememberMe": "Atcerēties mani",
+  "loginButton": "Pieteikties",
+  "selectLanguage": "Mainīt valodu",
+  "loginSuccess": "Pieteikšanās veiksmīga",
+  "loginFailure": "Pieteikšanās neizdevās. Lūdzu, pārbaudiet savus dati."
+}

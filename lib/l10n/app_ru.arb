@@ -1,0 +1,10 @@
+{
+  "loginTitle": "Войти",
+  "emailLabel": "Электронная почта",
+  "passwordLabel": "Пароль",
+  "rememberMe": "Запомнить меня",
+  "loginButton": "Войти",
+  "selectLanguage": "Изменить язык",
+  "loginSuccess": "Вход выполнен успешно",
+  "loginFailure": "Ошибка входа. Пожалуйста, проверьте ваши учетные данные."
+}
