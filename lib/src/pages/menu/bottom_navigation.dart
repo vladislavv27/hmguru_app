@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hmguru/l10n/global_localizations.dart';
 import 'package:hmguru/src/pages/home_view.dart';
 import 'package:hmguru/src/pages/invoice_list_view.dart';
 import 'package:hmguru/src/pages/meter_readings_view.dart';
@@ -26,15 +27,15 @@ class _MyBottomNavigationMenuState extends State<MyBottomNavigationMenu> {
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.apartment),
-          label: 'My apartment',
+          label: AppLocalizations.of(context)!.myApartment,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.electric_meter),
-          label: 'Meter',
+          label: AppLocalizations.of(context)!.meter,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.receipt),
-          label: 'Invoices',
+          label: AppLocalizations.of(context)!.invoices,
         ),
       ],
       currentIndex: widget.currentIndex,

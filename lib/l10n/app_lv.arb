@@ -24,5 +24,7 @@
   "balconyArea": "Balkona platība",
   "billDeliveryType": "Rēķina piegādes veids",
   "accessCode": "Piekļuves kods",
-  "close": "Aizvērt"
+  "close": "Aizvērt",
+  "meter": "Skaitītājs",
+  "invoices": "Rēķini"
 }

@@ -24,5 +24,7 @@
   "balconyArea": "Площадь балкона",
   "billDeliveryType": "Способ доставки счетов",
   "accessCode": "Код доступа",
-  "close": "Закрыть"
+  "close": "Закрыть",
+  "meter": "Счетчик",
+  "invoices": "Счета"
 }

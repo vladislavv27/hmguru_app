@@ -24,5 +24,7 @@
   "balconyArea": "Balcony area",
   "billDeliveryType": "Bill delivery type",
   "accessCode": "Access code",
-  "close": "Close"
+  "close": "Close",
+  "meter": "Meter",
+  "invoices": "Invoices"
 }
