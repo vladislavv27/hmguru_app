@@ -3,6 +3,7 @@ import 'package:hmguru/src/controllers/payment_detail_controller.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/payments_vm.dart';
 import 'package:intl/intl.dart';
+import 'package:hmguru/l10n/global_localizations.dart';
 
 class PaymentDetailView extends StatefulWidget {
   final String paymentId;
@@ -36,7 +37,7 @@ class _PaymentDetailViewState extends State<PaymentDetailView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Payment Details'),
+        title: Text(AppLocalizations.of(context)!.paymentDetails),
         backgroundColor: AppColors.primaryColor,
       ),
       body: _isLoading
@@ -56,12 +57,16 @@ class _PaymentDetailViewState extends State<PaymentDetailView> {
           Row(
             children: [
               Expanded(
-                child: _buildDetail("invoice",
-                    _paymentDetail?.invoiceUID.toString() ?? "No data"),
+                child: _buildDetail(
+                  AppLocalizations.of(context)!.invoice.toUpperCase(),
+                  _paymentDetail?.invoiceUID.toString() ?? "No data",
+                ),
               ),
               Expanded(
-                child: _buildDetail("submitter",
-                    _paymentDetail?.submitter.toString() ?? "No data"),
+                child: _buildDetail(
+                  AppLocalizations.of(context)!.submitter.toUpperCase(),
+                  _paymentDetail?.submitter.toString() ?? "No data",
+                ),
               ),
             ],
           ),
@@ -69,30 +74,40 @@ class _PaymentDetailViewState extends State<PaymentDetailView> {
             children: [
               Expanded(
                 child: _buildDetail(
-                    "perido", _formatDateYearMonth(_paymentDetail?.period)),
+                  AppLocalizations.of(context)!.period.toUpperCase(),
+                  _formatDateYearMonth(_paymentDetail?.period),
+                ),
               ),
               Expanded(
-                child: _buildDetail("bank transaction nr",
-                    _paymentDetail?.bankTransactionID.toString() ?? "No data"),
+                child: _buildDetail(
+                  AppLocalizations.of(context)!.bankTransactionNr.toUpperCase(),
+                  _paymentDetail?.bankTransactionID.toString() ?? "No data",
+                ),
               ),
             ],
           ),
           _buildDetail(
-            "payment amount",
+            AppLocalizations.of(context)!.paymentAmount.toUpperCase(),
             _paymentDetail?.amount.toStringAsFixed(2) ?? "No data",
             _paymentDetail?.currency,
           ),
-          _buildDetail("bank transaction comment",
-              _paymentDetail?.bankTransactionComment.toString() ?? "No data"),
+          _buildDetail(
+            AppLocalizations.of(context)!.bankTransactionComment.toUpperCase(),
+            _paymentDetail?.bankTransactionComment.toString() ?? "No data",
+          ),
           Row(
             children: [
               Expanded(
-                child: _buildDetail("Received on",
-                    formatDateFulldate(_paymentDetail?.receivedOn)),
+                child: _buildDetail(
+                  AppLocalizations.of(context)!.receivedOn.toUpperCase(),
+                  formatDateFulldate(_paymentDetail?.receivedOn),
+                ),
               ),
               Expanded(
-                child: _buildDetail("submitted on".toUpperCase(),
-                    formatDateFulldate(_paymentDetail?.submittedOn)),
+                child: _buildDetail(
+                  AppLocalizations.of(context)!.submittedOn.toUpperCase(),
+                  formatDateFulldate(_paymentDetail?.submittedOn),
+                ),
               ),
             ],
           ),
@@ -110,7 +125,7 @@ class _PaymentDetailViewState extends State<PaymentDetailView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label.toUpperCase(),
+          label,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.textGrayColor,
@@ -130,7 +145,7 @@ class _PaymentDetailViewState extends State<PaymentDetailView> {
     if (date != null) {
       return DateFormat('dd.MM.yyyy').format(date);
     } else {
-      return 'No data';
+      return AppLocalizations.of(context)!.noData;
     }
   }
 
@@ -138,6 +153,6 @@ class _PaymentDetailViewState extends State<PaymentDetailView> {
     if (date != null) {
       return DateFormat('MMMM y').format(date);
     }
-    return "No data";
+    return AppLocalizations.of(context)!.noData;
   }
 }

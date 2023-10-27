@@ -81,6 +81,19 @@
   "amount": "Amount",
   "submitter": "Submitter",
   "period": "Period",
-  "paymentList": "Payment List"
+  "paymentList": "Payment List",
+  "receivedOn": "Received On",
+  "submittedOn": "Submitted On",
+  "bankTransactionComment": "Bank Transaction Comment",
+  "paymentAmount": "Payment Amount",
+  "bankTransactionNr": "Bank Transaction Number",
+  "invoice": "Invoice",
+  "paymentDetails": "Payment Details",
+  "notResidentTitle": "Not a Resident",
+  "notResidentMessage": "You are not in the role of a resident.",
+  "logoutButton": "Logout",
+  "errorOccurred": "An error occurred. Please try again.",
+  "loginSuccess": "Login Success",
+  "loginFailure": "Login failed. Please check your credentials."
 
 }

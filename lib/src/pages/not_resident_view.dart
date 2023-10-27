@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hmguru/l10n/global_localizations.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/pages/login_view.dart';
 import 'package:hmguru/src/services/preference_service.dart';
@@ -10,7 +11,7 @@ class NotResidentView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Not a Resident'),
+        title: Text(AppLocalizations.of(context)!.notResidentTitle),
         backgroundColor: AppColors.primaryColor,
       ),
       body: Center(
@@ -18,7 +19,7 @@ class NotResidentView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'You are not in the role of a resident.',
+              AppLocalizations.of(context)!.notResidentMessage,
               style: TextStyle(
                   fontSize: 18,
                   color: AppColors.accentColor,
@@ -29,7 +30,7 @@ class NotResidentView extends StatelessWidget {
               onPressed: () {
                 _handleLogout(context);
               },
-              child: Text('Logout'),
+              child: Text(AppLocalizations.of(context)!.logoutButton),
               style: ElevatedButton.styleFrom(
                 primary: AppColors.primaryColor,
               ),

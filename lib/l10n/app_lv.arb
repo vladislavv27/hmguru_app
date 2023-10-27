@@ -81,6 +81,19 @@
   "amount": "Summa",
   "submitter": "Iesniedzējs",
   "period": "Periods",
-  "paymentList": "Maksājumu saraksts"
+  "paymentList": "Maksājumu saraksts",
+  "receivedOn": "Saņemts",
+  "submittedOn": "Iesniegts",
+  "bankTransactionComment": "Bankas darījuma komentārs",
+  "paymentAmount": "Maksājuma summa",
+  "bankTransactionNr": "Bankas darījuma numurs",
+  "invoice": "Rēķins",
+  "paymentDetails": "Maksājuma detaļas",
+  "notResidentTitle": "Nav Iedzīvotājs",
+  "notResidentMessage": "Jūs neesat iedzīvotāja lomā.",
+  "logoutButton": "Iziet",
+  "errorOccurred": "Radās kļūda. Lūdzu, mēģiniet vēlreiz.",
+  "loginSuccess": "Pieteikšanās veiksmīga",
+  "loginFailure": "Pieteikšanās neizdevās. Lūdzu, pārbaudiet savus datus."
 
 }
