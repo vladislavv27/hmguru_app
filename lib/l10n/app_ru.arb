@@ -37,5 +37,17 @@
   "infoButton": "Информация",
   "downloadButton": "Скачать",
   "successfullyDownloaded": "Успешно скачано",
-  "downloadError": "Ошибка загрузки"
+  "downloadError": "Ошибка загрузки",
+    "invoiceDetailTitle": "Детали счета",
+  "invoiceLabel": "Счет",
+  "toPayLabel": "К оплате",
+  "serviceLabel": "Услуга",
+  "priceLabel": "Цена",
+  "taxLabel": "Налог",
+  "debtLabel": "Долг",
+  "paidLabel": "Оплачено",
+  "penaltyPeriodLabel": "Штраф за период",
+  "penaltyLabel": "Штраф",
+  "recalculationLabel": "Перерасчет",
+  "formulaLabel": "Формула"
 }

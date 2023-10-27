@@ -37,5 +37,17 @@
   "infoButton": "Info",
   "downloadButton": "Download",
   "successfullyDownloaded": "Successfully downloaded",
-  "downloadError": "Download error"
+  "downloadError": "Download error",
+    "invoiceDetailTitle": "Invoice Detail",
+  "invoiceLabel": "Invoice",
+  "toPayLabel": "To Pay",
+  "serviceLabel": "Service",
+  "priceLabel": "Price",
+  "taxLabel": "Tax",
+  "debtLabel": "Debt",
+  "paidLabel": "Paid",
+  "penaltyPeriodLabel": "Penalty For Period",
+  "penaltyLabel": "Penalty",
+  "recalculationLabel": "Recalculation",
+  "formulaLabel": "Formula"
 }

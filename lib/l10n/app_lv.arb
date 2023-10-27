@@ -37,5 +37,17 @@
   "infoButton": "Informācija",
   "downloadButton": "Lejupielādēt",
   "successfullyDownloaded": "Veiksmīgi lejupielādēts",
-  "downloadError": "Lejupielādes kļūda"
+  "downloadError": "Lejupielādes kļūda",
+    "invoiceDetailTitle": "Rēķina detaļas",
+  "invoiceLabel": "Rēķins",
+  "toPayLabel": "Jāmaksā",
+  "serviceLabel": "Pakalpojums",
+  "priceLabel": "Cena",
+  "taxLabel": "Nodoklis",
+  "debtLabel": "Parāds",
+  "paidLabel": "Samaksāts",
+  "penaltyPeriodLabel": "Sods periodam",
+  "penaltyLabel": "Sods",
+  "recalculationLabel": "Pārrēķināšana",
+  "formulaLabel": "Formula"
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hmguru/l10n/global_localizations.dart'; // Import your localization file here
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/invoice_details_vm.dart';
 
@@ -17,7 +18,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
     double totalPrice = calculateTotalPrice();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Invoice Detail'),
+        title: Text(AppLocalizations.of(context)!.invoiceDetailTitle),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: GestureDetector(
@@ -36,8 +37,9 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildHeaderItem(
-            'Invoice: ${widget.data.isNotEmpty ? widget.data[0].invoiceUID : ""}'),
-        _buildHeaderItem('To pay: ${totalPrice.toStringAsFixed(2)}'),
+            '${AppLocalizations.of(context)!.invoiceLabel}: ${widget.data.isNotEmpty ? widget.data[0].invoiceUID : ""}'),
+        _buildHeaderItem(
+            '${AppLocalizations.of(context)!.toPayLabel}: ${totalPrice.toStringAsFixed(2)}'),
       ],
     );
   }
@@ -67,8 +69,10 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildText('Service: ${rowData.serviceTitle}'),
-                _buildText('Price: ${rowData.priceForService}'),
+                _buildText(
+                    '${AppLocalizations.of(context)!.serviceLabel}: ${rowData.serviceTitle}'),
+                _buildText(
+                    '${AppLocalizations.of(context)!.priceLabel}: ${rowData.priceForService}'),
               ],
             ),
             children: _buildInvoiceDetails(rowData),
@@ -80,16 +84,23 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
 
   List<Widget> _buildInvoiceDetails(InvoiceDetailVM rowData) {
     return [
-      _buildText('Tax: ${rowData.priceTaxTotal}'),
-      _buildText('Debt: ${rowData.debtForService}'),
-      _buildText('To Pay: ${rowData.priceForServiceTotal}'),
+      _buildText(
+          '${AppLocalizations.of(context)!.taxLabel}: ${rowData.priceTaxTotal}'),
+      _buildText(
+          '${AppLocalizations.of(context)!.debtLabel}: ${rowData.debtForService}'),
+      _buildText(
+          '${AppLocalizations.of(context)!.toPayLabel}: ${rowData.priceForServiceTotal}'),
       _buildText((double.tryParse(rowData.payedForService) ?? 0) > 0
-          ? 'Paid: +${rowData.payedForService}€'
-          : 'Paid: ${rowData.payedForService}€'),
-      _buildText('Penalty For Period: ${rowData.penaltyForService}'),
-      _buildText('Penalty: ${rowData.penaltyForServiceTotal}'),
-      _buildText('Recalculation: ${rowData.debtRecalculationValue}'),
-      _buildText('Formula: ${rowData.rateFormula}'),
+          ? '${AppLocalizations.of(context)!.paidLabel}: +${rowData.payedForService}€'
+          : '${AppLocalizations.of(context)!.paidLabel}: ${rowData.payedForService}€'),
+      _buildText(
+          '${AppLocalizations.of(context)!.penaltyPeriodLabel}: ${rowData.penaltyForService}'),
+      _buildText(
+          '${AppLocalizations.of(context)!.penaltyLabel}: ${rowData.penaltyForServiceTotal}'),
+      _buildText(
+          '${AppLocalizations.of(context)!.recalculationLabel}: ${rowData.debtRecalculationValue}'),
+      _buildText(
+          '${AppLocalizations.of(context)!.formulaLabel}: ${rowData.rateFormula}'),
     ];
   }
 
