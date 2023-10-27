@@ -4,6 +4,7 @@ import 'package:hmguru/src/models/my_leasehold_vm.dart';
 import 'package:hmguru/src/pages/login_view.dart';
 import 'package:hmguru/src/pages/payment_list_view.dart';
 import 'package:hmguru/src/services/preference_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SideMenu extends StatefulWidget {
   @override
@@ -68,8 +69,8 @@ class _SideMenuState extends State<SideMenu> {
           ),
           ListTile(
             leading: Icon(Icons.apartment),
-            title: const Text(
-              'My apartment',
+            title: Text(
+              AppLocalizations.of(context)!.myApartment,
               style: TextStyle(
                 fontSize: 18,
               ),
@@ -82,8 +83,8 @@ class _SideMenuState extends State<SideMenu> {
           ),
           ListTile(
             leading: Icon(Icons.payment),
-            title: const Text(
-              'Payments',
+            title: Text(
+              AppLocalizations.of(context)!.payments,
               style: TextStyle(
                 fontSize: 18,
               ),
@@ -99,8 +100,8 @@ class _SideMenuState extends State<SideMenu> {
           ),
           ListTile(
             leading: Icon(Icons.logout),
-            title: const Text(
-              'Logout',
+            title: Text(
+              AppLocalizations.of(context)!.logout,
               style: TextStyle(
                 fontSize: 18,
               ),
@@ -132,16 +133,16 @@ class _SideMenuState extends State<SideMenu> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Apartment information'),
+          title: Text(AppLocalizations.of(context)!.apartmentInformation),
           content: Text(
-            '${leaseholdData.address}\nApartment number:${leaseholdData.fullNumber}\n'
-            'Owner: ${leaseholdData.owners.isNotEmpty ? leaseholdData.owners.join(", ") : ""}\n'
-            'Floor: ${leaseholdData.floor}\n'
-            'Resident count: ${leaseholdData.residentCount}\n'
-            'Area: ${leaseholdData.fullArea.toStringAsFixed(2)}\n'
-            'Balcony area: ${leaseholdData.balconyArea.toStringAsFixed(2)}\n'
-            'Bill delivery type: ${leaseholdData.billDeliveryType.name}\n'
-            'Access code: ${leaseholdData.accessCode}',
+            '${leaseholdData.address}\n${AppLocalizations.of(context)!.apartmentNumber}:${leaseholdData.fullNumber}\n'
+            '${AppLocalizations.of(context)!.owner}: ${leaseholdData.owners.isNotEmpty ? leaseholdData.owners.join(", ") : ""}\n'
+            '${AppLocalizations.of(context)!.floor}: ${leaseholdData.floor}\n'
+            '${AppLocalizations.of(context)!.residentCount}: ${leaseholdData.residentCount}\n'
+            '${AppLocalizations.of(context)!.area}: ${leaseholdData.fullArea.toStringAsFixed(2)}\n'
+            '${AppLocalizations.of(context)!.balconyArea}: ${leaseholdData.balconyArea.toStringAsFixed(2)}\n'
+            '${AppLocalizations.of(context)!.billDeliveryType}: ${leaseholdData.billDeliveryType.name}\n'
+            '${AppLocalizations.of(context)!.accessCode}: ${leaseholdData.accessCode}',
             style: TextStyle(
               color: Color(0xFF464646),
               fontSize: 20,
@@ -153,7 +154,7 @@ class _SideMenuState extends State<SideMenu> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Close'),
+              child: Text(AppLocalizations.of(context)!.close),
             ),
           ],
         );

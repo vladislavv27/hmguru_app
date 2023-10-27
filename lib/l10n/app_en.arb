@@ -12,6 +12,17 @@
   "dataNotFound": "Sorry, data not found",
   "lastInvoice": "Last invoice:",
   "noInvoiceData": "No invoice data available",
-  "youAreDebtor": "You are a debtor %s",
-  "readMore": "Read more"
+  "youAreDebtor": "You are a debtor",
+  "readMore": "Read more",
+  "payments": "Payments", 
+  "logout": "Logout",
+  "apartmentInformation": "Apartment information",
+  "owner": "Owner",
+  "floor": "Floor",
+  "residentCount": "Resident count",
+  "area": "Area",
+  "balconyArea": "Balcony area",
+  "billDeliveryType": "Bill delivery type",
+  "accessCode": "Access code",
+  "close": "Close"
 }

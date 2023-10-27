@@ -11,7 +11,18 @@
   "apartmentNumber": "Номер квартиры",
   "dataNotFound": "Извините, данные не найдены",
   "lastInvoice": "Последний счет:",
-  "noInvoiceData": "Нет доступных данных о счетах",
+  "noInvoiceData": "Нет данных о счетах",
   "youAreDebtor": "Вы должник",
-  "readMore": "Читать далее"
+  "readMore": "Подробнее",
+  "payments": "Платежи",
+  "logout": "Выйти",
+  "apartmentInformation": "Информация о квартире",
+  "owner": "Владелец",
+  "floor": "Этаж",
+  "residentCount": "Количество жителей",
+  "area": "Площадь",
+  "balconyArea": "Площадь балкона",
+  "billDeliveryType": "Способ доставки счетов",
+  "accessCode": "Код доступа",
+  "close": "Закрыть"
 }
