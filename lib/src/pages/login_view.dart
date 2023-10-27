@@ -58,8 +58,6 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    final locale = Localizations.localeOf(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.loginTitle),
@@ -72,7 +70,10 @@ class _LoginViewState extends State<LoginView> {
             style: ElevatedButton.styleFrom(
               primary: Theme.of(context).primaryColor,
             ),
-            child: Text(AppLocalizations.of(context)!.selectLanguage),
+            child: Text(
+              AppLocalizations.of(context)!.selectLanguage,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
           ),
         ],
       ),
@@ -88,7 +89,8 @@ class _LoginViewState extends State<LoginView> {
                   children: <Widget>[
                     TextFormField(
                       decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.emailLabel),
+                          labelText: AppLocalizations.of(context)!.emailLabel,
+                          labelStyle: TextStyle(fontSize: 18)),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return AppLocalizations.of(context)!.emailLabel;
@@ -99,8 +101,11 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     TextFormField(
                       decoration: InputDecoration(
-                          labelText:
-                              AppLocalizations.of(context)!.passwordLabel),
+                        labelText: AppLocalizations.of(context)!.passwordLabel,
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
                       obscureText: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -153,35 +158,30 @@ class _LoginViewState extends State<LoginView> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Available Locales: ${supportedLocales}'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: supportedLocales.map((locale) {
               String displayLocale =
                   (locale.languageCode == 'en') ? 'gb' : locale.languageCode;
 
-              if (locale != null) {
-                return ListTile(
-                  title: Row(
-                    children: [
-                      Flag.fromString(
-                        displayLocale,
-                        width: 32,
-                        height: 24,
-                      ),
-                      SizedBox(width: 16),
-                      Text(locale.languageCode.toUpperCase()),
-                    ],
-                  ),
-                  onTap: () {
-                    Locale newLocale = locale;
-                    MyApp.setLocale(context, newLocale);
-                    Navigator.of(context).pop();
-                  },
-                );
-              } else {
-                return Container();
-              }
+              return ListTile(
+                title: Row(
+                  children: [
+                    Flag.fromString(
+                      displayLocale,
+                      width: 32,
+                      height: 24,
+                    ),
+                    SizedBox(width: 16),
+                    Text(locale.languageCode.toUpperCase()),
+                  ],
+                ),
+                onTap: () {
+                  Locale newLocale = locale;
+                  MyApp.setLocale(context, newLocale);
+                  Navigator.of(context).pop();
+                },
+              );
             }).toList(),
           ),
         );
@@ -272,7 +272,7 @@ class _LoginViewState extends State<LoginView> {
       print('Error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('An error occurred. Please try again.'),
+          content: Text(AppLocalizations.of(context)!.errorOccurred),
           duration: Duration(seconds: 3),
         ),
       );
@@ -293,8 +293,8 @@ class _LoginViewState extends State<LoginView> {
       SnackBar(
         content: Text(
           isSuccess
-              ? 'Login Success'
-              : 'Login failed. Please check your credentials.',
+              ? AppLocalizations.of(context)!.loginSuccess
+              : AppLocalizations.of(context)!.loginFailure,
           textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
