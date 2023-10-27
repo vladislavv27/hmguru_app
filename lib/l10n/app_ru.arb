@@ -26,5 +26,16 @@
   "accessCode": "Код доступа",
   "close": "Закрыть",
   "meter": "Счетчик",
-  "invoices": "Счета"
+  "invoices": "Счета",
+    "invoiceListTitle": "Список счетов",
+  "toPayForPeriod": "К оплате за период",
+  "toPay": "К оплате",
+  "paid": "Оплачено",
+  "debt": "Долг",
+  "penalty": "Штраф",
+  "recalculation": "Перерасчет",
+  "infoButton": "Информация",
+  "downloadButton": "Скачать",
+  "successfullyDownloaded": "Успешно скачано",
+  "downloadError": "Ошибка загрузки"
 }

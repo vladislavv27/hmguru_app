@@ -26,5 +26,16 @@
   "accessCode": "Access code",
   "close": "Close",
   "meter": "Meter",
-  "invoices": "Invoices"
+  "invoices": "Invoices",
+  "invoiceListTitle": "Invoice List",
+  "toPayForPeriod": "To Pay For Period",
+  "toPay": "To Pay",
+  "paid": "Paid",
+  "debt": "Debt",
+  "penalty": "Penalty",
+  "recalculation": "Recalculation",
+  "infoButton": "Info",
+  "downloadButton": "Download",
+  "successfullyDownloaded": "Successfully downloaded",
+  "downloadError": "Download error"
 }

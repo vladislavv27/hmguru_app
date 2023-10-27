@@ -26,5 +26,16 @@
   "accessCode": "Piekļuves kods",
   "close": "Aizvērt",
   "meter": "Skaitītājs",
-  "invoices": "Rēķini"
+  "invoices": "Rēķini",
+   "invoiceListTitle": "Rēķinu saraksts",
+  "toPayForPeriod": "Jāmaksā par periodu",
+  "toPay": "Jāmaksā",
+  "paid": "Apmaksāts",
+  "debt": "Parāds",
+  "penalty": "Sods",
+  "recalculation": "Pārvērtēšana",
+  "infoButton": "Informācija",
+  "downloadButton": "Lejupielādēt",
+  "successfullyDownloaded": "Veiksmīgi lejupielādēts",
+  "downloadError": "Lejupielādes kļūda"
 }

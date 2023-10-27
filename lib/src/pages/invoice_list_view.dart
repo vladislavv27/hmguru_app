@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hmguru/l10n/global_localizations.dart';
 import 'package:hmguru/src/controllers/invoice_list_controller.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/invoice_list.dart';
@@ -36,7 +37,7 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Invoice List'),
+        title: Text(AppLocalizations.of(context)!.invoiceListTitle),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       drawer: SideMenu(),
@@ -73,14 +74,19 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildText("To Pay For Period: ${rowData.toPayForPeriod}"),
-            _buildText("To Pay: ${rowData.sumTotal}"),
+            _buildText(
+                '${AppLocalizations.of(context)!.toPayForPeriod}: ${rowData.toPayForPeriod}'),
+            _buildText(
+                '${AppLocalizations.of(context)!.toPay}: ${rowData.sumTotal}'),
             _buildText((double.tryParse(rowData.paymentSum) ?? 0) > 0
-                ? 'Paid: +${rowData.paymentSum}€'
-                : 'Paid: ${rowData.paymentSum}€'),
-            _buildText('Debt: ${rowData.debt}'),
-            _buildText('Penalty: ${rowData.penalty}'),
-            _buildText('Recalculation ${rowData.priceRecalculationValueTotal}'),
+                ? '${AppLocalizations.of(context)!.paid}: +${rowData.paymentSum}€'
+                : '${AppLocalizations.of(context)!.paid}: ${rowData.paymentSum}€'),
+            _buildText(
+                '${AppLocalizations.of(context)!.debt}: ${rowData.debt}'),
+            _buildText(
+                '${AppLocalizations.of(context)!.penalty}: ${rowData.penalty}'),
+            _buildText(
+                '${AppLocalizations.of(context)!.recalculation}: ${rowData.priceRecalculationValueTotal}'),
           ],
         ),
         Row(
@@ -106,17 +112,17 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
     return Text(text, style: TextStyle(fontSize: 18));
   }
 
-  Widget _buildInfoButton(String id) =>
-      _buildTextButton(id, Icons.info, AppColors.secondaryColor);
+  Widget _buildInfoButton(String id) => _buildTextButton(id, Icons.info,
+      AppColors.secondaryColor, AppLocalizations.of(context)!.infoButton);
 
-  Widget _buildDownloadButton(String id) =>
-      _buildTextButton(id, Icons.download, AppColors.accentColor);
+  Widget _buildDownloadButton(String id) => _buildTextButton(id, Icons.download,
+      AppColors.accentColor, AppLocalizations.of(context)!.downloadButton);
 
-  Widget _buildTextButton(String id, IconData icon, Color color) {
+  Widget _buildTextButton(String id, IconData icon, Color color, String label) {
     return TextButton.icon(
       onPressed: () => _handleButton(id, icon),
       icon: Icon(icon, color: color),
-      label: Text(''),
+      label: Text(label),
     );
   }
 
@@ -130,7 +136,9 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
 
   Future<void> _handleDownload(String id) async {
     final downloaded = await _controller.downloadFile(id);
-    final message = downloaded ? 'Successfully downloaded' : 'Download error';
+    final message = downloaded
+        ? AppLocalizations.of(context)!.successfullyDownloaded
+        : AppLocalizations.of(context)!.downloadError;
     final color = downloaded ? AppColors.successColor : AppColors.accentColor;
     _showSnackBar(message, color);
   }
