@@ -77,6 +77,10 @@
   "previously": "Previously",
   "meterReadingsFor": "Meter Readings for",
   "addMeterReadings": "Add Meter Readings",
-  "noData": "No Data"
+  "noData": "No Data",
+  "amount": "Amount",
+  "submitter": "Submitter",
+  "period": "Period",
+  "paymentList": "Payment List"
 
 }

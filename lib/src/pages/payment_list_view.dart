@@ -4,6 +4,7 @@ import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/payments_vm.dart';
 import 'package:hmguru/src/pages/payment_details_view.dart';
 import 'package:intl/intl.dart';
+import 'package:hmguru/l10n/global_localizations.dart';
 
 class PaymentListView extends StatefulWidget {
   @override
@@ -14,6 +15,7 @@ class _PaymentListViewState extends State<PaymentListView> {
   final PaymentListController _controller = PaymentListController();
   List<PaymentListVM> _paymentList = [];
   bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
@@ -32,7 +34,7 @@ class _PaymentListViewState extends State<PaymentListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Payment List'),
+        title: Text(AppLocalizations.of(context)!.paymentList),
         backgroundColor: AppColors.primaryColor,
       ),
       body: _isLoading
@@ -57,18 +59,20 @@ class _PaymentListViewState extends State<PaymentListView> {
             Expanded(
               child: ListTile(
                 title: Text(
-                  "Period: $formattedPeriod",
+                  '${AppLocalizations.of(context)!.period}: $formattedPeriod',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Amount: ${payment.amount.toStringAsFixed(2)}',
+                    Text(
+                        '${AppLocalizations.of(context)!.amount}: ${payment.amount.toStringAsFixed(2)}',
                         style: TextStyle(
                             fontSize: 16,
                             color: AppColors.textGrayColor,
                             fontWeight: FontWeight.bold)),
-                    Text("Submitter: ${payment.submitter}",
+                    Text(
+                        "${AppLocalizations.of(context)!.submitter}: ${payment.submitter}",
                         style: TextStyle(
                             fontSize: 16,
                             color: AppColors.textGrayColor,

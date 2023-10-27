@@ -77,6 +77,10 @@
   "previously": "Iepriekšējais",
   "meterReadingsFor": "Skaitītāja rādījumi",
   "addMeterReadings": "Pievienot skaitītāja rādījumus",
-  "noData": "Datu nav"
+  "noData": "Datu nav",
+  "amount": "Summa",
+  "submitter": "Iesniedzējs",
+  "period": "Periods",
+  "paymentList": "Maksājumu saraksts"
 
 }

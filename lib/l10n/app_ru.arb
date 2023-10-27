@@ -77,6 +77,10 @@
   "previously": "Предыдущее",
   "meterReadingsFor": "Показания счетчика для",
   "addMeterReadings": "Добавить показания счетчика",
-  "noData": "Нет данных"
+  "noData": "Нет данных",
+  "amount": "Сумма",
+  "submitter": "Отправитель",
+  "period": "Период",
+  "paymentList": "Список платежей"
 
 }
