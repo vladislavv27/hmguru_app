@@ -19,7 +19,13 @@ class MeterReadingController {
 
   Future<void> initializeData() async {
     try {
-      await _apiService.getMyMeterReadings();
+      final bool dataExists =
+          await _prefService.IfdataExists('apartmentMeterData');
+
+      if (!dataExists) {
+        await _apiService.getMyMeterReadings();
+      }
+
       final myLeaseholdVM = await _prefService.loadLeaseholdData();
       final myInvoiceInfo = await _prefService.loadInvoiceInfo();
       final myMeterReadings = await _prefService.loadApartmentMeterData();
