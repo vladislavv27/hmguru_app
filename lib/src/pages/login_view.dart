@@ -1,4 +1,5 @@
 import 'package:flag/flag_widget.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -7,8 +8,8 @@ import 'package:hmguru/main.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/user_profile.dart';
 import 'package:hmguru/src/pages/not_resident_view.dart';
-import 'package:hmguru/src/services/api_service.dart';
 import 'package:hmguru/src/pages/home_view.dart';
+import 'package:hmguru/src/services/api_service.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -77,74 +78,82 @@ class _LoginViewState extends State<LoginView> {
           ),
         ],
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    TextFormField(
-                      decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.emailLabel,
-                          labelStyle: TextStyle(fontSize: 18)),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return AppLocalizations.of(context)!.emailLabel;
-                        }
-                        return null;
-                      },
-                      controller: _emailController,
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.passwordLabel,
-                        labelStyle: TextStyle(
-                          fontSize: 18,
-                        ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SvgPicture.asset(
+                  'assets/log-in.svg',
+                  width: 140,
+                  height: 140,
+                ),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                        decoration: InputDecoration(
+                            labelText: AppLocalizations.of(context)!.emailLabel,
+                            labelStyle: TextStyle(fontSize: 18)),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return AppLocalizations.of(context)!.emailLabel;
+                          }
+                          return null;
+                        },
+                        controller: _emailController,
                       ),
-                      obscureText: true,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return AppLocalizations.of(context)!.passwordLabel;
-                        }
-                        return null;
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText:
+                              AppLocalizations.of(context)!.passwordLabel,
+                          labelStyle: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return AppLocalizations.of(context)!.passwordLabel;
+                          }
+                          return null;
+                        },
+                        controller: _passwordController,
+                      ),
+                    ],
+                  ),
+                ),
+                Row(
+                  children: <Widget>[
+                    Checkbox(
+                      value: _rememberMe,
+                      onChanged: (value) {
+                        setState(() {
+                          _rememberMe = value!;
+                        });
                       },
-                      controller: _passwordController,
                     ),
+                    Text(AppLocalizations.of(context)!.rememberMe),
                   ],
                 ),
-              ),
-              Row(
-                children: <Widget>[
-                  Checkbox(
-                    value: _rememberMe,
-                    onChanged: (value) {
-                      setState(() {
-                        _rememberMe = value!;
-                      });
-                    },
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      _submitForm(context);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Theme.of(context).primaryColor,
                   ),
-                  Text(AppLocalizations.of(context)!.rememberMe),
-                ],
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    _submitForm(context);
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).primaryColor,
+                  child: Text(AppLocalizations.of(context)!.loginButton),
                 ),
-                child: Text(AppLocalizations.of(context)!.loginButton),
-              ),
-              _isLoading ? CircularProgressIndicator() : SizedBox(),
-            ],
+                _isLoading ? CircularProgressIndicator() : SizedBox(),
+              ],
+            ),
           ),
         ),
       ),

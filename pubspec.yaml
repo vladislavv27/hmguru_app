@@ -70,6 +70,8 @@ flutter:
     - .env
     - assets/apartment.svg
     - assets/meter-reading.svg
+    - assets/log-in.svg
+
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
