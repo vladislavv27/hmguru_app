@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hmguru/l10n/global_localizations.dart';
 import 'package:hmguru/src/models/apartment_meter_vm.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/meter_reading_vm.dart';
@@ -29,9 +30,7 @@ class AddMeterController {
 
       final period = await _apiservice.getCurrentPeriod(leaseholdData!.id);
 
-      if (period != null) {
-        currentPeriod = period;
-      }
+      currentPeriod = period;
 
       if (apartmentMeterVM != null) {
         for (var meter in apartmentMeterVM!) {
@@ -64,8 +63,8 @@ class AddMeterController {
       final snackBar = SnackBar(
         content: Text(
           saveSuccess
-              ? 'Meter reading saved successfully'
-              : 'Failed to save meter reading',
+              ? AppLocalizations.of(context)!.meterReadingSavedSuccessfully
+              : AppLocalizations.of(context)!.failedToSaveMeterReading,
           textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),

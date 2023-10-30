@@ -94,6 +94,8 @@
   "logoutButton": "Logout",
   "errorOccurred": "An error occurred. Please try again.",
   "loginSuccess": "Login Success",
-  "loginFailure": "Login failed. Please check your credentials."
+  "loginFailure": "Login failed. Please check your credentials.",
+  "meterReadingSavedSuccessfully": "Meter reading saved successfully",
+  "failedToSaveMeterReading": "Failed to save meter reading"
 
 }

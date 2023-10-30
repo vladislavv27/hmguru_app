@@ -94,6 +94,8 @@
   "logoutButton": "Iziet",
   "errorOccurred": "Radās kļūda. Lūdzu, mēģiniet vēlreiz.",
   "loginSuccess": "Pieteikšanās veiksmīga",
-  "loginFailure": "Pieteikšanās neizdevās. Lūdzu, pārbaudiet savus datus."
+  "loginFailure": "Pieteikšanās neizdevās. Lūdzu, pārbaudiet savus datus.",
+  "meterReadingSavedSuccessfully": "Skaitītāja rādījumu saglabāšana veiksmīga",
+  "failedToSaveMeterReading": "Neizdevās saglabāt skaitītāja rādījumus"
 
 }
