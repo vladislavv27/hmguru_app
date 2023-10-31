@@ -8,6 +8,7 @@ import 'package:hmguru/src/models/my_leasehold_vm.dart';
 import 'package:hmguru/src/models/invoice_details_vm.dart';
 import 'package:hmguru/src/models/invoice_list.dart';
 import 'package:hmguru/src/models/payments_vm.dart';
+import 'package:hmguru/src/models/residents_vm.dart';
 import 'package:hmguru/src/models/table_querus_vm.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 import 'package:http/http.dart' as http;
@@ -364,6 +365,33 @@ class ApiService {
       final PaymentDetailVM paymentDetails =
           PaymentDetailVM.fromJson(jsonResponse);
       await _preferenceservice.savePaymentDetails(paymentDetails);
+    }
+  }
+
+  Future<void> getLeaseholdResidents() async {
+    final String? jwtToken = await _preferenceservice.loadJwtToken();
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $jwtToken',
+    };
+
+    final tableQuery = TableQueryModel();
+
+    final response = await http.post(
+      Uri.parse(apiURL! + '/my/residents'),
+      headers: headers,
+      body: jsonEncode(tableQuery.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      final List<dynamic> jsonList = jsonResponse['list'];
+      final List<ResidentTableVM> residents =
+          jsonList.map((json) => ResidentTableVM.fromJson(json)).toList();
+      await _preferenceservice.saveResidentTableVM(residents);
     }
   }
 }

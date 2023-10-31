@@ -7,6 +7,7 @@ import 'package:hmguru/src/models/invoice_list.dart';
 import 'package:hmguru/src/models/meters_vm.dart';
 import 'package:hmguru/src/models/my_leasehold_vm.dart';
 import 'package:hmguru/src/models/payments_vm.dart';
+import 'package:hmguru/src/models/residents_vm.dart';
 import 'package:hmguru/src/models/user_profile.dart';
 import 'package:hmguru/src/models/invoice_details_vm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -218,5 +219,27 @@ class PreferenceService {
       return PaymentDetailVM.fromJson(decodedData);
     }
     return null;
+  }
+
+  Future<void> saveResidentTableVM(List<ResidentTableVM> residents) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonList = residents.map((resident) => resident.toJson()).toList();
+    final jsonString = jsonEncode(jsonList);
+    await prefs.setString('residentTable', jsonString);
+  }
+
+  Future<List<ResidentTableVM>?> loadResidentTableVM() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString('residentTable');
+    if (jsonString == null) {
+      return null;
+    }
+    final List<dynamic> jsonList = jsonDecode(jsonString);
+    final List<ResidentTableVM> residents = [];
+
+    for (var json in jsonList) {
+      residents.add(ResidentTableVM.fromJson(json));
+    }
+    return residents;
   }
 }

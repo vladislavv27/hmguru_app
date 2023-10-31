@@ -96,6 +96,12 @@
   "loginSuccess": "Login Success",
   "loginFailure": "Login failed. Please check your credentials.",
   "meterReadingSavedSuccessfully": "Meter reading saved successfully",
-  "failedToSaveMeterReading": "Failed to save meter reading"
-
+  "failedToSaveMeterReading": "Failed to save meter reading",
+  "residents": "Residents",
+  "phone": "Phone",
+  "email": "E-mail",
+  "name": "Name",
+  "role": "Role",
+  "owner": "Owner",
+  "resident": "Resident"
 }

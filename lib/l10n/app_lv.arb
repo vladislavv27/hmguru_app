@@ -96,6 +96,12 @@
   "loginSuccess": "Pieteikšanās veiksmīga",
   "loginFailure": "Pieteikšanās neizdevās. Lūdzu, pārbaudiet savus datus.",
   "meterReadingSavedSuccessfully": "Skaitītāja rādījumu saglabāšana veiksmīga",
-  "failedToSaveMeterReading": "Neizdevās saglabāt skaitītāja rādījumus"
-
+  "failedToSaveMeterReading": "Neizdevās saglabāt skaitītāja rādījumus",
+  "residents": "Iedzīvotāji",
+  "phone": "Telefons",
+  "email": "E-pasts",
+  "name": "Vārds",
+  "role": "Loma",
+  "owner": "Īpašnieks",
+  "resident": "Iedzīvotājs"
 }

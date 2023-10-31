@@ -3,6 +3,7 @@ import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/my_leasehold_vm.dart';
 import 'package:hmguru/src/pages/login_view.dart';
 import 'package:hmguru/src/pages/payment_list_view.dart';
+import 'package:hmguru/src/pages/residents_view.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -16,7 +17,6 @@ class _SideMenuState extends State<SideMenu> {
   MyLeaseholdVM? leaseholdData;
   String userName = '';
   String userMail = '';
-
   @override
   void initState() {
     super.initState();
@@ -94,6 +94,22 @@ class _SideMenuState extends State<SideMenu> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => PaymentListView(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.people),
+            title: Text(
+              AppLocalizations.of(context)!.residents,
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            onTap: () async {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ResidentsView(),
                 ),
               );
             },
