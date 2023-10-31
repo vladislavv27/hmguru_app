@@ -118,14 +118,18 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddMeterView(),
-                  ),
-                );
-              },
+              onPressed:
+                  (!meterController.invoiceInfoData!.allowAddNewMeterReadings ||
+                          !meterController.isTodayValidDateForMetersReading)
+                      ? null
+                      : () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddMeterView(),
+                            ),
+                          );
+                        },
               style: ElevatedButton.styleFrom(
                 primary: AppColors.primaryColor,
               ),
