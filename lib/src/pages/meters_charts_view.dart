@@ -171,7 +171,7 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
           children: [
             Center(
               child: Container(
-                width: 190,
+                width: 220,
                 child: ElevatedButton(
                   onPressed: _showModalBottomSheet,
                   style: ElevatedButton.styleFrom(
@@ -182,6 +182,7 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
                         ? AppLocalizations.of(context)!.selectPeriodLabel +
                             (selectedYear.toString())
                         : AppLocalizations.of(context)!.selectPeriodLabelNoYear,
+                    style: TextStyle(fontSize: 16),
                   ),
                 ),
               ),

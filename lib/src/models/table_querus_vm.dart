@@ -18,14 +18,14 @@ class MetersQuery {
     int pageSize = 10,
     String sortColumn = 'title',
     String sortDirection = 'asc',
-    int year = 2023,
+    int? year,
   })  : filter = filter,
         getAll = getAll,
         page = page,
         pageSize = pageSize,
         sortColumn = sortColumn,
         sortDirection = sortDirection,
-        year = year;
+        year = year ?? DateTime.now().year;
 
   Map<String, dynamic> toJson() {
     return {

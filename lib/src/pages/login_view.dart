@@ -135,6 +135,7 @@ class _LoginViewState extends State<LoginView> {
                           _rememberMe = value!;
                         });
                       },
+                      activeColor: Theme.of(context).primaryColor,
                     ),
                     Text(AppLocalizations.of(context)!.rememberMe),
                   ],
