@@ -32,7 +32,7 @@ class InvoiceListController {
     }
   }
 
-  Future<bool> downloadFile(String id) async {
+  Future<String?> downloadFile(String id) async {
     return await _apiservice.downloadFile(id);
   }
 }

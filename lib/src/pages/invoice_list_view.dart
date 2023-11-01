@@ -5,6 +5,7 @@ import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/invoice_list.dart';
 import 'package:hmguru/src/pages/menu/side_menu.dart';
 import 'package:intl/intl.dart';
+import 'package:open_file_plus/open_file_plus.dart';
 import 'invoice_details_view.dart';
 import 'menu/bottom_navigation.dart';
 
@@ -136,11 +137,28 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
 
   Future<void> _handleDownload(String id) async {
     final downloaded = await _controller.downloadFile(id);
-    final message = downloaded
-        ? AppLocalizations.of(context)!.successfullyDownloaded
-        : AppLocalizations.of(context)!.downloadError;
-    final color = downloaded ? AppColors.successColor : AppColors.accentColor;
-    _showSnackBar(message, color);
+
+    if (downloaded != null && downloaded.isNotEmpty) {
+      final message = 'File $downloaded successfully downloaded';
+      final color = AppColors.successColor;
+
+      _showSnackBar(message, color);
+
+      final directory = "/storage/emulated/0/Download"; //change !
+      final filePath = '$directory/$downloaded';
+      final result = await OpenFile.open(filePath);
+
+      if (result.type == ResultType.done) {
+        print('File opened successfully');
+      } else {
+        print('Error opening file: ${result.message}');
+      }
+    } else {
+      final message = AppLocalizations.of(context)!.downloadError;
+      final color = AppColors.accentColor;
+
+      _showSnackBar(message, color);
+    }
   }
 
   void _showSnackBar(String message, Color color) {

@@ -112,7 +112,7 @@ class ApiService {
     }
   }
 
-  Future<bool> downloadFile(String invoiceId) async {
+  Future<String?> downloadFile(String invoiceId) async {
     final String? jwtToken = await _preferenceservice.loadJwtToken();
 
     final headers = {
@@ -138,13 +138,14 @@ class ApiService {
 
         await file.writeAsBytes(response.bodyBytes);
         print('File saved at: $filePath');
-        return true;
+
+        return fileName;
       } else {
         throw Exception('Failed to download file');
       }
     } catch (e) {
       print('Error: $e');
-      return false;
+      return null; // Return null to indicate failure
     }
   }
 
@@ -386,7 +387,6 @@ class ApiService {
     );
 
     if (response.statusCode == 200) {
-      print(response.body);
       final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       final List<dynamic> jsonList = jsonResponse['list'];
       final List<ResidentTableVM> residents =
