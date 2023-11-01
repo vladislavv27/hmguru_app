@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hmguru/src/controllers/home_controller.dart';
 import 'package:hmguru/src/models/app_colors.dart';
+import 'package:hmguru/src/models/my_leasehold_vm.dart';
 import 'package:hmguru/src/pages/menu/bottom_navigation.dart';
 import 'package:hmguru/src/pages/menu/side_menu.dart';
-import 'package:hmguru/l10n/global_localizations.dart'; // Import localization
+import 'package:hmguru/l10n/global_localizations.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,12 +15,57 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final HomeController _controller = HomeController();
   int _currentIndex = 0;
+  bool receiveEmailInvoices = false;
+  bool receivePrintedInvoices = false;
 
   @override
   void initState() {
     super.initState();
     _controller.loadLeaseholdData(setState);
-    _controller.loadInvoiceData(setState);
+    _controller.loadInvoiceData(() {
+      setState(() {
+        updateEmailCheckbox();
+        updatePrintedCheckbox();
+      });
+    });
+  }
+
+  void updateEmailCheckbox() {
+    receiveEmailInvoices = _controller.invoiceInfoData?.invoiceDeliveryType ==
+            InvoiceDeliveryType.Email.index ||
+        _controller.invoiceInfoData?.invoiceDeliveryType ==
+            InvoiceDeliveryType.Both.index;
+  }
+
+  void updatePrintedCheckbox() {
+    receivePrintedInvoices = _controller.invoiceInfoData?.invoiceDeliveryType ==
+            InvoiceDeliveryType.Post.index ||
+        _controller.invoiceInfoData?.invoiceDeliveryType ==
+            InvoiceDeliveryType.Both.index;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        title: Text(AppLocalizations.of(context)!.myApartment),
+      ),
+      drawer: SideMenu(),
+      body: _controller.isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : _buildContent(),
+      bottomNavigationBar: MyBottomNavigationMenu(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      ),
+    );
   }
 
   Widget _buildApartmentImage() {
@@ -28,8 +74,8 @@ class _HomePageState extends State<HomePage> {
         if (orientation == Orientation.portrait) {
           return SvgPicture.asset(
             'assets/apartment.svg',
-            height: 140,
-            width: 140,
+            height: 120,
+            width: 120,
           );
         } else {
           return SizedBox();
@@ -131,31 +177,75 @@ class _HomePageState extends State<HomePage> {
             ),
             child: Text(AppLocalizations.of(context)!.readMore),
           ),
+          Row(
+            children: [
+              Checkbox(
+                value: receiveEmailInvoices,
+                onChanged: (value) {
+                  setState(() {
+                    if (value!) {
+                      if (receivePrintedInvoices) {
+                        _controller
+                            .updateDeliveryType(InvoiceDeliveryType.Both);
+                      } else {
+                        _controller
+                            .updateDeliveryType(InvoiceDeliveryType.Email);
+                      }
+                    } else {
+                      if (!receivePrintedInvoices) {
+                        _controller
+                            .updateDeliveryType(InvoiceDeliveryType.Email);
+                      } else {
+                        _controller
+                            .updateDeliveryType(InvoiceDeliveryType.Email);
+                      }
+                    }
+                    receiveEmailInvoices = value;
+                  });
+                },
+              ),
+              Flexible(
+                child: Text(
+                  AppLocalizations.of(context)!.emailInvoice,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Checkbox(
+                value: receivePrintedInvoices,
+                onChanged: (value) {
+                  setState(() {
+                    if (!value!) {
+                      if (receiveEmailInvoices) {
+                        _controller
+                            .updateDeliveryType(InvoiceDeliveryType.Both);
+                      } else {
+                        _controller
+                            .updateDeliveryType(InvoiceDeliveryType.Post);
+                      }
+                    } else {
+                      if (receiveEmailInvoices) {
+                        _controller
+                            .updateDeliveryType(InvoiceDeliveryType.Post);
+                      } else {
+                        _controller
+                            .updateDeliveryType(InvoiceDeliveryType.Post);
+                      }
+                    }
+                    receivePrintedInvoices = value;
+                  });
+                },
+              ),
+              Flexible(
+                child: Text(
+                  AppLocalizations.of(context)!.printedInvoice,
+                ),
+              ),
+            ],
+          ),
         ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text(AppLocalizations.of(context)!.myApartment),
-      ),
-      drawer: SideMenu(),
-      body: _controller.isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : _buildContent(),
-      bottomNavigationBar: MyBottomNavigationMenu(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
       ),
     );
   }

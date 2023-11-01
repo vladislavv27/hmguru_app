@@ -133,10 +133,10 @@ InvoiceDeliveryType parseInvoiceDeliveryType(int? value) {
 }
 
 enum InvoiceDeliveryType {
+  unknown,
   Email,
   Post,
   Both,
-  unknown,
 }
 
 enum HouseType {

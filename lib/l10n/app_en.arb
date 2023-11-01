@@ -103,5 +103,8 @@
   "name": "Name",
   "role": "Role",
   "owner": "Owner",
-  "resident": "Resident"
+  "resident": "Resident",
+  "printedInvoice": "The invoice will be sent in printed form to the mailbox",
+  "emailInvoice": "An invoice will be sent to this user's email",
+"successfullyChangedInvoiceReceiving": "Successfully changed invoice receiving"
 }

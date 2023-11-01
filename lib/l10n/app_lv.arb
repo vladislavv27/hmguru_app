@@ -103,5 +103,8 @@
   "name": "Vārds",
   "role": "Loma",
   "owner": "Īpašnieks",
-  "resident": "Iedzīvotājs"
+  "resident": "Iedzīvotājs",
+  "printedInvoice": "Rēķins tiks nosūtīts izdrukātā veidā uz pastkasti",
+  "emailInvoice": "Rēķins tiks nosūtīts uz šī lietotāja e-pastu",
+  "successfullyChangedInvoiceReceiving": "Veiksmīgi mainīta rēķinu saņemšana"
 }

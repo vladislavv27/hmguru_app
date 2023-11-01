@@ -8,7 +8,7 @@ class InvoiceInfoVm {
   final bool allowAddNewMeterReadings;
   final int meterReadingActivationDay;
   final int meterReadingDueDay;
-  final int invoiceDeliveryType;
+  late final int invoiceDeliveryType;
 
   InvoiceInfoVm({
     required this.invoiceId,

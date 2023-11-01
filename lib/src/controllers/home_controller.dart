@@ -12,6 +12,8 @@ class HomeController {
   MyLeaseholdVM? leaseholdData;
   InvoiceInfoVm? invoiceInfoData;
   bool isLoading = true;
+  bool deliveryByEmail = false;
+  bool deliveryByPost = false;
 
   Future<void> loadLeaseholdData(Function setState) async {
     try {
@@ -37,20 +39,14 @@ class HomeController {
     try {
       final myinvoiceInfo = await _prefservice.loadInvoiceInfo();
       if (myinvoiceInfo != null) {
-        setState(() {
-          invoiceInfoData = myinvoiceInfo;
-          isLoading = false;
-        });
-      } else {
-        setState(() {
-          isLoading = false;
-        });
+        invoiceInfoData = myinvoiceInfo;
+        isLoading = false;
       }
     } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
+      print(e);
+      isLoading = false;
     }
+    setState();
   }
 
   String getPreviousMonthDate() {
@@ -72,6 +68,14 @@ class HomeController {
       } catch (e) {
         print(e);
       }
+    }
+  }
+
+  Future<void> updateDeliveryType(InvoiceDeliveryType deliveryType) async {
+    try {
+      await _apiservice.updateDeliveryType(deliveryType);
+    } catch (e) {
+      print(e);
     }
   }
 }

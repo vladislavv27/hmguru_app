@@ -14,6 +14,8 @@ import 'package:hmguru/src/services/preference_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:http/http.dart';
+
 final _preferenceservice = PreferenceService();
 // ValidateIssuer = false, IN .NET IDENTITYSTARTAP!!!!!!!!!!!!
 
@@ -392,6 +394,33 @@ class ApiService {
       final List<ResidentTableVM> residents =
           jsonList.map((json) => ResidentTableVM.fromJson(json)).toList();
       await _preferenceservice.saveResidentTableVM(residents);
+    }
+  }
+
+  Future<void> updateDeliveryType(InvoiceDeliveryType deliveryType) async {
+    final String? jwtToken = await _preferenceservice.loadJwtToken();
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $jwtToken',
+    };
+
+    final Uri uri = Uri.parse('$apiURL/my/receive-invoices-type-change')
+        .replace(
+            queryParameters: {'deliveryType': deliveryType.name.toString()});
+
+    final Response response = await http.put(
+      uri,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      print('Delivery type updated successfully');
+
+      await getInvoiceDataForHomepage();
+    } else {
+      print('Request failed with status: ${response.statusCode}');
     }
   }
 }
