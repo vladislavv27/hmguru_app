@@ -8,7 +8,7 @@ import 'package:hmguru/l10n/global_localizations.dart';
 class PaymentDetailView extends StatefulWidget {
   final String paymentId;
 
-  PaymentDetailView({required this.paymentId});
+  const PaymentDetailView({super.key, required this.paymentId});
 
   @override
   _PaymentDetailViewState createState() => _PaymentDetailViewState();
@@ -41,7 +41,7 @@ class _PaymentDetailViewState extends State<PaymentDetailView> {
         backgroundColor: AppColors.primaryColor,
       ),
       body: _isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : _buildPaymentDetail(),
@@ -50,7 +50,7 @@ class _PaymentDetailViewState extends State<PaymentDetailView> {
 
   Widget _buildPaymentDetail() {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -126,7 +126,7 @@ class _PaymentDetailViewState extends State<PaymentDetailView> {
       children: [
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.textGrayColor,
             fontSize: 12,
@@ -134,9 +134,9 @@ class _PaymentDetailViewState extends State<PaymentDetailView> {
         ),
         Text(
           value,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
       ],
     );
   }

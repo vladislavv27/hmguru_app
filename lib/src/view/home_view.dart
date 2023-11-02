@@ -8,6 +8,8 @@ import 'package:hmguru/src/view/menu/side_menu.dart';
 import 'package:hmguru/l10n/global_localizations.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -51,9 +53,9 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(AppLocalizations.of(context)!.myApartment),
       ),
-      drawer: SideMenu(),
+      drawer: const SideMenu(),
       body: _controller.isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : _buildContent(),
@@ -73,9 +75,9 @@ class _HomePageState extends State<HomePage> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _buildApartmentImage(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _buildApartmentInfo(),
           ],
         ),
@@ -93,7 +95,7 @@ class _HomePageState extends State<HomePage> {
             width: 120,
           );
         } else {
-          return SizedBox();
+          return const SizedBox();
         }
       },
     );
@@ -101,7 +103,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildApartmentInfo() {
     return Container(
-      padding: EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
           Text(
@@ -110,25 +112,25 @@ class _HomePageState extends State<HomePage> {
                 : AppLocalizations.of(context)!.dataNotFound,
             style: TextStyle(
               color: _controller.leaseholdData != null
-                  ? Color(0xFF464646)
+                  ? const Color(0xFF464646)
                   : AppColors.accentColor,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 25),
+          const SizedBox(height: 25),
           Text(
             _controller.invoiceInfoData != null
                 ? AppLocalizations.of(context)!.lastInvoice
                 : '',
-            style: TextStyle(
+            style: const TextStyle(
                 color: Color(0xFF464646),
                 fontSize: 22,
                 fontWeight: FontWeight.bold),
           ),
           Text(
             _controller.invoiceInfoData != null
-                ? '${_controller.getPreviousMonthDate()}'
+                ? _controller.getPreviousMonthDate()
                 : '',
             style: TextStyle(
               color: _controller.leaseholdData != null
@@ -141,7 +143,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Text(
             _controller.invoiceInfoData != null
-                ? '${_controller.invoiceInfoData!.invoiceUID}'
+                ? _controller.invoiceInfoData!.invoiceUID
                 : AppLocalizations.of(context)!.noInvoiceData,
             style: TextStyle(
               color: _controller.leaseholdData != null
@@ -168,15 +170,15 @@ class _HomePageState extends State<HomePage> {
           if (_controller.leaseholdData!.balance.isNegative)
             Column(
               children: [
-                SizedBox(height: 30),
-                Icon(
+                const SizedBox(height: 30),
+                const Icon(
                   Icons.local_fire_department,
                   color: AppColors.accentColor,
                   size: 48,
                 ),
                 Text(
                   '${AppLocalizations.of(context)!.youAreDebtor} ${_controller.leaseholdData!.balance}',
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: AppColors.accentColor,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),

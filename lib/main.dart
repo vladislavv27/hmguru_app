@@ -4,10 +4,12 @@ import 'package:hmguru/src/controllers/material_app_with_locale.dart';
 
 void main() async {
   await dotenv.load();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   _MyAppState createState() => _MyAppState();
 
@@ -18,7 +20,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale _appLocale = Locale('en');
+  Locale _appLocale = const Locale('en');
 
   void setLocale(Locale newLocale) {
     setState(() {

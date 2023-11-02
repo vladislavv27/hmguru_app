@@ -10,6 +10,8 @@ import 'invoice_details_view.dart';
 import 'menu/bottom_navigation.dart';
 
 class InvoiceListPage extends StatefulWidget {
+  const InvoiceListPage({super.key});
+
   @override
   _InvoiceListPageState createState() => _InvoiceListPageState();
 }
@@ -41,9 +43,9 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
         title: Text(AppLocalizations.of(context)!.invoiceListTitle),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      drawer: SideMenu(),
+      drawer: const SideMenu(),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : _buildInvoiceListView(),
       bottomNavigationBar: MyBottomNavigationMenu(
         currentIndex: _currentIndex,
@@ -104,13 +106,13 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
   Widget _buildCenterText(String text) {
     return Expanded(
       child: Center(
-        child: Text(text, style: TextStyle(fontSize: 18)),
+        child: Text(text, style: const TextStyle(fontSize: 18)),
       ),
     );
   }
 
   Widget _buildText(String text) {
-    return Text(text, style: TextStyle(fontSize: 18));
+    return Text(text, style: const TextStyle(fontSize: 18));
   }
 
   Widget _buildInfoButton(String id) => _buildTextButton(id, Icons.info,
@@ -140,11 +142,11 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
 
     if (downloaded != null && downloaded.isNotEmpty) {
       final message = 'File $downloaded successfully downloaded';
-      final color = AppColors.successColor;
+      const color = AppColors.successColor;
 
       _showSnackBar(message, color);
 
-      final directory = "/storage/emulated/0/Download"; //change !
+      const directory = "/storage/emulated/0/Download"; //change !
       final filePath = '$directory/$downloaded';
       final result = await OpenFile.open(filePath);
 
@@ -155,7 +157,7 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
       }
     } else {
       final message = AppLocalizations.of(context)!.downloadError;
-      final color = AppColors.accentColor;
+      const color = AppColors.accentColor;
 
       _showSnackBar(message, color);
     }
@@ -167,9 +169,9 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
         content: Text(
           message,
           textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
         backgroundColor: color,
       ),
     );

@@ -14,12 +14,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenceService {
   Future<void> saveJwtToken(String jwtToken) async {
-    final secureStorage = FlutterSecureStorage();
+    const secureStorage = FlutterSecureStorage();
     await secureStorage.write(key: 'jwtToken', value: jwtToken);
   }
 
   Future<String?> loadJwtToken() async {
-    final secureStorage = FlutterSecureStorage();
+    const secureStorage = FlutterSecureStorage();
     String? jwtToken = await secureStorage.read(key: 'jwtToken');
     return jwtToken;
   }
@@ -59,7 +59,7 @@ class PreferenceService {
 
   Future<void> clearAllPreferences() async {
     final prefs = await SharedPreferences.getInstance();
-    final secureStorage = FlutterSecureStorage();
+    const secureStorage = FlutterSecureStorage();
     await secureStorage.delete(key: 'jwtToken');
     // await secureStorage.deleteAll();
     await prefs.clear();
@@ -156,7 +156,6 @@ class PreferenceService {
       final List<dynamic> jsonData = json.decode(jsonString);
       final metersData =
           jsonData.map((item) => MetersVM.fromJson(item)).toList();
-      metersData.forEach((element) {});
       return metersData;
     } else {
       return [];

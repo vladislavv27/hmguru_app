@@ -5,6 +5,8 @@ import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/residents_vm.dart';
 
 class ResidentsView extends StatefulWidget {
+  const ResidentsView({super.key});
+
   @override
   _ResidentsViewState createState() => _ResidentsViewState();
 }
@@ -42,23 +44,23 @@ class _ResidentsViewState extends State<ResidentsView> {
         backgroundColor: AppColors.primaryColor,
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : _buildResidentsListView(labels),
     );
   }
 
   Widget _buildResidentsListView(AppLocalizations labels) {
-    final labelStyle = TextStyle(
+    const labelStyle = TextStyle(
       color: AppColors.textGrayColor,
       fontSize: 16,
       fontWeight: FontWeight.bold,
     );
 
-    final valueStyle = TextStyle(
+    const valueStyle = TextStyle(
       color: Colors.black,
       fontSize: 18,
     );
-    final ownerStyle = TextStyle(
+    const ownerStyle = TextStyle(
       color: AppColors.accentColor,
       fontSize: 20,
     );

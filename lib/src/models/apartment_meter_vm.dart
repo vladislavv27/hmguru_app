@@ -70,6 +70,7 @@ class ApartmentMeterVM extends MeterReadingValueVM {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       ...super.toJson(), // Include properties from the base class

@@ -6,7 +6,7 @@ import 'package:hmguru/src/models/invoice_details_vm.dart';
 class InvoiceDetailPage extends StatefulWidget {
   final List<InvoiceDetailVM> data;
 
-  InvoiceDetailPage({required this.data});
+  const InvoiceDetailPage({super.key, required this.data});
 
   @override
   _InvoiceDetailPageState createState() => _InvoiceDetailPageState();
@@ -49,7 +49,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
       padding: const EdgeInsets.all(8.0),
       child: Text(
         text,
-        style: TextStyle(
+        style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: AppColors.primaryColor),
@@ -60,7 +60,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
   Widget _buildInvoiceList() {
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: widget.data.length,
       itemBuilder: (context, index) {
         final rowData = widget.data[index];
@@ -109,7 +109,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
       alignment: Alignment.centerLeft,
       child: Text(
         text,
-        style: TextStyle(fontSize: 18),
+        style: const TextStyle(fontSize: 18),
       ),
     );
   }

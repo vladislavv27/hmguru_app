@@ -8,6 +8,8 @@ import 'package:hmguru/src/services/preference_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SideMenu extends StatefulWidget {
+  const SideMenu({super.key});
+
   @override
   _SideMenuState createState() => _SideMenuState();
 }
@@ -63,15 +65,15 @@ class _SideMenuState extends State<SideMenu> {
                 color: AppColors.primaryColor,
               ),
             ),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.primaryColor,
             ),
           ),
           ListTile(
-            leading: Icon(Icons.apartment),
+            leading: const Icon(Icons.apartment),
             title: Text(
               AppLocalizations.of(context)!.myApartment,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
               ),
             ),
@@ -82,10 +84,10 @@ class _SideMenuState extends State<SideMenu> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.payment),
+            leading: const Icon(Icons.payment),
             title: Text(
               AppLocalizations.of(context)!.payments,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
               ),
             ),
@@ -93,32 +95,32 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => PaymentListView(),
+                  builder: (context) => const PaymentListView(),
                 ),
               );
             },
           ),
           ListTile(
-            leading: Icon(Icons.people),
+            leading: const Icon(Icons.people),
             title: Text(
               AppLocalizations.of(context)!.residents,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
               ),
             ),
             onTap: () async {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => ResidentsView(),
+                  builder: (context) => const ResidentsView(),
                 ),
               );
             },
           ),
           ListTile(
-            leading: Icon(Icons.logout),
+            leading: const Icon(Icons.logout),
             title: Text(
               AppLocalizations.of(context)!.logout,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
               ),
             ),
@@ -137,7 +139,7 @@ class _SideMenuState extends State<SideMenu> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
-        builder: (BuildContext context) => LoginView(),
+        builder: (BuildContext context) => const LoginView(),
       ),
       (Route<dynamic> route) => false,
     );
@@ -159,7 +161,7 @@ class _SideMenuState extends State<SideMenu> {
             '${AppLocalizations.of(context)!.balconyArea}: ${leaseholdData.balconyArea.toStringAsFixed(2)}\n'
             '${AppLocalizations.of(context)!.billDeliveryType}: ${leaseholdData.billDeliveryType.name}\n'
             '${AppLocalizations.of(context)!.accessCode}: ${leaseholdData.accessCode}',
-            style: TextStyle(
+            style: const TextStyle(
               color: Color(0xFF464646),
               fontSize: 20,
               fontWeight: FontWeight.normal,

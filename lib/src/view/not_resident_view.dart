@@ -7,6 +7,8 @@ import 'package:hmguru/src/services/preference_service.dart';
 class NotResidentView extends StatelessWidget {
   final _prefservice = PreferenceService();
 
+  NotResidentView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,20 +22,20 @@ class NotResidentView extends StatelessWidget {
           children: [
             Text(
               AppLocalizations.of(context)!.notResidentMessage,
-              style: TextStyle(
+              style: const TextStyle(
                   fontSize: 18,
                   color: AppColors.accentColor,
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 _handleLogout(context);
               },
-              child: Text(AppLocalizations.of(context)!.logoutButton),
               style: ElevatedButton.styleFrom(
-                primary: AppColors.primaryColor,
+                backgroundColor: AppColors.primaryColor,
               ),
+              child: Text(AppLocalizations.of(context)!.logoutButton),
             ),
           ],
         ),
@@ -47,7 +49,7 @@ class NotResidentView extends StatelessWidget {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
-        builder: (BuildContext context) => LoginView(),
+        builder: (BuildContext context) => const LoginView(),
       ),
       (Route<dynamic> route) => false,
     );

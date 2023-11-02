@@ -66,9 +66,9 @@ class AddMeterController {
               ? AppLocalizations.of(context)!.meterReadingSavedSuccessfully
               : AppLocalizations.of(context)!.failedToSaveMeterReading,
           textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
         backgroundColor:
             saveSuccess ? AppColors.successColor : AppColors.accentColor,
       );

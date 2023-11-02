@@ -8,7 +8,7 @@ class MyBottomNavigationMenu extends StatefulWidget {
   final int currentIndex;
   final Function(int) onTap;
 
-  MyBottomNavigationMenu({required this.currentIndex, required this.onTap});
+  const MyBottomNavigationMenu({super.key, required this.currentIndex, required this.onTap});
 
   @override
   _MyBottomNavigationMenuState createState() => _MyBottomNavigationMenuState();
@@ -16,9 +16,9 @@ class MyBottomNavigationMenu extends StatefulWidget {
 
 class _MyBottomNavigationMenuState extends State<MyBottomNavigationMenu> {
   final List<Widget> pages = [
-    HomePage(),
-    MeterReadingPage(),
-    InvoiceListPage(),
+    const HomePage(),
+    const MeterReadingPage(),
+    const InvoiceListPage(),
   ];
 
   @override
@@ -26,15 +26,15 @@ class _MyBottomNavigationMenuState extends State<MyBottomNavigationMenu> {
     return BottomNavigationBar(
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.apartment),
+          icon: const Icon(Icons.apartment),
           label: AppLocalizations.of(context)!.myApartment,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.electric_meter),
+          icon: const Icon(Icons.electric_meter),
           label: AppLocalizations.of(context)!.meter,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.receipt),
+          icon: const Icon(Icons.receipt),
           label: AppLocalizations.of(context)!.invoices,
         ),
       ],

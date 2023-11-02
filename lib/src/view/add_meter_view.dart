@@ -6,6 +6,8 @@ import 'package:hmguru/src/models/app_colors.dart';
 import 'package:intl/intl.dart';
 
 class AddMeterView extends StatefulWidget {
+  const AddMeterView({super.key});
+
   @override
   _AddMeterViewState createState() => _AddMeterViewState();
 }
@@ -35,7 +37,7 @@ class _AddMeterViewState extends State<AddMeterView> {
         title: Text(AppLocalizations.of(context)!.addMeterReadings),
       ),
       body: _isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : CustomScrollView(
@@ -44,8 +46,8 @@ class _AddMeterViewState extends State<AddMeterView> {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      '${AppLocalizations.of(context)!.meterReadingsFor} ${controller.currentPeriod != null ? DateFormat.MMMM().format(controller.currentPeriod!) + ' ' + DateFormat.y().format(controller.currentPeriod!) : ''}',
-                      style: TextStyle(
+                      '${AppLocalizations.of(context)!.meterReadingsFor} ${controller.currentPeriod != null ? '${DateFormat.MMMM().format(controller.currentPeriod!)} ${DateFormat.y().format(controller.currentPeriod!)}' : ''}',
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -65,7 +67,7 @@ class _AddMeterViewState extends State<AddMeterView> {
                               children: [
                                 Text(
                                   meter.serviceTitle,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -73,7 +75,7 @@ class _AddMeterViewState extends State<AddMeterView> {
                                 ),
                                 Text(
                                   meter.meterUID,
-                                  style: TextStyle(color: Colors.grey),
+                                  style: const TextStyle(color: Colors.grey),
                                 ),
                               ],
                             ),
@@ -81,7 +83,7 @@ class _AddMeterViewState extends State<AddMeterView> {
                               ListTile(
                                 title: Text(
                                   '${AppLocalizations.of(context)!.previously}: ${meter.prevValue}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.textGrayColor),
                                 ),
@@ -89,7 +91,7 @@ class _AddMeterViewState extends State<AddMeterView> {
                               ListTile(
                                 title: Text(
                                   AppLocalizations.of(context)!.consumption,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.textGrayColor),
                                 ),
@@ -127,14 +129,14 @@ class _AddMeterViewState extends State<AddMeterView> {
                                       FilteringTextInputFormatter.allow(
                                           RegExp(r'^\d+\.?\d{0,2}')),
                                     ],
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: AppColors.primaryColor,
                                         fontWeight: FontWeight.bold)),
                               ),
                               ListTile(
                                 title: Text(
                                   AppLocalizations.of(context)!.currently,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.textGrayColor),
                                 ),
@@ -177,7 +179,7 @@ class _AddMeterViewState extends State<AddMeterView> {
                                     FilteringTextInputFormatter.allow(
                                         RegExp(r'^\d+\.?\d{0,2}')),
                                   ],
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: AppColors.primaryColor,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -195,7 +197,7 @@ class _AddMeterViewState extends State<AddMeterView> {
                   SliverToBoxAdapter(
                     child: Center(
                       child: Text(AppLocalizations.of(context)!.noData,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: AppColors.accentColor,
                               fontSize: 20)),

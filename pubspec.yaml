@@ -49,6 +49,7 @@ dependencies:
   fl_chart: ^0.64.0
   open_file_plus: ^3.4.1
   permission_handler: ^11.0.1
+  url_launcher: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +73,7 @@ flutter:
     - assets/apartment.svg
     - assets/meter-reading.svg
     - assets/log-in.svg
+    - assets/eParaksts-logo.png
 
   uses-material-design: true
 

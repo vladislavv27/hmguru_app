@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:hmguru/l10n/global_localizations.dart';
 
 class PaymentListView extends StatefulWidget {
+  const PaymentListView({super.key});
+
   @override
   _PaymentListViewState createState() => _PaymentListViewState();
 }
@@ -38,7 +40,7 @@ class _PaymentListViewState extends State<PaymentListView> {
         backgroundColor: AppColors.primaryColor,
       ),
       body: _isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : _buildPaymentListView(),
@@ -60,20 +62,20 @@ class _PaymentListViewState extends State<PaymentListView> {
               child: ListTile(
                 title: Text(
                   '${AppLocalizations.of(context)!.period}: $formattedPeriod',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                         '${AppLocalizations.of(context)!.amount}: ${payment.amount.toStringAsFixed(2)}',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             color: AppColors.textGrayColor,
                             fontWeight: FontWeight.bold)),
                     Text(
                         "${AppLocalizations.of(context)!.submitter}: ${payment.submitter}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             color: AppColors.textGrayColor,
                             fontWeight: FontWeight.bold)),
@@ -93,7 +95,7 @@ class _PaymentListViewState extends State<PaymentListView> {
       onPressed: () {
         _openAdditionalInformationPage(id);
       },
-      icon: Icon(
+      icon: const Icon(
         Icons.info,
         color: AppColors.secondaryColor,
       ),

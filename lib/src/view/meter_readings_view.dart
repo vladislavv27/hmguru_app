@@ -11,6 +11,8 @@ import 'package:hmguru/src/view/meters_charts_view.dart';
 import 'package:intl/intl.dart';
 
 class MeterReadingPage extends StatefulWidget {
+  const MeterReadingPage({super.key});
+
   @override
   _MeterReadingPageState createState() => _MeterReadingPageState();
 }
@@ -36,13 +38,13 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideMenu(),
+      drawer: const SideMenu(),
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.meterReadingsTitle),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: _isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : _buildContent(),
@@ -77,10 +79,10 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.info, color: AppColors.accentColor),
+                      const Icon(Icons.info, color: AppColors.accentColor),
                       Text(
                         AppLocalizations.of(context)!.noMeterReadings,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.accentColor,
                           fontSize: 18,
                         ),
@@ -90,9 +92,9 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Padding(
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
               child: Center(
                 child: RichText(
                   text: TextSpan(
@@ -116,7 +118,7 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed:
                   (!meterController.invoiceInfoData!.allowAddNewMeterReadings ||
@@ -126,16 +128,16 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => AddMeterView(),
+                              builder: (context) => const AddMeterView(),
                             ),
                           );
                         },
               style: ElevatedButton.styleFrom(
-                primary: AppColors.primaryColor,
+                backgroundColor: AppColors.primaryColor,
               ),
               child: Text(AppLocalizations.of(context)!.submitMeterReadings),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 final meterChartsController = MeterChartsController();
@@ -149,7 +151,7 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                primary: AppColors.primaryColor,
+                backgroundColor: AppColors.primaryColor,
               ),
               child: Text(AppLocalizations.of(context)!.metersButton),
             ),
@@ -165,7 +167,7 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
   ) {
     return TextSpan(
       text: '${date != null ? DateFormat.MMMM().format(date) : ''} $text',
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.normal,
         color: AppColors.primaryColor,
@@ -185,7 +187,7 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
 
     return TextSpan(
       text: translatedText,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.normal,
         color: Colors.black,

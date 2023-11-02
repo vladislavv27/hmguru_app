@@ -32,7 +32,7 @@ class ApiService {
     };
 
     final response = await http.get(
-      Uri.parse(apiURL! + '/my/leasehold'),
+      Uri.parse('${apiURL!}/my/leasehold'),
       headers: headers,
     );
 
@@ -54,7 +54,7 @@ class ApiService {
     };
 
     final response = await http.get(
-      Uri.parse(apiURL! + '/my/invoice-info'),
+      Uri.parse('${apiURL!}/my/invoice-info'),
       headers: headers,
     );
 
@@ -76,7 +76,7 @@ class ApiService {
     };
 
     final response = await http.get(
-      Uri.parse(apiURL! + '/invoice/$invoiceId/details'),
+      Uri.parse('${apiURL!}/invoice/$invoiceId/details'),
       headers: headers,
     );
 
@@ -100,7 +100,7 @@ class ApiService {
     final tableQuery = TableQueryModel();
 
     final response = await http.post(
-      Uri.parse(apiURL! + '/my/invoices'),
+      Uri.parse('${apiURL!}/my/invoices'),
       headers: headers,
       body: jsonEncode(tableQuery.toJson()),
     );
@@ -125,7 +125,7 @@ class ApiService {
 
     try {
       final response = await http.get(
-        Uri.parse(apiURL! + '/invoice/$invoiceId/export'),
+        Uri.parse('${apiURL!}/invoice/$invoiceId/export'),
         headers: headers,
       );
 
@@ -133,7 +133,7 @@ class ApiService {
         final contentDisposition = response.headers['content-disposition'];
         final fileName = extractFileName(contentDisposition) ?? 'invoice.docx';
 
-        final directory = "/storage/emulated/0/Download";
+        const directory = "/storage/emulated/0/Download";
         final filePath = '$directory/$fileName';
 
         File file = File(filePath);
@@ -176,8 +176,7 @@ class ApiService {
     };
 
     final response = await http.get(
-      Uri.parse(apiURL! +
-          '/period/current${leaseholdId != null ? '?leaseholdId=' + leaseholdId : ''}'),
+      Uri.parse('${apiURL!}/period/current${leaseholdId != null ? '?leaseholdId=$leaseholdId' : ''}'),
       headers: headers,
     );
 
@@ -221,7 +220,7 @@ class ApiService {
     };
 
     final response = await http.get(
-      Uri.parse(apiURL! + '/my/readings'),
+      Uri.parse('${apiURL!}/my/readings'),
       headers: headers,
     );
 
@@ -249,7 +248,7 @@ class ApiService {
       final jsonBody = jsonEncode(readingDTO.toJson());
 
       final response = await http.post(
-        Uri.parse(apiURL! + '/meterreadings'),
+        Uri.parse('${apiURL!}/meterreadings'),
         headers: headers,
         body: jsonBody,
       );
@@ -272,7 +271,7 @@ class ApiService {
   Future<void> getMyMeters(MetersQuery tableQuery) async {
     final String? jwtToken = await _preferenceservice.loadJwtToken();
     final response = await http.post(
-      Uri.parse(apiURL! + '/my/meters'),
+      Uri.parse('${apiURL!}/my/meters'),
       headers: <String, String>{
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -301,7 +300,7 @@ class ApiService {
     };
 
     final response = await http.get(
-      Uri.parse(apiURL! + '/my/meters/periods'),
+      Uri.parse('${apiURL!}/my/meters/periods'),
       headers: headers,
     );
 
@@ -327,7 +326,7 @@ class ApiService {
     final Map<String, dynamic> requestBody = tableQuery.toJson();
 
     final response = await http.post(
-      Uri.parse(apiURL! + '/my/payments'),
+      Uri.parse('${apiURL!}/my/payments'),
       headers: headers,
       body: json.encode(requestBody),
     );
@@ -359,7 +358,7 @@ class ApiService {
     };
 
     final response = await http.get(
-      Uri.parse(apiURL! + '/payment/$id/details'),
+      Uri.parse('${apiURL!}/payment/$id/details'),
       headers: headers,
     );
 
@@ -383,7 +382,7 @@ class ApiService {
     final tableQuery = TableQueryModel();
 
     final response = await http.post(
-      Uri.parse(apiURL! + '/my/residents'),
+      Uri.parse('${apiURL!}/my/residents'),
       headers: headers,
       body: jsonEncode(tableQuery.toJson()),
     );

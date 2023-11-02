@@ -8,7 +8,7 @@ import 'package:hmguru/src/models/meters_vm.dart';
 class MeterChartsPage extends StatefulWidget {
   final MeterChartsController controller;
 
-  MeterChartsPage({required this.controller});
+  const MeterChartsPage({super.key, required this.controller});
 
   @override
   _MeterChartsPageState createState() => _MeterChartsPageState();
@@ -129,10 +129,10 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
 
     return LineChart(
       LineChartData(
-        gridData: FlGridData(show: false),
+        gridData: const FlGridData(show: false),
         titlesData: FlTitlesData(
-          leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
@@ -170,19 +170,19 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
         child: ListView(
           children: [
             Center(
-              child: Container(
+              child: SizedBox(
                 width: 220,
                 child: ElevatedButton(
                   onPressed: _showModalBottomSheet,
                   style: ElevatedButton.styleFrom(
-                    primary: AppColors.primaryColor,
+                    backgroundColor: AppColors.primaryColor,
                   ),
                   child: Text(
                     selectedYear != null
                         ? AppLocalizations.of(context)!.selectPeriodLabel +
                             (selectedYear.toString())
                         : AppLocalizations.of(context)!.selectPeriodLabelNoYear,
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
                 ),
               ),
@@ -190,7 +190,7 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
             _isDataLoaded
                 ? ListView.builder(
                     shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
+                    physics: const ClampingScrollPhysics(),
                     itemCount: widget.controller.meterDataList.length,
                     itemBuilder: (context, index) {
                       final meterData = widget.controller.meterDataList[index];
@@ -198,27 +198,27 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
 
                       if (meterData.chartData!.values.isEmpty) {
                         return Container(
-                            margin: EdgeInsets.all(16),
+                            margin: const EdgeInsets.all(16),
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
                                     AppLocalizations.of(context)!.noInvoiceData,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   Text(
                                     '${meterData.meterUID}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.normal,
                                     ),
                                   ),
                                   Text(
                                     AppLocalizations.of(context)!.noDataLabel,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         color: AppColors.accentColor),
@@ -227,37 +227,37 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
                       }
 
                       return Container(
-                        margin: EdgeInsets.all(16),
+                        margin: const EdgeInsets.all(16),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
                               '${meterData.title}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
                               '${meterData.meterUID}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.normal,
                                   color: AppColors.textGrayColor),
                             ),
-                            SizedBox(height: 16),
-                            Container(
+                            const SizedBox(height: 16),
+                            SizedBox(
                               width: double.infinity,
                               height: 300,
                               child: chart,
                             ),
-                            SizedBox(height: 16),
+                            const SizedBox(height: 16),
                           ],
                         ),
                       );
                     },
                   )
-                : Center(child: CircularProgressIndicator()),
+                : const Center(child: CircularProgressIndicator()),
           ],
         ),
       ),

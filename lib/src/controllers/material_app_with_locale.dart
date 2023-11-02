@@ -7,7 +7,7 @@ import 'package:hmguru/src/view/login_view.dart';
 class MaterialAppWithLocale extends StatelessWidget {
   final Locale appLocale;
 
-  MaterialAppWithLocale({required this.appLocale});
+  const MaterialAppWithLocale({super.key, required this.appLocale});
 
   @override
   Widget build(BuildContext context) {
@@ -15,17 +15,17 @@ class MaterialAppWithLocale extends StatelessWidget {
       theme: ThemeData(
         primaryColor: AppColors.primaryColor,
       ),
-      home: LoginView(),
-      localizationsDelegates: [
+      home: const LoginView(),
+      localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [
-        const Locale('en'),
-        const Locale('lv'),
-        const Locale('ru'),
+      supportedLocales: const [
+        Locale('en'),
+        Locale('lv'),
+        Locale('ru'),
       ],
       locale: appLocale,
     );
