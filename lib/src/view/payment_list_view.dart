@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hmguru/src/controllers/payment_list_controller.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/payments_vm.dart';
-import 'package:hmguru/src/pages/payment_details_view.dart';
+import 'package:hmguru/src/view/payment_details_view.dart';
 import 'package:intl/intl.dart';
 import 'package:hmguru/l10n/global_localizations.dart';
 

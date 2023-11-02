@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hmguru/src/pages/invoice_details_view.dart';
+import 'package:hmguru/src/view/invoice_details_view.dart';
 import 'package:intl/intl.dart';
 import 'package:hmguru/src/models/Invoice_Info_vm.dart';
 import 'package:hmguru/src/models/my_leasehold_vm.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hmguru/l10n/global_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hmguru/src/models/app_colors.dart';
-import 'package:hmguru/src/pages/login_view.dart';
+import 'package:hmguru/src/view/login_view.dart';
 
 class MaterialAppWithLocale extends StatelessWidget {
   final Locale appLocale;

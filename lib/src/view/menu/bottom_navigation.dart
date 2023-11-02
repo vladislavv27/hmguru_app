@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hmguru/l10n/global_localizations.dart';
-import 'package:hmguru/src/pages/home_view.dart';
-import 'package:hmguru/src/pages/invoice_list_view.dart';
-import 'package:hmguru/src/pages/meter_readings_view.dart';
+import 'package:hmguru/src/view/home_view.dart';
+import 'package:hmguru/src/view/invoice_list_view.dart';
+import 'package:hmguru/src/view/meter_readings_view.dart';
 
 class MyBottomNavigationMenu extends StatefulWidget {
   final int currentIndex;

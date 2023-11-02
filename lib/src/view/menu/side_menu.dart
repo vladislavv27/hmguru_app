@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/my_leasehold_vm.dart';
-import 'package:hmguru/src/pages/login_view.dart';
-import 'package:hmguru/src/pages/payment_list_view.dart';
-import 'package:hmguru/src/pages/residents_view.dart';
+import 'package:hmguru/src/view/login_view.dart';
+import 'package:hmguru/src/view/payment_list_view.dart';
+import 'package:hmguru/src/view/residents_view.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

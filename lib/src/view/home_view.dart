@@ -3,8 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hmguru/src/controllers/home_controller.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/my_leasehold_vm.dart';
-import 'package:hmguru/src/pages/menu/bottom_navigation.dart';
-import 'package:hmguru/src/pages/menu/side_menu.dart';
+import 'package:hmguru/src/view/menu/bottom_navigation.dart';
+import 'package:hmguru/src/view/menu/side_menu.dart';
 import 'package:hmguru/l10n/global_localizations.dart';
 
 class HomePage extends StatefulWidget {
@@ -64,6 +64,21 @@ class _HomePageState extends State<HomePage> {
             _currentIndex = index;
           });
         },
+      ),
+    );
+  }
+
+  Widget _buildContent() {
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            _buildApartmentImage(),
+            SizedBox(height: 20),
+            _buildApartmentInfo(),
+          ],
+        ),
       ),
     );
   }
@@ -173,7 +188,7 @@ class _HomePageState extends State<HomePage> {
               _controller.openAdditionalInformationPage(context, setState);
             },
             style: ElevatedButton.styleFrom(
-              primary: AppColors.primaryColor,
+              backgroundColor: AppColors.primaryColor,
             ),
             child: Text(AppLocalizations.of(context)!.readMore),
           ),
@@ -246,21 +261,6 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildContent() {
-    return Center(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 20),
-            _buildApartmentImage(),
-            SizedBox(height: 20),
-            _buildApartmentInfo(),
-          ],
-        ),
       ),
     );
   }

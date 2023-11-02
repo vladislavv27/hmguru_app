@@ -3,7 +3,7 @@ import 'package:hmguru/l10n/global_localizations.dart';
 import 'package:hmguru/src/controllers/invoice_list_controller.dart';
 import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/invoice_list.dart';
-import 'package:hmguru/src/pages/menu/side_menu.dart';
+import 'package:hmguru/src/view/menu/side_menu.dart';
 import 'package:intl/intl.dart';
 import 'package:open_file_plus/open_file_plus.dart';
 import 'invoice_details_view.dart';

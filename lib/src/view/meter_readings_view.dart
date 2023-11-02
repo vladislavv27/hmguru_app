@@ -4,10 +4,10 @@ import 'package:hmguru/l10n/global_localizations.dart';
 import 'package:hmguru/src/controllers/meter_charts_controller.dart';
 import 'package:hmguru/src/controllers/meter_readings_controller.dart';
 import 'package:hmguru/src/models/app_colors.dart';
-import 'package:hmguru/src/pages/add_meter_view.dart';
-import 'package:hmguru/src/pages/menu/bottom_navigation.dart';
-import 'package:hmguru/src/pages/menu/side_menu.dart';
-import 'package:hmguru/src/pages/meters_charts_view.dart';
+import 'package:hmguru/src/view/add_meter_view.dart';
+import 'package:hmguru/src/view/menu/bottom_navigation.dart';
+import 'package:hmguru/src/view/menu/side_menu.dart';
+import 'package:hmguru/src/view/meters_charts_view.dart';
 import 'package:intl/intl.dart';
 
 class MeterReadingPage extends StatefulWidget {
