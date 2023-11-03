@@ -24,9 +24,11 @@ class _AddMeterViewState extends State<AddMeterView> {
 
   Future<void> _loadData() async {
     await controller.initializeData();
-    setState(() {
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override

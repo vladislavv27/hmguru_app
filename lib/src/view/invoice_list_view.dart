@@ -30,10 +30,12 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
 
   Future<void> _loadInvoiceList() async {
     final updatedInvoices = await _controller.loadInvoiceList();
-    setState(() {
-      invoiceList = updatedInvoices;
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        invoiceList = updatedInvoices;
+        _isLoading = false;
+      });
+    }
   }
 
   @override

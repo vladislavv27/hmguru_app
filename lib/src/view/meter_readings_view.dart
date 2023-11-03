@@ -30,9 +30,11 @@ class _MeterReadingPageState extends State<MeterReadingPage> {
 
   Future<void> _loadData() async {
     await meterController.initializeData();
-    setState(() {
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override

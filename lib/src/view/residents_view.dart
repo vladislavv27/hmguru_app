@@ -24,14 +24,16 @@ class _ResidentsViewState extends State<ResidentsView> {
 
   Future<void> _loadResidentData() async {
     final residents = await _controller.loadResidentList();
-    setState(() {
-      if (residents != null) {
-        _residentList = residents;
-        _isLoading = false;
-      } else {
-        _isLoading = false;
-      }
-    });
+    if (mounted) {
+      setState(() {
+        if (residents != null) {
+          _residentList = residents;
+          _isLoading = false;
+        } else {
+          _isLoading = false;
+        }
+      });
+    }
   }
 
   @override

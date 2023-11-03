@@ -27,10 +27,12 @@ class _PaymentDetailViewState extends State<PaymentDetailView> {
 
   Future<void> _loadPaymentDetail() async {
     final paymentDetail = await _controller.loadPaymentDetail(widget.paymentId);
-    setState(() {
-      _paymentDetail = paymentDetail;
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _paymentDetail = paymentDetail;
+        _isLoading = false;
+      });
+    }
   }
 
   @override

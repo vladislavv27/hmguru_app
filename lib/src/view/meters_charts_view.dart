@@ -25,9 +25,11 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
 
   Future<void> _loadData() async {
     await widget.controller.initializeData();
-    setState(() {
-      _isDataLoaded = true;
-    });
+    if (mounted) {
+      setState(() {
+        _isDataLoaded = true;
+      });
+    }
   }
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
@@ -131,8 +133,10 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
       LineChartData(
         gridData: const FlGridData(show: false),
         titlesData: FlTitlesData(
-          leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          leftTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,

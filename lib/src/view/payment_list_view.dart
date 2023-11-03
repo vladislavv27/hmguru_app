@@ -26,10 +26,12 @@ class _PaymentListViewState extends State<PaymentListView> {
 
   Future<void> _loadPaymentData() async {
     final paymentData = await _controller.loadPaymentList();
-    setState(() {
-      _paymentList = paymentData!;
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _paymentList = paymentData!;
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -62,7 +64,8 @@ class _PaymentListViewState extends State<PaymentListView> {
               child: ListTile(
                 title: Text(
                   '${AppLocalizations.of(context)!.period}: $formattedPeriod',
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

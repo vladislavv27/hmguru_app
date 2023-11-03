@@ -199,26 +199,28 @@ class _HomePageState extends State<HomePage> {
               Checkbox(
                 value: receiveEmailInvoices,
                 onChanged: (value) {
-                  setState(() {
-                    if (value!) {
-                      if (receivePrintedInvoices) {
-                        _controller
-                            .updateDeliveryType(InvoiceDeliveryType.Both);
+                  if (mounted) {
+                    setState(() {
+                      if (value!) {
+                        if (receivePrintedInvoices) {
+                          _controller
+                              .updateDeliveryType(InvoiceDeliveryType.Both);
+                        } else {
+                          _controller
+                              .updateDeliveryType(InvoiceDeliveryType.Email);
+                        }
                       } else {
-                        _controller
-                            .updateDeliveryType(InvoiceDeliveryType.Email);
+                        if (!receivePrintedInvoices) {
+                          _controller
+                              .updateDeliveryType(InvoiceDeliveryType.Email);
+                        } else {
+                          _controller
+                              .updateDeliveryType(InvoiceDeliveryType.Email);
+                        }
                       }
-                    } else {
-                      if (!receivePrintedInvoices) {
-                        _controller
-                            .updateDeliveryType(InvoiceDeliveryType.Email);
-                      } else {
-                        _controller
-                            .updateDeliveryType(InvoiceDeliveryType.Email);
-                      }
-                    }
-                    receiveEmailInvoices = value;
-                  });
+                      receiveEmailInvoices = value;
+                    });
+                  }
                 },
               ),
               Flexible(
@@ -233,26 +235,28 @@ class _HomePageState extends State<HomePage> {
               Checkbox(
                 value: receivePrintedInvoices,
                 onChanged: (value) {
-                  setState(() {
-                    if (!value!) {
-                      if (receiveEmailInvoices) {
-                        _controller
-                            .updateDeliveryType(InvoiceDeliveryType.Both);
+                  if (mounted) {
+                    setState(() {
+                      if (!value!) {
+                        if (receiveEmailInvoices) {
+                          _controller
+                              .updateDeliveryType(InvoiceDeliveryType.Both);
+                        } else {
+                          _controller
+                              .updateDeliveryType(InvoiceDeliveryType.Post);
+                        }
                       } else {
-                        _controller
-                            .updateDeliveryType(InvoiceDeliveryType.Post);
+                        if (receiveEmailInvoices) {
+                          _controller
+                              .updateDeliveryType(InvoiceDeliveryType.Post);
+                        } else {
+                          _controller
+                              .updateDeliveryType(InvoiceDeliveryType.Post);
+                        }
                       }
-                    } else {
-                      if (receiveEmailInvoices) {
-                        _controller
-                            .updateDeliveryType(InvoiceDeliveryType.Post);
-                      } else {
-                        _controller
-                            .updateDeliveryType(InvoiceDeliveryType.Post);
-                      }
-                    }
-                    receivePrintedInvoices = value;
-                  });
+                      receivePrintedInvoices = value;
+                    });
+                  }
                 },
               ),
               Flexible(
