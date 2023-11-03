@@ -75,7 +75,6 @@ class _HomePageState extends State<HomePage> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 20),
             _buildApartmentImage(),
             const SizedBox(height: 20),
             _buildApartmentInfo(),
@@ -226,6 +225,10 @@ class _HomePageState extends State<HomePage> {
               Flexible(
                 child: Text(
                   AppLocalizations.of(context)!.emailInvoice,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textGrayColor),
                 ),
               ),
             ],
@@ -260,9 +263,11 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               Flexible(
-                child: Text(
-                  AppLocalizations.of(context)!.printedInvoice,
-                ),
+                child: Text(AppLocalizations.of(context)!.printedInvoice,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textGrayColor)),
               ),
             ],
           ),

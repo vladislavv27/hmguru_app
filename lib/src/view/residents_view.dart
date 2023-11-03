@@ -67,9 +67,6 @@ class _ResidentsViewState extends State<ResidentsView> {
       fontSize: 20,
     );
 
-    String ownerTranslation = labels.owner;
-    String residentTranslation = labels.resident;
-
     return ListView.builder(
       itemCount: _residentList.length,
       itemBuilder: (context, index) {
@@ -129,9 +126,7 @@ class _ResidentsViewState extends State<ResidentsView> {
                       style: labelStyle,
                     ),
                     TextSpan(
-                      text: resident.isOwner
-                          ? ownerTranslation
-                          : residentTranslation,
+                      text: resident.isOwner ? labels.owner : labels.resident,
                       style: ownerStyle,
                     ),
                   ],

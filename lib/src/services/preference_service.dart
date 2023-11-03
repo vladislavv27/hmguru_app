@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hmguru/src/models/apartment_meter_vm.dart';
 import 'package:hmguru/src/models/Invoice_Info_vm.dart';
@@ -13,13 +12,13 @@ import 'package:hmguru/src/models/invoice_details_vm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenceService {
+  final secureStorage = FlutterSecureStorage();
+
   Future<void> saveJwtToken(String jwtToken) async {
-    const secureStorage = FlutterSecureStorage();
     await secureStorage.write(key: 'jwtToken', value: jwtToken);
   }
 
   Future<String?> loadJwtToken() async {
-    const secureStorage = FlutterSecureStorage();
     String? jwtToken = await secureStorage.read(key: 'jwtToken');
     return jwtToken;
   }
@@ -59,7 +58,6 @@ class PreferenceService {
 
   Future<void> clearAllPreferences() async {
     final prefs = await SharedPreferences.getInstance();
-    const secureStorage = FlutterSecureStorage();
     await secureStorage.delete(key: 'jwtToken');
     // await secureStorage.deleteAll();
     await prefs.clear();
@@ -135,11 +133,6 @@ class PreferenceService {
       return data;
     }
     return null;
-  }
-
-  Future<void> clearInvoiceList() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('invoiceList');
   }
 
   Future<void> saveMetersData(List<MetersVM> metersDataList) async {
