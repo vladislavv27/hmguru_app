@@ -6,6 +6,7 @@ import 'package:hmguru/src/models/invoice_list.dart';
 import 'package:hmguru/src/models/meters_vm.dart';
 import 'package:hmguru/src/models/my_leasehold_vm.dart';
 import 'package:hmguru/src/models/payments_vm.dart';
+import 'package:hmguru/src/models/provided_service_vm.dart';
 import 'package:hmguru/src/models/residents_vm.dart';
 import 'package:hmguru/src/models/user_profile.dart';
 import 'package:hmguru/src/models/invoice_details_vm.dart';
@@ -233,5 +234,28 @@ class PreferenceService {
       residents.add(ResidentTableVM.fromJson(json));
     }
     return residents;
+  }
+
+  Future<void> saveProvidedService(List<ProvidedServiceSimpleVM> list) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonList = list.map((item) => item.toJson()).toList();
+    final encodedList = json.encode(jsonList);
+    await prefs.setString('providedServiceSimpleVMList', encodedList);
+  }
+
+  Future<List<ProvidedServiceSimpleVM>> loadProvidedService() async {
+    final prefs = await SharedPreferences.getInstance();
+    final encodedList = prefs.getString('providedServiceSimpleVMList');
+
+    if (encodedList != null) {
+      final List<dynamic> decodedList = jsonDecode(encodedList);
+      List<ProvidedServiceSimpleVM> providedservicelist = decodedList
+          .map((json) =>
+              ProvidedServiceSimpleVM.fromJson(json as Map<String, dynamic>))
+          .toList();
+      return providedservicelist;
+    } else {
+      return <ProvidedServiceSimpleVM>[];
+    }
   }
 }

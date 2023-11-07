@@ -42,6 +42,42 @@ class MetersQuery {
   }
 }
 
+class RateQueryModel {
+  int? page;
+  int pageSize;
+  String? sortColumn;
+  String filter;
+  String sortDirection;
+  bool getAll;
+  String LeaseholdId;
+  String HouseId;
+  RateQueryModel({
+    this.page = 0,
+    this.pageSize = 20,
+    this.sortColumn = 'title',
+    this.filter = '',
+    this.sortDirection = 'asc',
+    this.getAll = true,
+    this.LeaseholdId = '',
+    this.HouseId = '00000000-0000-0000-0000-000000000000',
+  });
+
+  bool get getAllItems => getAll && page == null && pageSize == 0;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'page': page,
+      'pageSize': pageSize,
+      'sortColumn': sortColumn,
+      'filter': filter,
+      'sortDirection': sortDirection,
+      'getAll': getAll,
+      'LeaseholdId': LeaseholdId,
+      'HouseId': HouseId,
+    };
+  }
+}
+
 class TableQueryModel {
   int? page;
   int pageSize;

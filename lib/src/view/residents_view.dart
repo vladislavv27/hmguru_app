@@ -26,12 +26,8 @@ class _ResidentsViewState extends State<ResidentsView> {
     final residents = await _controller.loadResidentList();
     if (mounted) {
       setState(() {
-        if (residents != null) {
-          _residentList = residents;
-          _isLoading = false;
-        } else {
-          _isLoading = false;
-        }
+        _residentList = residents!;
+        _isLoading = false;
       });
     }
   }

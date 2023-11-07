@@ -106,5 +106,15 @@
   "resident": "Resident",
   "printedInvoice": "The invoice will be sent in printed form to the mailbox",
   "emailInvoice": "An invoice will be sent to this user's email",
-"successfullyChangedInvoiceReceiving": "Successfully changed invoice receiving"
+  "successfullyChangedInvoiceReceiving": "Successfully changed invoice receiving",
+  "authenticateWith": "Authenticate with",
+  "billDeliveryTypeEmail": "Email Delivery",
+  "billDeliveryTypePost": "Mail Delivery",
+  "billDeliveryTypeBoth": "Both",
+  "providedservices": "Provided services",
+  "fee": "Fee:",
+  "formula": "Formula: ",
+  "penalty": "Penalty:",
+  "coefficient": "Quotient:",
+  "taxesFromFee": "VAT:"
 }

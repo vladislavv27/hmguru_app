@@ -1,5 +1,5 @@
 import 'package:hmguru/src/models/meters_vm.dart';
-import 'package:hmguru/src/models/table_querus_vm.dart';
+import 'package:hmguru/src/models/table_querys_vm.dart';
 import 'package:hmguru/src/services/api_service.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';

@@ -17,6 +17,20 @@ class MeterChartsPage extends StatefulWidget {
 class _MeterChartsPageState extends State<MeterChartsPage> {
   bool _isDataLoaded = false;
   int? selectedYear;
+  final monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ];
   @override
   void initState() {
     super.initState();
@@ -37,48 +51,10 @@ class _MeterChartsPageState extends State<MeterChartsPage> {
       fontWeight: FontWeight.normal,
       fontSize: 12,
     );
-    Widget text;
-    switch (value.toInt()) {
-      case 0:
-        text = const Text('Jan', style: style);
-        break;
-      case 1:
-        text = const Text('Feb', style: style);
-        break;
-      case 2:
-        text = const Text('Mar', style: style);
-        break;
-      case 3:
-        text = const Text('Apr', style: style);
-        break;
-      case 4:
-        text = const Text('May', style: style);
-        break;
-      case 5:
-        text = const Text('Jun', style: style);
-        break;
-      case 6:
-        text = const Text('Jul', style: style);
-        break;
-      case 7:
-        text = const Text('Aug', style: style);
-        break;
-      case 8:
-        text = const Text('Sep', style: style);
-        break;
-      case 9:
-        text = const Text('Oct', style: style);
-        break;
-      case 10:
-        text = const Text('Nov', style: style);
-        break;
-      case 11:
-        text = const Text('Dec', style: style);
-        break;
-      default:
-        text = const Text('', style: style);
-        break;
-    }
+
+    final text = value.toInt() >= 0 && value.toInt() < monthNames.length
+        ? Text(monthNames[value.toInt()], style: style)
+        : Text('', style: style);
 
     return SideTitleWidget(
       axisSide: meta.axisSide,

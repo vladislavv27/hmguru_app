@@ -8,8 +8,9 @@ import 'package:hmguru/src/models/my_leasehold_vm.dart';
 import 'package:hmguru/src/models/invoice_details_vm.dart';
 import 'package:hmguru/src/models/invoice_list.dart';
 import 'package:hmguru/src/models/payments_vm.dart';
+import 'package:hmguru/src/models/provided_service_vm.dart';
 import 'package:hmguru/src/models/residents_vm.dart';
-import 'package:hmguru/src/models/table_querus_vm.dart';
+import 'package:hmguru/src/models/table_querys_vm.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -176,7 +177,8 @@ class ApiService {
     };
 
     final response = await http.get(
-      Uri.parse('${apiURL!}/period/current${leaseholdId != null ? '?leaseholdId=$leaseholdId' : ''}'),
+      Uri.parse(
+          '${apiURL!}/period/current${leaseholdId != null ? '?leaseholdId=$leaseholdId' : ''}'),
       headers: headers,
     );
 
@@ -420,6 +422,36 @@ class ApiService {
       await getInvoiceDataForHomepage();
     } else {
       print('Request failed with status: ${response.statusCode}');
+    }
+  }
+
+  Future<void> getProvidedServices(String LeaseholdId) async {
+    final String? jwtToken = await _preferenceservice.loadJwtToken();
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $jwtToken',
+    };
+    final tableQuery = RateQueryModel();
+    tableQuery.LeaseholdId = LeaseholdId;
+    final Map<String, dynamic> requestBody = tableQuery.toJson();
+
+    final response = await http.post(
+      Uri.parse('${apiURL!}/my/rates'),
+      headers: headers,
+      body: json.encode(requestBody),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      print(response.body);
+      final List<ProvidedServiceSimpleVM> providedServices = [];
+
+      final List<dynamic> jsonResponse = json.decode(response.body)['list'];
+
+      providedServices.addAll(
+          jsonResponse.map((item) => ProvidedServiceSimpleVM.fromJson(item)));
+
+      await _preferenceservice.saveProvidedService(providedServices);
     }
   }
 }

@@ -3,6 +3,7 @@ import 'package:hmguru/src/models/app_colors.dart';
 import 'package:hmguru/src/models/my_leasehold_vm.dart';
 import 'package:hmguru/src/view/login_view.dart';
 import 'package:hmguru/src/view/payment_list_view.dart';
+import 'package:hmguru/src/view/provided_Services_view.dart';
 import 'package:hmguru/src/view/residents_view.dart';
 import 'package:hmguru/src/services/preference_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -19,6 +20,7 @@ class _SideMenuState extends State<SideMenu> {
   MyLeaseholdVM? leaseholdData;
   String userName = '';
   String userMail = '';
+  String userId = '';
   @override
   void initState() {
     super.initState();
@@ -27,6 +29,7 @@ class _SideMenuState extends State<SideMenu> {
       setState(() {
         userName = userProfile.fullName;
         userMail = userProfile.name;
+        userId = userProfile.userId;
       });
     });
   }
@@ -117,6 +120,22 @@ class _SideMenuState extends State<SideMenu> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.construction),
+            title: Text(
+              AppLocalizations.of(context)!.providedservices,
+              style: const TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ProvidedServiceListView(userId: userId),
+                ),
+              );
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.logout),
             title: Text(
               AppLocalizations.of(context)!.logout,
@@ -159,7 +178,7 @@ class _SideMenuState extends State<SideMenu> {
             '${AppLocalizations.of(context)!.residentCount}: ${leaseholdData.residentCount}\n'
             '${AppLocalizations.of(context)!.area}: ${leaseholdData.fullArea.toStringAsFixed(2)}\n'
             '${AppLocalizations.of(context)!.balconyArea}: ${leaseholdData.balconyArea.toStringAsFixed(2)}\n'
-            '${AppLocalizations.of(context)!.billDeliveryType}: ${leaseholdData.billDeliveryType.name}\n'
+            '${AppLocalizations.of(context)!.billDeliveryType}: ${_getBillDeliveryTypeTranslation(leaseholdData.billDeliveryType)}\n'
             '${AppLocalizations.of(context)!.accessCode}: ${leaseholdData.accessCode}',
             style: const TextStyle(
               color: Color(0xFF464646),
@@ -178,5 +197,18 @@ class _SideMenuState extends State<SideMenu> {
         );
       },
     );
+  }
+
+  String _getBillDeliveryTypeTranslation(InvoiceDeliveryType deliveryType) {
+    switch (deliveryType) {
+      case InvoiceDeliveryType.Email:
+        return AppLocalizations.of(context)!.billDeliveryTypeEmail;
+      case InvoiceDeliveryType.Post:
+        return AppLocalizations.of(context)!.billDeliveryTypePost;
+      case InvoiceDeliveryType.Both:
+        return AppLocalizations.of(context)!.billDeliveryTypeBoth;
+      default:
+        return '';
+    }
   }
 }

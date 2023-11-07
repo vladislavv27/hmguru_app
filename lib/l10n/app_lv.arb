@@ -106,5 +106,16 @@
   "resident": "Iedzīvotājs",
   "printedInvoice": "Rēķins tiks nosūtīts izdrukātā veidā uz pastkasti",
   "emailInvoice": "Rēķins tiks nosūtīts uz šī lietotāja e-pastu",
-  "successfullyChangedInvoiceReceiving": "Veiksmīgi mainīta rēķinu saņemšana"
+  "successfullyChangedInvoiceReceiving": "Veiksmīgi mainīta rēķinu saņemšana",
+  "authenticateWith": "Autentificēt ar",
+  "billDeliveryTypeEmail": "Piegāde pa e-pastu",
+  "billDeliveryTypePost": "Piegāde pa pastu",
+  "billDeliveryTypeBoth": "Abi varianti",
+  "providedservices": "Sniegtie pakalpojumi",
+  "fee": "Maksa:",
+  "formula": "Formula:",
+  "penalty": "Sods:",
+  "coefficient": "Kvocients:",
+  "taxesFromFee": "PVN:"
+
 }

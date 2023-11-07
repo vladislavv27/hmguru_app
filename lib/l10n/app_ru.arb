@@ -54,7 +54,7 @@
   "noMeterReadings": "У вас нет показаний счетчиков",
   "submitMeterReadings": "Отправить показания счетчиков",
   "metersButton": "Счетчики",
- "january": "Январь",
+  "january": "Январь",
   "february": "Февраль",
   "march": "Март",
   "april": "Апрель",
@@ -106,5 +106,16 @@
   "resident": "Жилец",
    "printedInvoice": "Счет будет отправлен на почту в печатной форме",
   "emailInvoice": "Счет будет отправлен на электронную почту этому пользователю",
-  "successfullyChangedInvoiceReceiving": "Успешно изменен способ получения счета"
+  "successfullyChangedInvoiceReceiving": "Успешно изменен способ получения счета",
+  "authenticateWith": "Аутентификация с",
+  "billDeliveryTypeEmail": "Доставка по электронной почте",
+  "billDeliveryTypePost": "Доставка по почте",
+  "billDeliveryTypeBoth": "Оба способа",
+  "providedservices": "Оказанные услуги",
+   "fee": "Стоимость:",
+  "formula": "Формула:",
+  "penalty": "Штраф:",
+  "coefficient": "Коэффициент:",
+  "taxesFromFee": "НДС:"
+
 }
